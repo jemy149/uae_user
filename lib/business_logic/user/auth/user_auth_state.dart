@@ -93,3 +93,12 @@ class UserResendCodeSuccessState extends UserAuthStates{}
 class UserResendCodeErrorState extends UserAuthStates{
 
 }
+
+
+class UserSocialAuthLoadingState extends UserAuthStates{}
+
+class UserSocialAuthSuccessState extends UserAuthStates{}
+
+class UserSocialAuthErrorState extends UserAuthStates{
+
+}

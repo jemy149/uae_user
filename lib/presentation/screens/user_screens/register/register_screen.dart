@@ -241,7 +241,9 @@ class RegisterScreen extends StatelessWidget {
                               children: [
                                 OutlinedSocialButton(
                                   text: 'facebook',
-                                  onTap: () {},
+                                  onTap: () {
+                                    UserAuthCubit?.get(context).signInWithFacebook();
+                                  },
                                   image: 'assets/icons/facebook.png',
                                   textColor: AppColors.darkBlue,
                                   color: Colors.white,
@@ -251,7 +253,9 @@ class RegisterScreen extends StatelessWidget {
                                 ),
                                 OutlinedSocialButton(
                                   text: 'Google',
-                                  onTap: () {},
+                                  onTap: () {
+                                    UserAuthCubit?.get(context).signInWithGoogle();
+                                  },
                                   image: 'assets/icons/google.png',
                                   textColor: AppColors.red,
                                   color: Colors.white,

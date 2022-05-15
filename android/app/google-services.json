@@ -1,0 +1,86 @@
+{
+  "project_info": {
+    "project_number": "104285375023",
+    "project_id": "uaestore-5efe9",
+    "storage_bucket": "uaestore-5efe9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:104285375023:android:d893aba4e91793054694da",
+        "android_client_info": {
+          "package_name": "com.magdsoft.uae_user"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "104285375023-b1eb7vgfc8b9mvsk71u4kblai8hanj2f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.magdsoft.uae_user",
+            "certificate_hash": "e431e159feb242c86c1f372c44535b6c3e797270"
+          }
+        },
+        {
+          "client_id": "104285375023-e11mfqeq1kh2tq17krc7lg04f1tr77vf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.magdsoft.uae_user",
+            "certificate_hash": "bdd4f095f1beafe9fcb9a1069423a6d23873fee9"
+          }
+        },
+        {
+          "client_id": "104285375023-el03a26g5vh87buh8iq1en2ii600m8cv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.magdsoft.uae_user",
+            "certificate_hash": "2c2151cd4864dc31144e19e4df65e6af54d79970"
+          }
+        },
+        {
+          "client_id": "104285375023-l9osrt8gght0dgg7k4j35n0ul41q36ti.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.magdsoft.uae_user",
+            "certificate_hash": "71207fdce1995f5addce75f93e8e99557379b4ad"
+          }
+        },
+        {
+          "client_id": "104285375023-pgdvqtud4ev78evsf4jh42n669dthblp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.magdsoft.uae_user",
+            "certificate_hash": "8cc361834b25fe93b8024fc26f4698470ff762ef"
+          }
+        },
+        {
+          "client_id": "104285375023-9i8m60kan9crseuue6t8a8use5q05h6o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvY6kqUpXlJOa58MVsoAMjKy8SRD6LA-E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "104285375023-9i8m60kan9crseuue6t8a8use5q05h6o.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "104285375023-0mnjlt42lftkrg3n1unc1c9ju7adj3l8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.uaeStore"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

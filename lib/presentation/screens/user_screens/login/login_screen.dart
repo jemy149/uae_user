@@ -1,4 +1,5 @@
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,6 +17,8 @@ import 'package:uae_user/presentation/widgets/default_material_button.dart';
 import 'package:uae_user/presentation/widgets/default_text.dart';
 import 'package:uae_user/presentation/widgets/default_text_button.dart';
 import 'package:uae_user/presentation/widgets/outlined_social_button.dart';
+
+import '../app_layout/home_layout.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -183,7 +186,19 @@ class LoginScreen extends StatelessWidget {
                                 children: [
                                   OutlinedSocialButton(
                                     text: 'facebook',
-                                    onTap: () {},
+                                    onTap: () {
+                                      UserAuthCubit?.get(context).signInWithFacebook();
+                                      StreamBuilder(
+                                          stream: FirebaseAuth.instance.authStateChanges(),
+                                          builder: (BuildContext context, snapshot) {
+                                            if (snapshot.hasData) {
+                                            // user is authorozed hence redirect to home screen
+                                            return HomeLayout();
+                                            } else
+                                            // user not authorized hence redirect to login page
+                                            return LoginScreen();
+                                          });
+                                      },
                                     image: 'assets/icons/facebook.png',
                                     textColor: AppColors.darkBlue,
                                     color: Colors.white,
@@ -193,7 +208,18 @@ class LoginScreen extends StatelessWidget {
                                   ),
                                   OutlinedSocialButton(
                                     text: 'Google',
-                                    onTap: () {},
+                                    onTap: () {UserAuthCubit?.get(context).signInWithGoogle();
+                                    StreamBuilder(
+                                        stream: FirebaseAuth.instance.authStateChanges(),
+                                        builder: (BuildContext context, snapshot) {
+                                          if (snapshot.hasData) {
+                                            // user is authorozed hence redirect to home screen
+                                            return HomeLayout();
+                                          } else
+                                            // user not authorized hence redirect to login page
+                                            return LoginScreen();
+                                        });
+                                      },
                                     image: 'assets/icons/google.png',
                                     textColor: AppColors.red,
                                     color: Colors.white,

@@ -1,9 +1,44 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.magdsoft.uae_user">
+    <queries>
+        <provider android:authorities="com.facebook.katana.provider.PlatformProvider" /> <!-- allows app to access Facebook app features -->
+        <provider android:authorities="com.facebook.orca.provider.PlatformProvider" /> <!-- allows sharing to Messenger app -->
+    </queries>
+    <queries>
+        <package android:name="com.google.android.apps.maps" />
+    </queries>
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.DIAL" />
+            <data android:scheme="tel" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.SEND" />
+            <data android:mimeType="*/*" />
+        </intent>
+    </queries>
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name ="android.permission.ACCESS_FINE_LOCATION" />
+
    <application
         android:label="uae_user"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+
+       <meta-data
+           android:name="com.facebook.sdk.ApplicationId"
+           android:value="@string/facebook_app_id"/>
+
+       <meta-data
+           android:name="com.facebook.sdk.ClientToken"
+           android:value="@string/facebook_client_token"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -30,5 +65,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+       <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDvY6kqUpXlJOa58MVsoAMjKy8SRD6LA-E"/>
     </application>
 </manifest>
