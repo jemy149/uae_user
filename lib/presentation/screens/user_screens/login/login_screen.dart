@@ -1,0 +1,241 @@
+import 'package:country_code_picker/country_code_picker.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:uae_user/business_logic/user/auth/user_auth_cubit.dart';
+import 'package:uae_user/constants/constant_methods.dart';
+import 'package:uae_user/constants/enums.dart';
+import 'package:uae_user/constants/screens.dart';
+import 'package:uae_user/data/data_provider/local/cache_helper.dart';
+import 'package:uae_user/presentation/styles/colors.dart';
+import 'package:uae_user/presentation/views/animated_image.dart';
+import 'package:uae_user/presentation/views/correcting_password_alert_dialog.dart';
+import 'package:uae_user/presentation/widgets/default_form_field.dart';
+import 'package:uae_user/presentation/widgets/default_material_button.dart';
+import 'package:uae_user/presentation/widgets/default_text.dart';
+import 'package:uae_user/presentation/widgets/default_text_button.dart';
+import 'package:uae_user/presentation/widgets/outlined_social_button.dart';
+
+class LoginScreen extends StatelessWidget {
+  LoginScreen({Key? key}) : super(key: key);
+
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  final GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
+  UserAuthCubit? cubit;
+  CountryCode? _countryCode = CountryCode(name: 'EG', dialCode: '+20');
+
+  @override
+  Widget build(BuildContext context) {
+
+    return BlocProvider(
+      create: (context) => UserAuthCubit(),
+      child: SafeArea(
+          child: Scaffold(
+        backgroundColor: AppColors.lightBlue,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Stack(
+              children: [
+                const AnimatedImage(),
+                Form(
+                  key: loginFormKey,
+                  child: Builder(
+                    builder: (context) {
+                      cubit = UserAuthCubit.get(context);
+                      return BlocConsumer<UserAuthCubit, UserAuthStates>(
+                        listener: (context, state) {
+                          if (state is UserLoginErrorState) {
+                            printTest('test');
+                            showToastMsg(
+                                msg:state.message ?? AppLocalizations.of(context)!.pleaseTryAgain,
+                                toastState: ToastStates.ERROR);
+                          }
+                          if (state is UserLoginSuccessState) {
+                            Navigator.pushNamedAndRemoveUntil(
+                              context,
+                                HOME_LAYOUT_R,
+                              (route) => false,
+                            );
+                          }
+                        },
+                        builder: (context, state) {
+                          return Column(
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Image.asset(
+                                        'assets/images/whiteLogo.png',
+                                        height: 150,
+                                      ),
+                                      Text(
+                                        AppLocalizations.of(context)!.welcome,
+                                        style:
+                                            const TextStyle(color: AppColors.grey),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 30, vertical: 15),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    DefaultText(
+                                      text: AppLocalizations.of(context)!.login,
+                                      style: Theme.of(context).textTheme.headline6,
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsetsDirectional.only(top: 5),
+                                      child: TextFormField(
+                                        controller: phoneController,
+                                        keyboardType: TextInputType.phone,
+                                        textAlign: TextAlign.end,
+                                        style: const TextStyle(
+                                          fontFamily: 'Bukra-Regular',
+                                          color: AppColors.black,
+                                          fontSize: 12,
+                                        ),
+                                        validator: (text) {
+                                          if (text!.isEmpty) {
+                                            return AppLocalizations.of(context)!
+                                                .emptyPhoneNumber;
+                                          }
+                                        },
+                                        decoration: InputDecoration(
+                                          suffixIcon: const Icon(Icons.check),
+                                          prefixIcon: CountryCodePicker(
+                                            onChanged: (countryCode) {
+                                              _countryCode = countryCode;
+                                            },
+                                            // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
+                                            initialSelection: 'EG',
+                                            favorite: ['+20', 'EG'],
+                                            // optional. Shows only country name and flag
+                                            showCountryOnly: false,
+                                            // optional. Shows only country name and flag when popup is closed.
+                                            showOnlyCountryWhenClosed: false,
+                                            // optional. aligns the flag and the Text left
+                                            alignLeft: false,
+                                            countryFilter: ['+20', '+971'],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsetsDirectional.only(top: 5),
+                                      child: DefaultFormField(
+                                        controller: passwordController,
+                                        imgPath: 'assets/images/padlock.png',
+                                        hintText: AppLocalizations.of(context)!
+                                            .hintPassword,
+                                        validator: (text) {
+                                          if (text!.isEmpty) {
+                                            return AppLocalizations.of(context)!
+                                                .emptyPhonePassword;
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsetsDirectional.only(top: 15),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          DefaultMaterialButton(
+                                            text:
+                                                AppLocalizations.of(context)!.login,
+                                            onTap: () {
+                                              if (loginFormKey.currentState!
+                                                  .validate()) {
+                                                 cubit!.userLogin(
+                                                    phone: _countryCode!.dialCode! +
+                                                        phoneController.text,
+                                                    password:
+                                                        passwordController.text);
+                                              }
+
+                                            },
+                                            height: 50,
+                                            width: 200,
+                                            color: AppColors.darkBlue,
+                                            textColor: Colors.white,
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  OutlinedSocialButton(
+                                    text: 'facebook',
+                                    onTap: () {},
+                                    image: 'assets/icons/facebook.png',
+                                    textColor: AppColors.darkBlue,
+                                    color: Colors.white,
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  OutlinedSocialButton(
+                                    text: 'Google',
+                                    onTap: () {},
+                                    image: 'assets/icons/google.png',
+                                    textColor: AppColors.red,
+                                    color: Colors.white,
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 20),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    DefaultTextButton(
+                                        text: AppLocalizations.of(context)!
+                                            .forgetPassword,
+                                        onTap: () => showDialog(
+                                              context: context,
+                                              builder: (context) => CorrectingPasswordAlertDialog(),
+                                            ),
+                                        fontSize: 12),
+                                    DefaultTextButton(
+                                        text: AppLocalizations.of(context)!.signUp,
+                                        onTap: () {
+                                          Navigator.pushNamed(
+                                              context, REGISTER_SCREEN_R);
+                                        },
+                                        fontSize: 12),
+                                  ],
+                                ),
+                              )
+                            ],
+                          );
+                        },
+                      );
+                    }
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      )),
+    );
+  }
+}
