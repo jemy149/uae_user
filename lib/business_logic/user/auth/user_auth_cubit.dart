@@ -115,7 +115,8 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
       userLoginModel = value;
       if (userLoginModel!.status.toString() == '200') {
         CacheHelper.saveDataToSP(
-            key: SharedPreferencesKeys.SP_ACCESS_TOKEN_KEY, value: accessToken);
+            key: SharedPreferencesKeys.SP_ACCESS_TOKEN_KEY, value: userLoginModel!.account!.apiToken);
+
         CacheHelper.saveDataToSP(
             key: SharedPreferencesKeys.SP_ACCOUNT_TYPE_KEY,
             value: userLoginModel?.account?.type);
@@ -203,7 +204,8 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
   }
 
 //////////////////////////////////// Auth With Facebook and Google ////////////////////////////////////
-  signInWithFacebook({String? status}) async {
+  signInWithFacebook() async {
+    emit(UserFacebookAuthLoadingState());
     final fb = FacebookLogin();
     final res = await fb.logIn(permissions: [
       FacebookPermission.publicProfile,
@@ -214,7 +216,7 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
       case FacebookLoginStatus.success:
         // The user is suceessfully logged in
         // Send access token to server for validation and auth
-      status = res.status.toString();
+      emit(UserFacebookAuthSuccessState());
         final FacebookAccessToken? accessToken = res.accessToken;
         // final AuthCredential authCredential = FacebookAuth.credential(accessToken.token);
         final AuthCredential authCredential =
@@ -237,12 +239,14 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
         break;
       case FacebookLoginStatus.error:
         // Login procedure failed
+      emit(UserFacebookAuthErrorState());
         print('Error while log in: ${res.error}');
         break;
     }
   }
 
   Future<UserCredential> signInWithGoogle() async {
+    emit(UserGoogleAuthErrorState());
     // Initiate the auth procedure
     final GoogleSignInAccount? googleUser =
         await GoogleSignIn(scopes: <String>["email"]).signIn();
@@ -254,6 +258,11 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
+    if(credential != null){
+      emit(UserFacebookAuthSuccessState());
+    }else {
+      emit(UserFacebookAuthErrorState());
+    }
     // Once signed in, return the UserCredential
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }

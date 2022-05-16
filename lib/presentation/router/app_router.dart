@@ -24,6 +24,9 @@ import 'package:uae_user/presentation/screens/user_screens/tracking_order/tracki
 import 'package:uae_user/presentation/screens/user_screens/user_addresses/user_addresses_screen.dart';
 import 'package:uae_user/presentation/screens/user_screens/verification/verification_screen.dart';
 import 'package:uae_user/presentation/screens/user_screens/wallet/wallet_screen.dart';
+import '../../constants/constants.dart';
+import '../../constants/shared_preferences_keys.dart';
+import '../../data/data_provider/local/cache_helper.dart';
 import '../screens/user_screens/delivery_information/delivery_information_screen.dart';
 import '../screens/user_screens/frequently_asked_questions/frequently_asked_questions_screen.dart';
 import '../screens/user_screens/login/login_screen.dart';
@@ -35,6 +38,10 @@ import '../screens/user_screens/register/register_screen.dart';
 class AppRouter {
   late Widget startWidget;
   AppRouter(){
+    apiToken = CacheHelper.getDataFromSP(key: SharedPreferencesKeys.SP_ACCESS_TOKEN_KEY);
+    accountType = CacheHelper.getDataFromSP(
+        key: SharedPreferencesKeys.SP_ACCOUNT_TYPE_KEY);
+    // if(apiToken != null){}
     startWidget =const SplashScreen();
   }
 

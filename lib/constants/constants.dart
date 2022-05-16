@@ -2,11 +2,15 @@
 
 
 
+import 'package:uae_user/constants/shared_preferences_keys.dart';
+
+import '../data/data_provider/local/cache_helper.dart';
+
 String? AppLang = 'En' ;
 
 
 ///////////////////////////////// sharedPreferences constant /////////////////////////////////////////////
-String? apiToken;
+String? apiToken = CacheHelper.getDataFromSP(key: SharedPreferencesKeys.SP_ACCESS_TOKEN_KEY);
 String? accessToken;
 String? accountType;
 String? tmpToken;

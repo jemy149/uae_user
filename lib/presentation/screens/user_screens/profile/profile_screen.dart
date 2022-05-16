@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:uae_user/business_logic/user/auth/user_auth_cubit.dart';
+import 'package:uae_user/data/data_provider/local/cache_helper.dart';
 import 'package:uae_user/presentation/styles/colors.dart';
 import 'package:uae_user/presentation/views/default_profile_list_tile.dart';
 import 'package:uae_user/presentation/widgets/default_text.dart';
@@ -134,6 +135,8 @@ class ProfileScreen extends StatelessWidget {
                   return DefaultProfileListTile(
                     onTap: () {
                       UserAuthCubit.get(context).userLogout();
+                      UserAuthCubit.get(context).signOut();
+                      CacheHelper.sharedPreferences.clear();
                     },
                     image: 'assets/icons/logout.jpg',
                     titleText: AppLocalizations.of(context)!.logout,

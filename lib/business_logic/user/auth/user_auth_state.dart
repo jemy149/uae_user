@@ -95,10 +95,17 @@ class UserResendCodeErrorState extends UserAuthStates{
 }
 
 
-class UserSocialAuthLoadingState extends UserAuthStates{}
+class UserFacebookAuthLoadingState extends UserAuthStates{}
 
-class UserSocialAuthSuccessState extends UserAuthStates{}
+class UserFacebookAuthSuccessState extends UserAuthStates{}
 
-class UserSocialAuthErrorState extends UserAuthStates{
+class UserFacebookAuthErrorState extends UserAuthStates{
+
+}
+class UserGoogleAuthLoadingState extends UserAuthStates{}
+
+class UserGoogleAuthSuccessState extends UserAuthStates{}
+
+class UserGoogleAuthErrorState extends UserAuthStates{
 
 }
