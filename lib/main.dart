@@ -20,6 +20,7 @@ Future<void> main() async {
 
 
   runApp(MyApp());
+
 }
 
 
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
           builder: (context) {
             LanguageCubit _langCubit;
             _langCubit = LanguageCubit.get(context);
+
             return MaterialApp(
               useInheritedMediaQuery: true,
               supportedLocales: L10n.all,
@@ -55,8 +57,10 @@ class MyApp extends StatelessWidget {
               theme: lightTheme,
               onGenerateRoute: appRouter.onGenerateRoute,
 
+
             );
           }
+
       ),
     );
   }

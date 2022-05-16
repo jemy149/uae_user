@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:uae_user/constants/screens.dart';
 import 'package:uae_user/presentation/screens/user_screens/about/about_screen.dart';
@@ -24,9 +23,7 @@ import 'package:uae_user/presentation/screens/user_screens/tracking_order/tracki
 import 'package:uae_user/presentation/screens/user_screens/user_addresses/user_addresses_screen.dart';
 import 'package:uae_user/presentation/screens/user_screens/verification/verification_screen.dart';
 import 'package:uae_user/presentation/screens/user_screens/wallet/wallet_screen.dart';
-import '../../constants/constants.dart';
-import '../../constants/shared_preferences_keys.dart';
-import '../../data/data_provider/local/cache_helper.dart';
+
 import '../screens/user_screens/delivery_information/delivery_information_screen.dart';
 import '../screens/user_screens/frequently_asked_questions/frequently_asked_questions_screen.dart';
 import '../screens/user_screens/login/login_screen.dart';
@@ -34,15 +31,11 @@ import '../screens/user_screens/products_in_stock/products_in_stock_screen.dart'
 import '../screens/user_screens/profile/profile_screen.dart';
 import '../screens/user_screens/register/register_screen.dart';
 
-
 class AppRouter {
   late Widget startWidget;
-  AppRouter(){
-    apiToken = CacheHelper.getDataFromSP(key: SharedPreferencesKeys.SP_ACCESS_TOKEN_KEY);
-    accountType = CacheHelper.getDataFromSP(
-        key: SharedPreferencesKeys.SP_ACCOUNT_TYPE_KEY);
-    // if(apiToken != null){}
-    startWidget =const SplashScreen();
+
+  AppRouter() {
+    startWidget = SplashScreen();
   }
 
   // AppRouter() {
@@ -75,65 +68,66 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => startWidget);
       case REGISTER_SCREEN_R:
         return MaterialPageRoute(builder: (_) => RegisterScreen());
-        case LOGIN_SCREEN_R:
+      case LOGIN_SCREEN_R:
         return MaterialPageRoute(builder: (_) => LoginScreen());
-        case VERIFICATION_SCREEN_R:
+      case VERIFICATION_SCREEN_R:
         return MaterialPageRoute(builder: (_) => VerificationScreen());
-        case HOME_LAYOUT_R:
+      case HOME_LAYOUT_R:
         return MaterialPageRoute(builder: (_) => const HomeLayout());
-        case PROFILE_SCREEN_R:
+      case PROFILE_SCREEN_R:
         return MaterialPageRoute(builder: (_) => const ProfileScreen());
-        case ORDERS_SCREEN_R:
+      case ORDERS_SCREEN_R:
         return MaterialPageRoute(builder: (_) => const OrdersScreen());
-        case FAVOURITES_SCREEN_R:
+      case FAVOURITES_SCREEN_R:
         return MaterialPageRoute(builder: (_) => const FavouritesScreen());
-        case TRACKING_ORDER_SCREEN_R:
+      case TRACKING_ORDER_SCREEN_R:
         return MaterialPageRoute(builder: (_) => const TrackingOrderScreen());
-        case ABOUT_SCREEN_R:
+      case ABOUT_SCREEN_R:
         return MaterialPageRoute(builder: (_) => const AboutScreen());
-        case FREQUENTLY_ASKED_QUESTIONS_SCREEN_R:
-        return MaterialPageRoute(builder: (_) => const FrequentlyAskedQuestionsScreen());
-        case POLICY_AND_TERMS_SCREEN_R:
+      case FREQUENTLY_ASKED_QUESTIONS_SCREEN_R:
+        return MaterialPageRoute(
+            builder: (_) => const FrequentlyAskedQuestionsScreen());
+      case POLICY_AND_TERMS_SCREEN_R:
         return MaterialPageRoute(builder: (_) => const PolicyAndTermsScreen());
-        case LANGUAGE_SCREEN_R:
+      case LANGUAGE_SCREEN_R:
         return MaterialPageRoute(builder: (_) => const LanguageScreen());
-        case NOTIFICATIONS_SCREEN_R:
+      case NOTIFICATIONS_SCREEN_R:
         return MaterialPageRoute(builder: (_) => const NotificationsScreen());
-        case DELIVERY_INFORMATION_SCREEN_R:
-        return MaterialPageRoute(builder: (_) => const DeliveryInformationScreen());
-        case CART_SCREEN_R:
+      case DELIVERY_INFORMATION_SCREEN_R:
+        return MaterialPageRoute(
+            builder: (_) => const DeliveryInformationScreen());
+      case CART_SCREEN_R:
         return MaterialPageRoute(builder: (_) => const CartScreen());
-        case OFFERS_SCREEN_R:
+      case OFFERS_SCREEN_R:
         return MaterialPageRoute(builder: (_) => OffersScreen());
-        case FILTER_SCREEN_R:
+      case FILTER_SCREEN_R:
         return MaterialPageRoute(builder: (_) => FilterScreen());
-        case WALLET_SCREEN_R:
+      case WALLET_SCREEN_R:
         return MaterialPageRoute(builder: (_) => WalletScreen());
-        case CATEGORIES_SCREEN_R:
+      case CATEGORIES_SCREEN_R:
         return MaterialPageRoute(builder: (_) => CategoriesScreen());
-        case PRODUCTS_IN_STOCK_SCREEN_R:
+      case PRODUCTS_IN_STOCK_SCREEN_R:
         return MaterialPageRoute(builder: (_) => ProdrctsInStockScreen());
-        case ADDING_PRODUCT_TO_CART_SCREEN_R:
+      case ADDING_PRODUCT_TO_CART_SCREEN_R:
         return MaterialPageRoute(builder: (_) => AddingProductToCartScreen());
-        case DELIVERY_LOCATION_SCREEN_R:
+      case DELIVERY_LOCATION_SCREEN_R:
         return MaterialPageRoute(builder: (_) => DeliveryLocationScreen());
-        case PAYMENT_METHOD_SCREEN_R:
+      case PAYMENT_METHOD_SCREEN_R:
         return MaterialPageRoute(builder: (_) => PaymentMethodScreen());
-        case QR_CODE_SCREEN_R:
+      case QR_CODE_SCREEN_R:
         return MaterialPageRoute(builder: (_) => QrCodeScreen());
-        case DELIVERY_DETAILS_SCREEN_R:
+      case DELIVERY_DETAILS_SCREEN_R:
         return MaterialPageRoute(builder: (_) => DeliveryDetailsScreen());
-        case USER_ADDRESSES_SCREEN_R:
+      case USER_ADDRESSES_SCREEN_R:
         return MaterialPageRoute(builder: (_) => UserAddressesScreen());
-        case ADDING_ADDITIONAL_LOCATION_SCREEN_R:
-        return MaterialPageRoute(builder: (_) => AddingAdditionalLocationScreen());
-        case SEARCH_SCREEN_R:
+      case ADDING_ADDITIONAL_LOCATION_SCREEN_R:
+        return MaterialPageRoute(
+            builder: (_) => AddingAdditionalLocationScreen());
+      case SEARCH_SCREEN_R:
         return MaterialPageRoute(builder: (_) => SearchScreen());
-
-
 
       default:
         return null;
     }
-  }}
-
+  }
+}

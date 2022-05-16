@@ -99,9 +99,9 @@ class UserFacebookAuthLoadingState extends UserAuthStates{}
 
 class UserFacebookAuthSuccessState extends UserAuthStates{}
 
-class UserFacebookAuthErrorState extends UserAuthStates{
+class UserFacebookAuthErrorState extends UserAuthStates{}
 
-}
+
 class UserGoogleAuthLoadingState extends UserAuthStates{}
 
 class UserGoogleAuthSuccessState extends UserAuthStates{}

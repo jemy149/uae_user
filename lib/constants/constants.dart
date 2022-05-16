@@ -10,7 +10,9 @@ String? AppLang = 'En' ;
 
 
 ///////////////////////////////// sharedPreferences constant /////////////////////////////////////////////
-String? apiToken = CacheHelper.getDataFromSP(key: SharedPreferencesKeys.SP_ACCESS_TOKEN_KEY);
+String? apiToken;
+String? googleAccessToken;
+String? facebookAccessToken;
 String? accessToken;
 String? accountType;
 String? tmpToken;

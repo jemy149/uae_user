@@ -18,7 +18,6 @@ import 'package:uae_user/data/requests/auth/validate_code_request.dart';
 import 'package:uae_user/data/requests/logout/logout_request.dart';
 
 import '../../../constants/constant_methods.dart';
-import '../../../constants/constants.dart';
 import '../../../constants/shared_preferences_keys.dart';
 import '../../../data/data_provider/local/cache_helper.dart';
 import '../../../data/models/user_models/auth/validate_code_model.dart';
@@ -115,7 +114,8 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
       userLoginModel = value;
       if (userLoginModel!.status.toString() == '200') {
         CacheHelper.saveDataToSP(
-            key: SharedPreferencesKeys.SP_ACCESS_TOKEN_KEY, value: userLoginModel!.account!.apiToken);
+            key: SharedPreferencesKeys.SP_ACCESS_TOKEN_KEY,
+            value: userLoginModel!.account!.apiToken);
 
         CacheHelper.saveDataToSP(
             key: SharedPreferencesKeys.SP_ACCOUNT_TYPE_KEY,
@@ -216,7 +216,7 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
       case FacebookLoginStatus.success:
         // The user is suceessfully logged in
         // Send access token to server for validation and auth
-      emit(UserFacebookAuthSuccessState());
+
         final FacebookAccessToken? accessToken = res.accessToken;
         // final AuthCredential authCredential = FacebookAuth.credential(accessToken.token);
         final AuthCredential authCredential =
@@ -225,6 +225,7 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
             await FirebaseAuth.instance.signInWithCredential(authCredential);
         // Get profile data from facebook for use in the app
         final profile = await fb.getUserProfile();
+
         print('Hello, ${profile!.name}! You ID: ${profile!.userId}');
         // Get user profile image url
         final imageUrl = await fb.getProfileImageUrl(width: 100);
@@ -232,6 +233,10 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
         // fetch user email
         final email = await fb.getUserEmail();
         // But user can decline permission
+        CacheHelper.saveDataToSP(
+            key: SharedPreferencesKeys.SP_FACEBOOK_ACCESS_TOKEN_KEY,
+            value: accessToken.token);
+        emit(UserFacebookAuthSuccessState());
         if (email != null) print('And your email is $email');
         break;
       case FacebookLoginStatus.cancel:
@@ -239,14 +244,14 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
         break;
       case FacebookLoginStatus.error:
         // Login procedure failed
-      emit(UserFacebookAuthErrorState());
+        emit(UserFacebookAuthErrorState());
         print('Error while log in: ${res.error}');
         break;
     }
   }
 
   Future<UserCredential> signInWithGoogle() async {
-    emit(UserGoogleAuthErrorState());
+    emit(UserGoogleAuthLoadingState());
     // Initiate the auth procedure
     final GoogleSignInAccount? googleUser =
         await GoogleSignIn(scopes: <String>["email"]).signIn();
@@ -258,9 +263,13 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-    if(credential != null){
+
+    if (credential.accessToken != null) {
+      CacheHelper.saveDataToSP(
+          key: SharedPreferencesKeys.SP_GOOGLE_ACCESS_TOKEN_KEY,
+          value: credential.accessToken);
       emit(UserFacebookAuthSuccessState());
-    }else {
+    } else {
       emit(UserFacebookAuthErrorState());
     }
     // Once signed in, return the UserCredential
