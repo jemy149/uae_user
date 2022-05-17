@@ -94,6 +94,14 @@ class UserResendCodeErrorState extends UserAuthStates{
 
 }
 
+class UserSocialAuthUserDetailsLoadingState extends UserAuthStates{}
+
+class UserSocialAuthUserDetailsSuccessState extends UserAuthStates{}
+
+class UserSocialAuthUserDetailsErrorState extends UserAuthStates{
+
+}
+
 
 class UserFacebookAuthLoadingState extends UserAuthStates{}
 

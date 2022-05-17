@@ -272,23 +272,6 @@ class _FilterScreenState extends State<FilterScreen> {
   }
 }
 
-// Expanded(
-//             flex: 2,
-//             child: Container(
-//                 color: AppColors.blue,
-//                 child: ListView.builder(
-//                   itemBuilder: (context, index) => CheckboxListTile(
-//                     value: isTrue,
-//                     onChanged: (p) {},
-//                     title: const DefaultText(
-//                       text: 'item name',
-//                     ),
-//                     controlAffinity: ListTileControlAffinity.leading,
-//                   ),
-//                   itemCount: 30,
-//                 )),
-//           )
-
 class Data {
   Data({required this.x, required this.y});
 

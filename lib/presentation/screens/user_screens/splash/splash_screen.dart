@@ -12,21 +12,14 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    apiToken = CacheHelper.getDataFromSP(
-        key: SharedPreferencesKeys.SP_ACCESS_TOKEN_KEY);
-    googleAccessToken = CacheHelper.getDataFromSP(
-        key: SharedPreferencesKeys.SP_GOOGLE_ACCESS_TOKEN_KEY);
-    facebookAccessToken = CacheHelper.getDataFromSP(
-        key: SharedPreferencesKeys.SP_FACEBOOK_ACCESS_TOKEN_KEY);
-
+    apiToken =  CacheHelper.getDataFromSP(
+        key: SharedPreferencesKeys.SP_API_TOKEN_KEY);
     return Scaffold(
       body: Stack(
         children: [
           SplashScreenView(
             navigateRoute: SizedBox(
-              child: apiToken != null ||
-                      googleAccessToken != null ||
-                      facebookAccessToken != null
+              child: apiToken == null
                   ? LoginScreen()
                   : const HomeLayout(),
             ),

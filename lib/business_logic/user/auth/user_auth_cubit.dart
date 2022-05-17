@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
+import 'package:uae_user/constants/constants.dart';
 import 'package:uae_user/data/models/user_models/auth/login_model.dart';
 import 'package:uae_user/data/models/user_models/auth/register_model.dart';
 import 'package:uae_user/data/models/user_models/auth/resend_code_model.dart';
@@ -16,12 +17,11 @@ import 'package:uae_user/data/requests/auth/resend_code_request.dart';
 import 'package:uae_user/data/requests/auth/reset_password_request.dart';
 import 'package:uae_user/data/requests/auth/validate_code_request.dart';
 import 'package:uae_user/data/requests/logout/logout_request.dart';
-
 import '../../../constants/constant_methods.dart';
 import '../../../constants/shared_preferences_keys.dart';
 import '../../../data/data_provider/local/cache_helper.dart';
 import '../../../data/models/user_models/auth/validate_code_model.dart';
-
+import '../../../data/requests/auth/login_by_social_token_request.dart';
 part 'user_auth_state.dart';
 
 class UserAuthCubit extends Cubit<UserAuthStates> {
@@ -114,7 +114,7 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
       userLoginModel = value;
       if (userLoginModel!.status.toString() == '200') {
         CacheHelper.saveDataToSP(
-            key: SharedPreferencesKeys.SP_ACCESS_TOKEN_KEY,
+            key: SharedPreferencesKeys.SP_API_TOKEN_KEY,
             value: userLoginModel!.account!.apiToken);
 
         CacheHelper.saveDataToSP(
@@ -129,7 +129,7 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
 
         emit(UserLoginSuccessState());
       } else {
-        emit(UserLoginErrorState(userLoginModel!.message));
+        emit(UserLoginErrorState(userLoginModel!.message.toString()));
       }
     }).catchError((error) {
       printResponse('UserLogin' + error.toString());
@@ -140,15 +140,16 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
 
   LogoutModel? userLogoutModel;
 
-  void userLogout() {
+   userLogout() {
     emit(UserLogoutLoadingState());
     LogoutRequest.logoutRequest()
         .then((value) => (value) {
-              userLoginModel = value;
-              if (userLogoutModel != null &&
-                  userLogoutModel?.status.toString() == '200') {
+      userLogoutModel = value;
+              if (userLogoutModel?.status.toString() == '200') {
+                CacheHelper.sharedPreferences.clear();
                 emit(UserLogoutSuccessState());
               } else {
+                CacheHelper.sharedPreferences.clear();
                 emit(UserLogoutErrorState());
               }
             })
@@ -203,7 +204,28 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
     });
   }
 
+//////////////////////////////////// Social Request ////////////////////////////////////
+
+  LoginModel? socialAuthUserDetailsModel;
+
+  void userSocialAuthUserDetails() {
+    emit(UserSocialAuthUserDetailsLoadingState());
+    LoginBySocialTokenRequest.loginBySocialTokenRequest()
+        .then((value) => (value) {
+      socialAuthUserDetailsModel = value;
+              if (socialAuthUserDetailsModel!.status.toString() == '200') {
+                emit(UserSocialAuthUserDetailsSuccessState());
+              } else {
+                emit(UserSocialAuthUserDetailsErrorState());
+              }
+            })
+        .catchError((error) {
+      printResponse('userSocialAuthUserDetails' + error.toString());
+    });
+  }
+
 //////////////////////////////////// Auth With Facebook and Google ////////////////////////////////////
+
   signInWithFacebook() async {
     emit(UserFacebookAuthLoadingState());
     final fb = FacebookLogin();
@@ -220,7 +242,7 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
         final FacebookAccessToken? accessToken = res.accessToken;
         // final AuthCredential authCredential = FacebookAuth.credential(accessToken.token);
         final AuthCredential authCredential =
-            FacebookAuthProvider.credential(accessToken!.token);
+            FacebookAuthProvider.credential(accessToken!.token.toString());
         final result =
             await FirebaseAuth.instance.signInWithCredential(authCredential);
         // Get profile data from facebook for use in the app
@@ -233,7 +255,7 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
         // fetch user email
         final email = await fb.getUserEmail();
         // But user can decline permission
-        CacheHelper.saveDataToSP(
+        await CacheHelper.saveDataToSP(
             key: SharedPreferencesKeys.SP_FACEBOOK_ACCESS_TOKEN_KEY,
             value: accessToken.token);
         emit(UserFacebookAuthSuccessState());

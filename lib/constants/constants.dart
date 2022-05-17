@@ -11,9 +11,9 @@ String? AppLang = 'En' ;
 
 ///////////////////////////////// sharedPreferences constant /////////////////////////////////////////////
 String? apiToken;
+String? socialToken;
 String? googleAccessToken;
 String? facebookAccessToken;
-String? accessToken;
 String? accountType;
 String? tmpToken;
 

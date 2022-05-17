@@ -9,6 +9,8 @@ import 'package:uae_user/business_logic/user/auth/user_auth_cubit.dart';
 import 'package:uae_user/constants/constant_methods.dart';
 import 'package:uae_user/constants/enums.dart';
 import 'package:uae_user/constants/screens.dart';
+import 'package:uae_user/constants/shared_preferences_keys.dart';
+import 'package:uae_user/data/data_provider/local/cache_helper.dart';
 import 'package:uae_user/presentation/styles/colors.dart';
 import 'package:uae_user/presentation/views/animated_image.dart';
 import 'package:uae_user/presentation/views/correcting_password_alert_dialog.dart';
@@ -17,6 +19,8 @@ import 'package:uae_user/presentation/widgets/default_material_button.dart';
 import 'package:uae_user/presentation/widgets/default_text.dart';
 import 'package:uae_user/presentation/widgets/default_text_button.dart';
 import 'package:uae_user/presentation/widgets/outlined_social_button.dart';
+
+import '../../../../constants/constants.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -48,7 +52,6 @@ class LoginScreen extends StatelessWidget {
                     return BlocConsumer<UserAuthCubit, UserAuthStates>(
                       listener: (context, state) {
                         if (state is UserLoginErrorState) {
-                          printTest('test');
                           showToastMsg(
                               msg: state.message ??
                                   AppLocalizations.of(context)!.pleaseTryAgain,
@@ -169,6 +172,7 @@ class LoginScreen extends StatelessWidget {
                                                   password:
                                                       passwordController.text);
                                             }
+
                                           },
                                           height: 50,
                                           width: 200,
@@ -200,9 +204,12 @@ class LoginScreen extends StatelessWidget {
                                       children: [
                                         OutlinedSocialButton(
                                           text: 'facebook',
-                                          onTap: () {
-                                            UserAuthCubit?.get(context)
+                                          onTap: () async{
+                                            await UserAuthCubit?.get(context)
                                                 .signInWithFacebook();
+                                            socialToken =await CacheHelper.getDataFromSP(key: SharedPreferencesKeys.SP_FACEBOOK_ACCESS_TOKEN_KEY);
+                                          UserAuthCubit.get(context).userSocialAuthUserDetails();
+                                            printTest('>>>>>>>>>>>>>>>>>>>>>>>>>>>${socialToken}');
                                           },
                                           image: 'assets/icons/facebook.png',
                                           textColor: AppColors.darkBlue,
@@ -213,10 +220,14 @@ class LoginScreen extends StatelessWidget {
                                         ),
                                         OutlinedSocialButton(
                                           text: 'Google',
-                                          onTap: () {
-                                            UserAuthCubit?.get(context)
+                                          onTap: () async{
+                                             UserAuthCubit?.get(context)
                                                 .signInWithGoogle();
-                                          },
+                                             socialToken =await CacheHelper.getDataFromSP(key: SharedPreferencesKeys.SP_GOOGLE_ACCESS_TOKEN_KEY);
+                                             printTest('>>>>>>>>>>>>>>>>>>>>>>>>>>>${socialToken}');
+                                             UserAuthCubit.get(context).userSocialAuthUserDetails();
+
+                                             },
                                           image: 'assets/icons/google.png',
                                           textColor: AppColors.red,
                                           color: Colors.white,

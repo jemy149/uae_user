@@ -1,11 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:uae_user/constants/weights.dart';
 import 'package:uae_user/presentation/styles/colors.dart';
 import 'package:uae_user/presentation/widgets/default_text.dart';
 
 class NotificationsListViewItem extends StatelessWidget {
-  const NotificationsListViewItem({Key? key}) : super(key: key);
+  const NotificationsListViewItem(
+      {Key? key,
+       this.imagePath,
+      required this.notificationHeadLine,
+       this.notificationTime,
+       this.notificationPlace,
+      required this.notificationDate,
+      required this.notificationBody})
+      : super(key: key);
+
+  final String? imagePath;
+  final String notificationHeadLine;
+  final String? notificationTime;
+  final String? notificationPlace;
+  final int notificationDate;
+  final String notificationBody;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +28,9 @@ class NotificationsListViewItem extends StatelessWidget {
       child: Card(
         elevation: 5,
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0,),
+          padding: const EdgeInsets.symmetric(
+            vertical: 8.0,
+          ),
           child: Row(
             children: [
               Flexible(
@@ -27,7 +43,7 @@ class NotificationsListViewItem extends StatelessWidget {
                       backgroundColor: AppColors.lightBlue,
                       child: CircleAvatar(
                         radius: 35,
-                        child: Image.asset('assets/images/almahalawy.png'),
+                        child: Image.network(imagePath!),
                         backgroundColor: Colors.white,
                       ),
                     ),
@@ -42,7 +58,7 @@ class NotificationsListViewItem extends StatelessWidget {
                         children: [
                           Expanded(
                               child: DefaultText(
-                                  text: 'notification',
+                                  text: notificationHeadLine,
                                   style: Theme.of(context)
                                       .textTheme
                                       .subtitle1
@@ -50,7 +66,7 @@ class NotificationsListViewItem extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsetsDirectional.only(start: 5),
                             child: DefaultText(
-                                text: '2 min ago',
+                                text: notificationTime!,
                                 style: Theme.of(context)
                                     .textTheme
                                     .caption
@@ -62,13 +78,13 @@ class NotificationsListViewItem extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           DefaultText(
-                              text: 'Dubai',
+                              text: notificationPlace!,
                               style: Theme.of(context)
                                   .textTheme
                                   .caption
                                   ?.copyWith(fontSize: 10)),
                           DefaultText(
-                              text: '17/4/2022',
+                              text: '${notificationDate}',
                               style: Theme.of(context)
                                   .textTheme
                                   .caption
@@ -82,8 +98,7 @@ class NotificationsListViewItem extends StatelessWidget {
                           children: [
                             Expanded(
                               child: DefaultText(
-                                text:
-                                    'text test text test text test text test ',
+                                text: notificationBody,
                                 style: Theme.of(context).textTheme.subtitle2,
                                 maxLines: 50,
                               ),

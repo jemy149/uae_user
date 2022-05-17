@@ -92,7 +92,7 @@ class AppRouter {
       case LANGUAGE_SCREEN_R:
         return MaterialPageRoute(builder: (_) => const LanguageScreen());
       case NOTIFICATIONS_SCREEN_R:
-        return MaterialPageRoute(builder: (_) => const NotificationsScreen());
+        return MaterialPageRoute(builder: (_) =>  NotificationsScreen());
       case DELIVERY_INFORMATION_SCREEN_R:
         return MaterialPageRoute(
             builder: (_) => const DeliveryInformationScreen());

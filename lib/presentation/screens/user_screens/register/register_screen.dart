@@ -10,11 +10,9 @@ import 'package:uae_user/presentation/views/animated_image.dart';
 import 'package:uae_user/presentation/widgets/default_form_field.dart';
 import 'package:uae_user/presentation/widgets/default_material_button.dart';
 import 'package:uae_user/presentation/widgets/default_text.dart';
-import 'package:uae_user/presentation/widgets/outlined_social_button.dart';
-
 import '../../../../constants/constant_methods.dart';
 import '../../../../constants/enums.dart';
-import '../../../../constants/screens.dart';
+
 
 class RegisterScreen extends StatelessWidget {
   UserAuthCubit? cubit;
@@ -236,32 +234,32 @@ class RegisterScreen extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                OutlinedSocialButton(
-                                  text: 'facebook',
-                                  onTap: () {
-                                    UserAuthCubit?.get(context).signInWithFacebook();
-                                  },
-                                  image: 'assets/icons/facebook.png',
-                                  textColor: AppColors.darkBlue,
-                                  color: Colors.white,
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                OutlinedSocialButton(
-                                  text: 'Google',
-                                  onTap: () {
-                                    UserAuthCubit?.get(context).signInWithGoogle();
-                                  },
-                                  image: 'assets/icons/google.png',
-                                  textColor: AppColors.red,
-                                  color: Colors.white,
-                                ),
-                              ],
-                            ),
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.end,
+                            //   children: [
+                            //     OutlinedSocialButton(
+                            //       text: 'facebook',
+                            //       onTap: () {
+                            //         UserAuthCubit?.get(context).signInWithFacebook();
+                            //       },
+                            //       image: 'assets/icons/facebook.png',
+                            //       textColor: AppColors.darkBlue,
+                            //       color: Colors.white,
+                            //     ),
+                            //     const SizedBox(
+                            //       width: 10,
+                            //     ),
+                            //     OutlinedSocialButton(
+                            //       text: 'Google',
+                            //       onTap: () {
+                            //         UserAuthCubit?.get(context).signInWithGoogle();
+                            //       },
+                            //       image: 'assets/icons/google.png',
+                            //       textColor: AppColors.red,
+                            //       color: Colors.white,
+                            //     ),
+                            //   ],
+                            // ),
                           ],
                         );
                       },

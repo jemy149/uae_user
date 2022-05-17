@@ -17,10 +17,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   DioHelper.init();
   await CacheHelper.init();
-
-
   runApp(MyApp());
-
 }
 
 

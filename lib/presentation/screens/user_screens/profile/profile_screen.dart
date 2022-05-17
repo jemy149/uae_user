@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:uae_user/business_logic/user/auth/user_auth_cubit.dart';
+import 'package:uae_user/constants/constant_methods.dart';
+import 'package:uae_user/constants/constants.dart';
+import 'package:uae_user/constants/shared_preferences_keys.dart';
 import 'package:uae_user/data/data_provider/local/cache_helper.dart';
 import 'package:uae_user/presentation/styles/colors.dart';
 import 'package:uae_user/presentation/views/default_profile_list_tile.dart';
@@ -133,10 +136,13 @@ class ProfileScreen extends StatelessWidget {
                 },
                 builder: (context, state) {
                   return DefaultProfileListTile(
-                    onTap: () {
+                    onTap: () async{
                       UserAuthCubit.get(context).userLogout();
                       UserAuthCubit.get(context).signOut();
-                      CacheHelper.sharedPreferences.clear();
+                     await CacheHelper.sharedPreferences.clear();
+                      apiToken =  CacheHelper.getDataFromSP(
+                          key: SharedPreferencesKeys.SP_API_TOKEN_KEY);
+                      printTest('>>>>>>>>>>>>>>>>>>>>>>>>>>>>> apiToken ${apiToken!}');
                     },
                     image: 'assets/icons/logout.jpg',
                     titleText: AppLocalizations.of(context)!.logout,
