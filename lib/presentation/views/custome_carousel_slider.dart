@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class CustomeCarouselSlider extends StatefulWidget {
-  const CustomeCarouselSlider({Key? key}) : super(key: key);
-
+   CustomeCarouselSlider({Key? key, this.imageUrl,this.index}) : super(key: key);
+  int? index = 0;
+  final String? imageUrl;
   @override
   _CustomeCarouselSliderState createState() => _CustomeCarouselSliderState();
 }
@@ -36,9 +37,9 @@ class _CustomeCarouselSliderState extends State<CustomeCarouselSlider> {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 8),
                 child: Container(
-                  child: Image.asset('assets/images/fruits.png'),
+                  child: Image.network(widget.imageUrl!,fit: BoxFit.contain,),
                 ),
-              ), itemCount: 3,
+              ), itemCount: widget.index,
         ),
         Center(
           child: AnimatedSmoothIndicator(

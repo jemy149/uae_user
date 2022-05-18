@@ -29,20 +29,5 @@ class AllAppSettingCubit extends Cubit<AllAppSettingStates> {
       printResponse('getTerms' + error.toString());
     });
   }
-  //
-  // AppInfoModel? aboutUs;
-  //
-  // void getAboutUs() {
-  //   emit(GetAboutUsLoadingState());
-  //   AboutUsRequest.getAboutUsRequest().then((value) {
-  //     aboutUs!.appInfo = value;
-  //     if (aboutUs!.status.toString() == '200') {
-  //       emit(GetAboutUsSuccessState());
-  //     } else {
-  //       emit(GetAboutUsErrorState());
-  //     }
-  //   }).catchError((error) {
-  //     printResponse('getAboutUs' + error.toString());
-  //   });
-  // }
+
 }

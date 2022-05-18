@@ -7,6 +7,7 @@ import 'package:uae_user/constants/shared_preferences_keys.dart';
 import '../data/data_provider/local/cache_helper.dart';
 
 String? AppLang = 'En' ;
+String? type ;
 
 
 ///////////////////////////////// sharedPreferences constant /////////////////////////////////////////////

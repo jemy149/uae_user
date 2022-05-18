@@ -14,7 +14,7 @@ class _AnimatedImageState extends State<AnimatedImage> with SingleTickerProvider
     duration: const Duration(seconds:5),
     animationBehavior: AnimationBehavior.preserve,
     value: 1,
-    vsync: this,
+    vsync:this,
 
   )..repeat(reverse: true,);
   late final Animation<Offset> _offsetAnimation = Tween<Offset>(

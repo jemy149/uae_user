@@ -11,7 +11,7 @@ class NotificationsRequest {
     try {
       Response response = await DioHelper.postData(url: EP_NOTIFICATIONS, data: {
         'apiToken': apiToken,
-        'page': 0,
+        'page': 1,
       });
       printResponse(response.data.toString());
       return NotificationsModel.fromJson(response.data);

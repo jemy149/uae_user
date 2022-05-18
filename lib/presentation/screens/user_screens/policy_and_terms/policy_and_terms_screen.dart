@@ -58,13 +58,13 @@ class PolicyAndTermsScreen extends StatelessWidget {
                   builder: (context, state) {
                     cubit = AllAppSettingCubit.get(context);
                     return ConditionalBuilder(
-                      condition: cubit?.terms != null,
+                      condition: cubit?.terms?.appInfo?.policy != null,
                       fallback: (context) => const Expanded(
                           child: Center(child: CircularProgressIndicator())),
                       builder:(context)=> Padding(
                         padding: const EdgeInsetsDirectional.all(12.0),
                         child: DefaultText(
-                          text: 'cubit?.terms',
+                          text: '${cubit?.terms?.appInfo?.policy}',
                           maxLines: 100,
                           style: Theme.of(context).textTheme.bodyText1,
                         ),

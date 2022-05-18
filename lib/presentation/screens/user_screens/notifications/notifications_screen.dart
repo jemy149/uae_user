@@ -8,9 +8,10 @@ import '../../../styles/colors.dart';
 import '../../../widgets/default_text.dart';
 
 class NotificationsScreen extends StatelessWidget {
-   NotificationsScreen({Key? key}) : super(key: key);
+  NotificationsScreen({Key? key}) : super(key: key);
 
   NotificationsCubit? _notificationsCubit;
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -42,27 +43,27 @@ class NotificationsScreen extends StatelessWidget {
                 ],
               ),
             ),
-            body: Builder(
-              builder: (context) {
-                _notificationsCubit = NotificationsCubit.get(context);
-                return BlocBuilder<NotificationsCubit, NotificationsState>(
-  builder: (context, state) {
-    return ListView.builder(
-                  itemBuilder: (context, index) =>
-                       NotificationsListViewItem(
-                        notificationBody: _notificationsCubit!.notificationsModel!.notifications![index].content!,
-                         notificationHeadLine: _notificationsCubit!.notificationsModel?.notifications?[index].title,
-                         notificationDate: _notificationsCubit!.notificationsModel!.notifications![index].createdAt!,
-                          // notificationPlace: _notificationsCubit!.notificationsModel?.notifications?[index].order!.orderLocation!.address,
-                         // notificationTime: _notificationsCubit!.notificationsModel!.notifications![index].order!.deliveryTime.toString(),
-
-                       ),
-                  itemCount: _notificationsCubit!.notificationsModel!.notifications!.length,
-                );
-  },
-);
-              }
-            )),
+            body: Builder(builder: (context) {
+              _notificationsCubit = NotificationsCubit.get(context);
+              return BlocBuilder<NotificationsCubit, NotificationsState>(
+                builder: (context, state) {
+                  return ListView.builder(
+                    itemBuilder: (context, index) => NotificationsListViewItem(
+                      notificationBody: _notificationsCubit!
+                          .notificationsModel!.notifications![index].content!,
+                      notificationHeadLine: _notificationsCubit!
+                          .notificationsModel?.notifications?[index].title,
+                      notificationDate: _notificationsCubit!
+                          .notificationsModel!.notifications![index].createdAt!,
+                      // notificationPlace: _notificationsCubit!.notificationsModel?.notifications?[index].order!.orderLocation!.address,
+                      // notificationTime: _notificationsCubit!.notificationsModel!.notifications![index].order!.deliveryTime.toString(),
+                    ),
+                    itemCount: _notificationsCubit!
+                        .notificationsModel!.notifications!.length,
+                  );
+                },
+              );
+            })),
       ),
     );
   }
