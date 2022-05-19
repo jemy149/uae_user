@@ -13,20 +13,43 @@ class AdsCubit extends Cubit<AdsStates> {
   AdsCubit() : super(UserAdsInitial());
    static AdsCubit get(context) => BlocProvider.of(context);
 
-  AdsModel? adsModel = AdsModel();
+  AdsModel adsModel = AdsModel();
 
   void userAds({
     required String type,
-  })async{
+  }){
     emit(UserAdsLoadingState());
-     AdsRequest.adsRequest(type: type).then((value) => (value) async{
-        adsModel =await value;
-      if(adsModel!.status == 200){
-        emit(UserAdsSuccessState());
-      }else{
-        emit(UserAdsErrorState());
+     AdsRequest()
+         .adsRequest(type: type,page: 0)
+         .then((value) {
+      if(value.status == 200){
+        adsModel = value;
+        emit(UserAdsSuccessState(groups:adsModel.ads));
+      }else if(value.status == 204){
+        adsModel = value;
+        emit(UserNoAdsState());
       }
     }).catchError((error){
+      emit(UserAdsErrorState());
+      printResponse('userAds' + error.toString());
+    });
+  }
+
+  void userAdsMore({
+    required String type,
+  }){
+    emit(UserAdsLoadingState());
+     AdsRequest().adsRequest(type: type,page: 0).then((value) {
+
+      if(value.status == 200){
+        adsModel = value;
+        emit(UserAdsSuccessState(groups:adsModel.ads));
+      }else if(value.status == 204){
+        adsModel = value;
+       emit(UserNoAdsState());
+      }
+    }).catchError((error){
+      emit(UserAdsErrorState());
       printResponse('userAds' + error.toString());
     });
   }

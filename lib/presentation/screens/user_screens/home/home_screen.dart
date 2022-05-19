@@ -8,9 +8,11 @@ import 'package:uae_user/presentation/views/custome_carousel_slider.dart';
 import 'package:uae_user/presentation/views/home_grid_view_item.dart';
 import 'package:uae_user/presentation/views/home_offers_card_item.dart';
 import 'package:uae_user/presentation/widgets/custome_search_field.dart';
+import 'package:uae_user/presentation/widgets/default_error_widget.dart';
 import 'package:uae_user/presentation/widgets/default_text.dart';
 
 import '../../../../constants/screens.dart';
+import '../../../widgets/default_loading_indicator.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -22,7 +24,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   TextEditingController searchController = TextEditingController();
   ScrollController scrollController = ScrollController();
-  AdsCubit? _adsCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -123,22 +124,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        Builder(builder: (context) {
-                          _adsCubit = AdsCubit.get(context);
-                          return BlocBuilder<AdsCubit, AdsStates>(
-                            builder: (context, state) {
-                              return CustomeCarouselSlider(
-                                index: _adsCubit!.adsModel
-                                    !.ads![CustomeCarouselSlider().index!].id ??0,
-                                imageUrl: _adsCubit
-                                    !.adsModel
-                                    !.ads![CustomeCarouselSlider().index!]
-                                    .image??'',
-                              );
-                            },
-                          );
-                        }),
-
+                        BlocBuilder<AdsCubit, AdsStates>(
+                          builder: (context, state) {
+                            if (state is UserAdsSuccessState) {
+                              return CustomCarouselSlider(groups:state.groups);
+                            } else if (state is UserNoAdsState) {
+                              return const SizedBox(height: 15.0,);
+                            } else if(state is UserAdsLoadingState){
+                              return const DefaultLoadingIndicator();
+                            } else {
+                              return const DefaultErrorWidget();
+                            }
+                          },
+                        ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15.0),
                           child: Row(

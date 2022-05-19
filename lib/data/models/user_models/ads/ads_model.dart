@@ -1,245 +1,528 @@
 import 'dart:convert';
-
 AdsModel adsModelFromJson(String str) => AdsModel.fromJson(json.decode(str));
-
 String adsModelToJson(AdsModel data) => json.encode(data.toJson());
-
 class AdsModel {
   AdsModel({
-    this.status,
-    this.totalPages,
-    this.ads,
-  });
-
-  int? status;
-  int? totalPages;
-  List<Ad>? ads;
-
-  factory AdsModel.fromJson(Map<String, dynamic> json) => AdsModel(
-    status: json["status"],
-    totalPages: json["totalPages"],
-    ads: List<Ad>.from(json["Ads"].map((x) => Ad.fromJson(x))),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "status": status,
-    "totalPages": totalPages,
-    "Ads": List<dynamic>.from(ads!.map((x) => x.toJson())),
-  };
+      int? status, 
+      int? totalPages, 
+      List<Ads>? ads,}){
+    _status = status;
+    _totalPages = totalPages;
+    _ads = ads;
 }
 
-class Ad {
-  Ad({
-    this.id,
-    this.title,
-    this.screen,
-    this.screenCategory,
-    this.screenStore,
-    this.action,
-    this.actionProduct,
-    this.actionStore,
-    this.actionCategory,
-    this.image,
-  });
+  AdsModel.fromJson(dynamic json) {
+    _status = json['status'];
+    _totalPages = json['totalPages'];
+    if (json['Ads'] != null) {
+      _ads = [];
+      json['Ads'].forEach((v) {
+        _ads?.add(Ads.fromJson(v));
+      });
+    }
+  }
+  int? _status;
+  int? _totalPages;
+  List<Ads>? _ads;
 
-  int? id;
-  String? title;
-  String? screen;
-  NCategory? screenCategory;
-  Store? screenStore;
-  String? action;
-  ActionProduct? actionProduct;
-  Store? actionStore;
-  NCategory? actionCategory;
-  String? image;
+  int? get status => _status;
+  int? get totalPages => _totalPages;
+  List<Ads>? get ads => _ads;
 
-  factory Ad.fromJson(Map<String, dynamic> json) => Ad(
-    id: json["id"],
-    title: json["title"],
-    screen: json["screen"],
-    screenCategory: NCategory.fromJson(json["screen-category"]),
-    screenStore: Store.fromJson(json["screen-store"]),
-    action: json["action"],
-    actionProduct: ActionProduct.fromJson(json["action-product"]),
-    actionStore: Store.fromJson(json["action-store"]),
-    actionCategory: NCategory.fromJson(json["action-category"]),
-    image: json["image"],
-  );
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['status'] = _status;
+    map['totalPages'] = _totalPages;
+    if (_ads != null) {
+      map['Ads'] = _ads?.map((v) => v.toJson()).toList();
+    }
+    return map;
+  }
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "title": title,
-    "screen": screen,
-    "screen-category": screenCategory!.toJson(),
-    "screen-store": screenStore!.toJson(),
-    "action": action,
-    "action-product": actionProduct!.toJson(),
-    "action-store": actionStore!.toJson(),
-    "action-category": actionCategory!.toJson(),
-    "image": image,
-  };
 }
 
-class NCategory {
-  NCategory({
-    this.id,
-    this.type,
-    this.name,
-    this.image,
-  });
-
-  int? id;
-  String? type;
-  String? name;
-  String? image;
-
-  factory NCategory.fromJson(Map<String, dynamic> json) => NCategory(
-    id: json["id"],
-    type: json["type"],
-    name: json["name"],
-    image: json["image"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "type": type,
-    "name": name,
-    "image": image,
-  };
+Ads adsFromJson(String str) => Ads.fromJson(json.decode(str));
+String adsToJson(Ads data) => json.encode(data.toJson());
+class Ads {
+  Ads({
+      int? id, 
+      String? title, 
+      String? screen, 
+      ScreenCategory? screencategory, 
+      ScreenStore? screenstore, 
+      String? action, 
+      ActionProduct? actionproduct, 
+      ActionStore? actionstore, 
+      ActionCategory? actioncategory, 
+      String? image,}){
+    _id = id;
+    _title = title;
+    _screen = screen;
+    _screencategory = screencategory;
+    _screenstore = screenstore;
+    _action = action;
+    _actionproduct = actionproduct;
+    _actionstore = actionstore;
+    _actioncategory = actioncategory;
+    _image = image;
 }
 
+  Ads.fromJson(dynamic json) {
+    _id = json['id'];
+    _title = json['title'];
+    _screen = json['screen'];
+    _screencategory = json['screen-category'] != null ? ScreenCategory.fromJson(json['screen-category']) : null;
+    _screenstore = json['screen-store'] != null ? ScreenStore.fromJson(json['screen-store']) : null;
+    _action = json['action'];
+    _actionproduct = json['action-product'] != null ? ActionProduct.fromJson(json['action-product']) : null;
+    _actionstore = json['action-store'] != null ? ActionStore.fromJson(json['action-store']) : null;
+    _actioncategory = json['action-category'] != null ? ActionCategory.fromJson(json['action-category']) : null;
+    _image = json['image'];
+  }
+  int? _id;
+  String? _title;
+  String? _screen;
+  ScreenCategory? _screencategory;
+  ScreenStore? _screenstore;
+  String? _action;
+  ActionProduct? _actionproduct;
+  ActionStore? _actionstore;
+  ActionCategory? _actioncategory;
+  String? _image;
+
+  int get id => _id ?? 0;
+  String get title => _title ?? '';
+  String get screen => _screen ?? '';
+  ScreenCategory get screencategory => _screencategory ?? ScreenCategory() ;
+  ScreenStore get screenstore => _screenstore ?? ScreenStore();
+  String get action => _action ?? '';
+  ActionProduct get actionproduct => _actionproduct ?? ActionProduct();
+  ActionStore get actionstore => _actionstore ?? ActionStore();
+  ActionCategory get actioncategory => _actioncategory ?? ActionCategory();
+  String get image => _image ?? '';
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['id'] = _id;
+    map['title'] = _title;
+    map['screen'] = _screen;
+    if (_screencategory != null) {
+      map['screen-category'] = _screencategory?.toJson();
+    }
+    if (_screenstore != null) {
+      map['screen-store'] = _screenstore?.toJson();
+    }
+    map['action'] = _action;
+    if (_actionproduct != null) {
+      map['action-product'] = _actionproduct?.toJson();
+    }
+    if (_actionstore != null) {
+      map['action-store'] = _actionstore?.toJson();
+    }
+    if (_actioncategory != null) {
+      map['action-category'] = _actioncategory?.toJson();
+    }
+    map['image'] = _image;
+    return map;
+  }
+
+}
+
+ActionCategory actionCategoryFromJson(String str) => ActionCategory.fromJson(json.decode(str));
+String actionCategoryToJson(ActionCategory data) => json.encode(data.toJson());
+class ActionCategory {
+  ActionCategory({
+      int? id, 
+      String? type, 
+      String? name, 
+      String? image,}){
+    _id = id;
+    _type = type;
+    _name = name;
+    _image = image;
+}
+
+  ActionCategory.fromJson(dynamic json) {
+    _id = json['id'];
+    _type = json['type'];
+    _name = json['name'];
+    _image = json['image'];
+  }
+  int? _id;
+  String? _type;
+  String? _name;
+  String? _image;
+
+  int get id => _id ?? 0;
+  String get type => _type ?? '';
+  String get name => _name ?? '';
+  String get image => _image ??'';
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['id'] = _id;
+    map['type'] = _type;
+    map['name'] = _name;
+    map['image'] = _image;
+    return map;
+  }
+
+}
+
+ActionStore actionStoreFromJson(String str) => ActionStore.fromJson(json.decode(str));
+String actionStoreToJson(ActionStore data) => json.encode(data.toJson());
+class ActionStore {
+  ActionStore({
+      int? id, 
+      String? name,
+      Location? location,
+      dynamic category, 
+      String? image, 
+      int? rate, 
+      String? deliveryTime, 
+      int? fees,}){
+    _id = id;
+    _name = name;
+    _location = location;
+    _category = category;
+    _image = image;
+    _rate = rate;
+    _deliveryTime = deliveryTime;
+    _fees = fees;
+}
+
+  ActionStore.fromJson(dynamic json) {
+    _id = json['id'];
+    _name = json['name'];
+    _location = json['location'] != null ? Location.fromJson(json['location']) : null;
+    _category = json['category'];
+    _image = json['image'];
+    _rate = json['rate'];
+    _deliveryTime = json['deliveryTime'];
+    _fees = json['fees'];
+  }
+  int? _id;
+  String? _name;
+  Location? _location;
+  dynamic _category;
+  String? _image;
+  int? _rate;
+  String? _deliveryTime;
+  int? _fees;
+
+  int get id => _id ?? 0;
+  String get name => _name ?? '';
+  Location get location => _location ?? Location();
+  dynamic get category => _category;
+  String get image => _image ?? '';
+  int get rate => _rate ?? 0;
+  String get deliveryTime => _deliveryTime ?? '';
+  int get fees => _fees ?? 0;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['id'] = _id;
+    map['name'] = _name;
+    if (_location != null) {
+      map['location'] = _location?.toJson();
+    }
+    map['category'] = _category;
+    map['image'] = _image;
+    map['rate'] = _rate;
+    map['deliveryTime'] = _deliveryTime;
+    map['fees'] = _fees;
+    return map;
+  }
+
+}
+
+
+ActionProduct actionProductFromJson(String str) => ActionProduct.fromJson(json.decode(str));
+String actionProductToJson(ActionProduct data) => json.encode(data.toJson());
 class ActionProduct {
   ActionProduct({
-    this.id,
-    this.name,
-    this.description,
-    this.price,
-    this.isFreeDelivered,
-    this.images,
-    this.store,
-    this.quantity,
-    this.isFav,
-    this.hasOffer,
-    this.point,
-    this.features,
-    this.viewers,
-  });
-
-  int? id;
-  String? name;
-  String? description;
-  double? price;
-  bool? isFreeDelivered;
-  List<String>? images;
-  Store? store;
-  int? quantity;
-  bool? isFav;
-  bool? hasOffer;
-  int? point;
-  List<dynamic>? features;
-  int? viewers;
-
-  factory ActionProduct.fromJson(Map<String, dynamic> json) => ActionProduct(
-    id: json["id"],
-    name: json["name"],
-    description: json["description"],
-    price: json["price"].toDouble(),
-    isFreeDelivered: json["isFreeDelivered"],
-    images: List<String>.from(json["images"].map((x) => x)),
-    store: Store.fromJson(json["store"]),
-    quantity: json["quantity"],
-    isFav: json["isFav"],
-    hasOffer: json["hasOffer"],
-    point: json["point"],
-    features: List<dynamic>.from(json["features"].map((x) => x)),
-    viewers: json["viewers"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "description": description,
-    "price": price,
-    "isFreeDelivered": isFreeDelivered,
-    "images": List<dynamic>.from(images!.map((x) => x)),
-    "store": store!.toJson(),
-    "quantity": quantity,
-    "isFav": isFav,
-    "hasOffer": hasOffer,
-    "point": point,
-    "features": List<dynamic>.from(features!.map((x) => x)),
-    "viewers": viewers,
-  };
+      int? id, 
+      String? name, 
+      String? description, 
+      double? price, 
+      bool? isFreeDelivered, 
+      List<String>? images, 
+      Store? store, 
+      int? quantity, 
+      List<dynamic>? prices, 
+      bool? hasOffer, 
+      int? point, 
+      List<dynamic>? features, 
+      int? viewers,}){
+    _id = id;
+    _name = name;
+    _description = description;
+    _price = price;
+    _isFreeDelivered = isFreeDelivered;
+    _images = images;
+    _store = store;
+    _quantity = quantity;
+    _prices = prices;
+    _hasOffer = hasOffer;
+    _point = point;
+    _features = features;
+    _viewers = viewers;
 }
 
+  ActionProduct.fromJson(dynamic json) {
+    _id = json['id'];
+    _name = json['name'];
+    _description = json['description'];
+    _price = json['price'];
+    _isFreeDelivered = json['isFreeDelivered'];
+    _images = json['images'] != null ? json['images'].cast<String>() : [];
+    _store = json['store'] != null ? Store.fromJson(json['store']) : null;
+    _quantity = json['quantity'];
+    if (json['prices'] != null) {
+      _prices = [];
+      json['prices'].forEach((v) {
+        _prices?.add(Dynamic.fromJson(v));
+      });
+    }
+    _hasOffer = json['hasOffer'];
+    _point = json['point'];
+    if (json['features'] != null) {
+      _features = [];
+      json['features'].forEach((v) {
+        _features?.add(Dynamic.fromJson(v));
+      });
+    }
+    _viewers = json['viewers'];
+  }
+  int? _id;
+  String? _name;
+  String? _description;
+  double? _price;
+  bool? _isFreeDelivered;
+  List<String>? _images;
+  Store? _store;
+  int? _quantity;
+  List<dynamic>? _prices;
+  bool? _hasOffer;
+  int? _point;
+  List<dynamic>? _features;
+  int? _viewers;
+
+  int? get id => _id;
+  String? get name => _name;
+  String? get description => _description;
+  double? get price => _price;
+  bool? get isFreeDelivered => _isFreeDelivered;
+  List<String>? get images => _images;
+  Store? get store => _store;
+  int? get quantity => _quantity;
+  List<dynamic>? get prices => _prices;
+  bool? get hasOffer => _hasOffer;
+  int? get point => _point;
+  List<dynamic>? get features => _features;
+  int? get viewers => _viewers;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['id'] = _id;
+    map['name'] = _name;
+    map['description'] = _description;
+    map['price'] = _price;
+    map['isFreeDelivered'] = _isFreeDelivered;
+    map['images'] = _images;
+    if (_store != null) {
+      map['store'] = _store?.toJson();
+    }
+    map['quantity'] = _quantity;
+    if (_prices != null) {
+      map['prices'] = _prices?.map((v) => v.toJson()).toList();
+    }
+    map['hasOffer'] = _hasOffer;
+    map['point'] = _point;
+    if (_features != null) {
+      map['features'] = _features?.map((v) => v.toJson()).toList();
+    }
+    map['viewers'] = _viewers;
+    return map;
+  }
+
+}
+
+Store storeFromJson(String str) => Store.fromJson(json.decode(str));
+String storeToJson(Store data) => json.encode(data.toJson());
 class Store {
   Store({
-    this.id,
-    this.name,
-    this.location,
-    this.category,
-    this.image,
-    this.rate,
-    this.deliveryTime,
-    this.fees,
-  });
-
-  int? id;
-  String? name;
-  Location? location;
-  dynamic category;
-  String? image;
-  int? rate;
-  String? deliveryTime;
-  int? fees;
-
-  factory Store.fromJson(Map<String, dynamic> json) => Store(
-    id: json["id"],
-    name: json["name"],
-    location: Location.fromJson(json["location"]),
-    category: json["category"],
-    image: json["image"],
-    rate: json["rate"],
-    deliveryTime: json["deliveryTime"],
-    fees: json["fees"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "location": location!.toJson(),
-    "category": category,
-    "image": image,
-    "rate": rate,
-    "deliveryTime": deliveryTime,
-    "fees": fees,
-  };
+      int? id, 
+      String? name, 
+      Location? location, 
+      dynamic category, 
+      String? image, 
+      int? rate, 
+      String? deliveryTime, 
+      int? fees,}){
+    _id = id;
+    _name = name;
+    _location = location;
+    _category = category;
+    _image = image;
+    _rate = rate;
+    _deliveryTime = deliveryTime;
+    _fees = fees;
 }
 
-class Location {
-  Location({
-    this.id,
-    this.longitude,
-    this.latitude,
-    this.address,
-  });
+  Store.fromJson(dynamic json) {
+    _id = json['id'];
+    _name = json['name'];
+    _location = json['location'] != null ? Location.fromJson(json['location']) : null;
+    _category = json['category'];
+    _image = json['image'];
+    _rate = json['rate'];
+    _deliveryTime = json['deliveryTime'];
+    _fees = json['fees'];
+  }
+  int? _id;
+  String? _name;
+  Location? _location;
+  dynamic _category;
+  String? _image;
+  int? _rate;
+  String? _deliveryTime;
+  int? _fees;
 
-  int? id;
-  double? longitude;
-  double? latitude;
-  String? address;
+  int? get id => _id;
+  String? get name => _name;
+  Location? get location => _location;
+  dynamic get category => _category;
+  String? get image => _image;
+  int? get rate => _rate;
+  String? get deliveryTime => _deliveryTime;
+  int? get fees => _fees;
 
-  factory Location.fromJson(Map<String, dynamic> json) => Location(
-    id: json["id"],
-    longitude: json["longitude"].toDouble(),
-    latitude: json["latitude"].toDouble(),
-    address: json["address"],
-  );
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['id'] = _id;
+    map['name'] = _name;
+    if (_location != null) {
+      map['location'] = _location?.toJson();
+    }
+    map['category'] = _category;
+    map['image'] = _image;
+    map['rate'] = _rate;
+    map['deliveryTime'] = _deliveryTime;
+    map['fees'] = _fees;
+    return map;
+  }
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "longitude": longitude,
-    "latitude": latitude,
-    "address": address,
-  };
+}
+
+
+
+ScreenStore screenStoreFromJson(String str) => ScreenStore.fromJson(json.decode(str));
+String screenStoreToJson(ScreenStore data) => json.encode(data.toJson());
+class ScreenStore {
+  ScreenStore({
+      int? id, 
+      String? name, 
+      Location? location, 
+      dynamic category, 
+      String? image, 
+      int? rate, 
+      String? deliveryTime, 
+      int? fees,}){
+    _id = id;
+    _name = name;
+    _location = location;
+    _category = category;
+    _image = image;
+    _rate = rate;
+    _deliveryTime = deliveryTime;
+    _fees = fees;
+}
+
+  ScreenStore.fromJson(dynamic json) {
+    _id = json['id'];
+    _name = json['name'];
+    _location = json['location'] != null ? Location.fromJson(json['location']) : null;
+    _category = json['category'];
+    _image = json['image'];
+    _rate = json['rate'];
+    _deliveryTime = json['deliveryTime'];
+    _fees = json['fees'];
+  }
+  int? _id;
+  String? _name;
+  Location? _location;
+  dynamic _category;
+  String? _image;
+  int? _rate;
+  String? _deliveryTime;
+  int? _fees;
+
+  int? get id => _id;
+  String? get name => _name;
+  Location? get location => _location;
+  dynamic get category => _category;
+  String? get image => _image;
+  int? get rate => _rate;
+  String? get deliveryTime => _deliveryTime;
+  int? get fees => _fees;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['id'] = _id;
+    map['name'] = _name;
+    if (_location != null) {
+      map['location'] = _location?.toJson();
+    }
+    map['category'] = _category;
+    map['image'] = _image;
+    map['rate'] = _rate;
+    map['deliveryTime'] = _deliveryTime;
+    map['fees'] = _fees;
+    return map;
+  }
+
+}
+
+
+
+ScreenCategory screenCategoryFromJson(String str) => ScreenCategory.fromJson(json.decode(str));
+String screenCategoryToJson(ScreenCategory data) => json.encode(data.toJson());
+class ScreenCategory {
+  ScreenCategory({
+      int? id, 
+      String? type, 
+      String? name, 
+      String? image,}){
+    _id = id;
+    _type = type;
+    _name = name;
+    _image = image;
+}
+
+  ScreenCategory.fromJson(dynamic json) {
+    _id = json['id'];
+    _type = json['type'];
+    _name = json['name'];
+    _image = json['image'];
+  }
+  int? _id;
+  String? _type;
+  String? _name;
+  String? _image;
+
+  int? get id => _id;
+  String? get type => _type;
+  String? get name => _name;
+  String? get image => _image;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['id'] = _id;
+    map['type'] = _type;
+    map['name'] = _name;
+    map['image'] = _image;
+    return map;
+  }
+
 }

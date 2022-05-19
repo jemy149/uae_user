@@ -1,17 +1,24 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:uae_user/data/models/user_models/ads/ads_model.dart';
 
-class CustomeCarouselSlider extends StatefulWidget {
-   CustomeCarouselSlider({Key? key, this.imageUrl,this.index}) : super(key: key);
-  int? index = 0;
-  final String? imageUrl;
+class CustomCarouselSlider extends StatefulWidget {
+  final List<Ads> groups ;
+   const CustomCarouselSlider({Key? key,required this.groups,}) : super(key: key);
+
+
   @override
-  _CustomeCarouselSliderState createState() => _CustomeCarouselSliderState();
+  _CustomCarouselSliderState createState() => _CustomCarouselSliderState();
 }
 
-class _CustomeCarouselSliderState extends State<CustomeCarouselSlider> {
-  int activeIndex =0;
+class _CustomCarouselSliderState extends State<CustomCarouselSlider> {
+  late int activeIndex ;
+  @override
+  void initState() {
+    activeIndex =0;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -19,7 +26,7 @@ class _CustomeCarouselSliderState extends State<CustomeCarouselSlider> {
         CarouselSlider.builder(
           options: CarouselOptions(
             height: 220,
-            enableInfiniteScroll: false,
+            enableInfiniteScroll: true,
             autoPlay: true,
             autoPlayInterval:const Duration(seconds: 3),
             autoPlayAnimationDuration:const Duration(milliseconds: 800),
@@ -35,20 +42,19 @@ class _CustomeCarouselSliderState extends State<CustomeCarouselSlider> {
           itemBuilder:
               (BuildContext context, int index, int realIndex) =>
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 8),
+                padding: const EdgeInsets.symmetric(vertical: 8),
                 child: Container(
-                  child: Image.network(widget.imageUrl!,fit: BoxFit.contain,),
+                  child: Image.network(widget.groups[index].image,fit: BoxFit.contain,),
                 ),
-              ), itemCount: widget.index,
+              ), itemCount: widget.groups.length,
         ),
         Center(
           child: AnimatedSmoothIndicator(
-            duration: const Duration(milliseconds: 1000),
+            duration: const Duration(milliseconds: 800),
             curve: Curves.fastOutSlowIn,
-            count: 3,
+            count: widget.groups.length,
             activeIndex: activeIndex,
             effect: const ScrollingDotsEffect(
-              fixedCenter: true,
               maxVisibleDots: 7,
               dotColor: Colors.black12,
               activeDotColor: Colors.black,

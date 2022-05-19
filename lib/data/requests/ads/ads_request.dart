@@ -7,13 +7,14 @@ import '../../data_provider/remote/dio_helper.dart';
 import '../../models/user_models/ads/ads_model.dart';
 
 class AdsRequest {
-  static Future adsRequest({
+   Future adsRequest({
     required String type,
+    required int page,
   }) async {
     try {
       Response response = await DioHelper.postData(url: EP_ADS, data: {
         'apiToken': apiToken,
-        'page': 0,
+        'page': page,
         'type': type,
       });
       printResponse(response.data.toString());

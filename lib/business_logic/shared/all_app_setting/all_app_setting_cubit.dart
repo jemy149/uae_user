@@ -22,7 +22,6 @@ class AllAppSettingCubit extends Cubit<AllAppSettingStates> {
       if (terms!.status.toString() == '200') {
         emit(GetTermsSuccessState());
       } else {
-
         emit(GetTermsErrorState());
       }
     }).catchError((error) {
