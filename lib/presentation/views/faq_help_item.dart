@@ -5,8 +5,11 @@ import '../styles/colors.dart';
 import '../widgets/default_text.dart';
 
 class FAQHelpItem extends StatefulWidget {
-   FAQHelpItem({Key? key,}) : super(key: key);
-    bool isTrue =false ;
+  bool isTrue =false ;
+  final String questionText;
+  final String answerText;
+   FAQHelpItem({Key? key,required this.questionText,required this.answerText,}) : super(key: key);
+
 
 
   @override
@@ -35,11 +38,14 @@ class _FAQHelpItemState extends State<FAQHelpItem> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      DefaultText(
-                        text: 'What is UAE app ?',
-                        style: Theme.of(context).textTheme.headline6?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.lightBlue,
+                      Expanded(
+                        child: DefaultText(
+                          maxLines: 5,
+                          text: widget.questionText,
+                          style: Theme.of(context).textTheme.headline6?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.lightBlue,
+                          ),
                         ),
                       ),
                       Visibility(
@@ -61,11 +67,10 @@ class _FAQHelpItemState extends State<FAQHelpItem> {
                 ),
                 Visibility(
                   visible: widget.isTrue,
-                  child: const Padding(
+                  child: Padding(
                     padding: EdgeInsetsDirectional.only(bottom: 10.0),
                     child: DefaultText(
-                      text:
-                          'answer text answer text answer text answer text answer text answer text answer text answer text answer text ',
+                      text: widget.answerText,
                       maxLines: 50,
                     ),
                   ),

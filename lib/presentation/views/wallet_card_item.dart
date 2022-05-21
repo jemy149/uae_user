@@ -33,7 +33,7 @@ class WalletCardItem extends StatelessWidget {
                 ),
               ),
               DefaultText(
-                text: '${points} ${countText}',
+                text: points,
                 style: Theme.of(context)
                     .textTheme
                     .bodyText1

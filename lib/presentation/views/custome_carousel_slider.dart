@@ -4,8 +4,8 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:uae_user/data/models/user_models/ads/ads_model.dart';
 
 class CustomCarouselSlider extends StatefulWidget {
-  final List<Ads> groups ;
-   const CustomCarouselSlider({Key? key,required this.groups,}) : super(key: key);
+  final List<Ads> userAds ;
+   const CustomCarouselSlider({Key? key,required this.userAds,}) : super(key: key);
 
 
   @override
@@ -44,15 +44,15 @@ class _CustomCarouselSliderState extends State<CustomCarouselSlider> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: Container(
-                  child: Image.network(widget.groups[index].image,fit: BoxFit.contain,),
+                  child: Image.network(widget.userAds[index].image,fit: BoxFit.contain,),
                 ),
-              ), itemCount: widget.groups.length,
+              ), itemCount: widget.userAds.length,
         ),
         Center(
           child: AnimatedSmoothIndicator(
             duration: const Duration(milliseconds: 800),
             curve: Curves.fastOutSlowIn,
-            count: widget.groups.length,
+            count: widget.userAds.length,
             activeIndex: activeIndex,
             effect: const ScrollingDotsEffect(
               maxVisibleDots: 7,

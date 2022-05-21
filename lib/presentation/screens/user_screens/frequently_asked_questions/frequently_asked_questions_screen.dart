@@ -1,8 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:uae_user/presentation/views/faq_help_item.dart';
+import '../../../../business_logic/user/faq_questions/faq_questions_cubit.dart';
 import '../../../styles/colors.dart';
+import '../../../widgets/default_error_widget.dart';
+import '../../../widgets/default_loading_indicator.dart';
 import '../../../widgets/default_text.dart';
 
 class FrequentlyAskedQuestionsScreen extends StatelessWidget {
@@ -11,7 +15,9 @@ class FrequentlyAskedQuestionsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return BlocProvider(
+  create: (context) => FaqQuestionsCubit()..userFaqQuestions(),
+  child: SafeArea(
         child: Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.lightBlue,
@@ -37,11 +43,25 @@ class FrequentlyAskedQuestionsScreen extends StatelessWidget {
           ],
         ),
       ),
-      body: ListView(
-        children: [
-         FAQHelpItem()
-        ],
+      body: BlocBuilder<FaqQuestionsCubit, FaqQuestionsState>(
+  builder: (context, state) {
+    if (state is UserFaqQuestionsSuccessState) {
+      return ListView.builder(itemBuilder: (context, index) => FAQHelpItem(
+        questionText: state.faqs[index].question,
+        answerText: state.faqs[index].answer,
       ),
-    ));
+      itemCount: state.faqs.length,
+      );
+
+    }  else if (state is UserFaqQuestionsLoadingState) {
+      return const DefaultLoadingIndicator();
+    } else {
+      return const DefaultErrorWidget();
+    }
+
+  },
+),
+    )),
+);
   }
 }

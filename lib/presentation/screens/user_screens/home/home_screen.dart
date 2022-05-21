@@ -127,10 +127,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         BlocBuilder<AdsCubit, AdsStates>(
                           builder: (context, state) {
                             if (state is UserAdsSuccessState) {
-                              return CustomCarouselSlider(groups:state.groups);
+                              return CustomCarouselSlider(userAds: state.ads);
                             } else if (state is UserNoAdsState) {
-                              return const SizedBox(height: 15.0,);
-                            } else if(state is UserAdsLoadingState){
+                              return const SizedBox(
+                                height: 15.0,
+                              );
+                            } else if (state is UserAdsLoadingState) {
                               return const DefaultLoadingIndicator();
                             } else {
                               return const DefaultErrorWidget();

@@ -7,6 +7,7 @@ import '../../../constants/constant_methods.dart';
 import '../../../constants/constants.dart';
 import '../../../data/models/user_models/ads/ads_model.dart';
 
+
 part 'ads_state.dart';
 
 class AdsCubit extends Cubit<AdsStates> {
@@ -22,9 +23,10 @@ class AdsCubit extends Cubit<AdsStates> {
      AdsRequest()
          .adsRequest(type: type,page: 0)
          .then((value) {
+       adsModel = value;
       if(value.status == 200){
         adsModel = value;
-        emit(UserAdsSuccessState(groups:adsModel.ads));
+        emit(UserAdsSuccessState(ads:adsModel.ads));
       }else if(value.status == 204){
         adsModel = value;
         emit(UserNoAdsState());
@@ -40,10 +42,10 @@ class AdsCubit extends Cubit<AdsStates> {
   }){
     emit(UserAdsLoadingState());
      AdsRequest().adsRequest(type: type,page: 0).then((value) {
-
+       adsModel = value;
       if(value.status == 200){
         adsModel = value;
-        emit(UserAdsSuccessState(groups:adsModel.ads));
+        emit(UserAdsSuccessState(ads:adsModel.ads));
       }else if(value.status == 204){
         adsModel = value;
        emit(UserNoAdsState());
