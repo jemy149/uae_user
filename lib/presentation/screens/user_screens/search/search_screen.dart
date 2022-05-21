@@ -65,6 +65,8 @@ class SearchScreen extends StatelessWidget {
                 itemCount: 20,
                 itemBuilder: (BuildContext context, int index) {
                   return HomeGridViewItem(
+                    homeGridViewItemText: 'Home Grid View Item Text',
+                    homeGridViewItemImgageUrl: 'assets/images/chocolate.png',
                     onTap: () {},
                   );
                 }),

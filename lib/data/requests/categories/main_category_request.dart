@@ -6,10 +6,9 @@ import '../../data_provider/remote/dio_helper.dart';
 import '../../models/user_models/categories/main_category_model.dart';
 
 class MainCategoryRequest {
-  static Future mainCategoryRequest({
+   Future mainCategoryRequest({
     required int page,
   }) async {
-
     try {
       Response response = await DioHelper.postData(
           url: EP_GET_CATEGORIES,

@@ -3,7 +3,9 @@ import 'package:uae_user/presentation/widgets/default_text.dart';
 
 class HomeGridViewItem extends StatelessWidget {
   final Function() onTap;
-  const HomeGridViewItem({Key? key,required this.onTap}) : super(key: key);
+  final String homeGridViewItemText;
+  final String homeGridViewItemImgageUrl;
+  const HomeGridViewItem({Key? key,required this.onTap,required this.homeGridViewItemText,required this.homeGridViewItemImgageUrl}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,11 +16,12 @@ class HomeGridViewItem extends StatelessWidget {
           ClipRRect(
             clipBehavior: Clip.antiAlias,
             borderRadius: BorderRadius.circular(10),
-             child: Image.asset('assets/images/chocolate.png',fit: BoxFit.contain,height: 120,width: 120,),
+             child: homeGridViewItemImgageUrl != ''  ?
+             Image.network(homeGridViewItemImgageUrl,fit: BoxFit.contain,height: 120,width: 120,) : Image.asset('assets/images/no-image-icon-23492.png',height: 120,width: 120,),
           ),
           SizedBox(
             width: 120,
-            child: DefaultText(text: 'home item item item',
+            child: DefaultText(text: homeGridViewItemText,
             style: Theme.of(context).textTheme.button?.copyWith(fontSize: 12),),
           )
         ],

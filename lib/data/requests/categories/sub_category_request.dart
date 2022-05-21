@@ -6,7 +6,7 @@ import '../../data_provider/remote/dio_helper.dart';
 import '../../models/user_models/categories/sub_category_model.dart';
 
 class SubCategoryRequest {
-  static Future subCategoryRequest({
+   Future subCategoryRequest({
     required int page,
     required int categoryId,
   }) async {

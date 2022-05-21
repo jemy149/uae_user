@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:uae_user/business_logic/user/ads/ads_cubit.dart';
+import 'package:uae_user/business_logic/user/category/category_cubit.dart';
+import 'package:uae_user/presentation/screens/user_screens/categories/categories_screen.dart';
 import 'package:uae_user/presentation/styles/colors.dart';
 import 'package:uae_user/presentation/views/custome_carousel_slider.dart';
 import 'package:uae_user/presentation/views/home_grid_view_item.dart';
@@ -31,6 +33,9 @@ class _HomeScreenState extends State<HomeScreen> {
       providers: [
         BlocProvider(
           create: (context) => AdsCubit()..userAds(type: 'welcome'),
+        ),
+        BlocProvider(
+          create: (context) => CategoryCubit()..userCategories(),
         ),
       ],
       child: SafeArea(
@@ -176,9 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Row(
-                              children: [
-                                HomeOffersCardItem(),
-                                HomeOffersCardItem(),
+                              children: const [
                                 HomeOffersCardItem(),
                                 HomeOffersCardItem(),
                                 HomeOffersCardItem(),
@@ -206,23 +209,51 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ],
                         ),
-                        GridView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 3,
-                                    mainAxisSpacing: 20,
-                                    mainAxisExtent: 150),
-                            itemCount: 20,
-                            itemBuilder: (BuildContext context, int index) {
-                              return HomeGridViewItem(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, CATEGORIES_SCREEN_R);
-                                },
-                              );
-                            }),
+                        BlocBuilder<CategoryCubit, CategoryStates>(
+                          builder: (context, state) {
+                            if (state is UserCategorySuccessState) {
+                              return GridView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 3,
+                                          mainAxisSpacing: 20,
+                                          mainAxisExtent: 150),
+                                  itemCount: 20,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return HomeGridViewItem(
+                                      homeGridViewItemText:
+                                          state.userCategories[index].name,
+                                      homeGridViewItemImgageUrl:
+                                          state.userCategories[index].image,
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CategoriesScreen(
+                                                    subCategoryId: state
+                                                        .userCategories[index]
+                                                        .id,
+                                                    subCategoryName: state
+                                                        .userCategories[index]
+                                                        .name,
+                                                  )),
+                                        );
+                                        // Navigator.pushNamed(
+                                        //     context, CATEGORIES_SCREEN_R);
+                                      },
+                                    );
+                                  });
+                            } else if (state is UserCategoryLoadingState) {
+                              return const DefaultLoadingIndicator();
+                            } else {
+                              return const DefaultErrorWidget();
+                            }
+                          },
+                        ),
                       ],
                     ),
                   ),

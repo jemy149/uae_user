@@ -35,7 +35,7 @@ class AppRouter {
   late Widget startWidget;
 
   AppRouter() {
-    startWidget = SplashScreen();
+    startWidget = const SplashScreen();
   }
 
   // AppRouter() {
@@ -105,24 +105,24 @@ class AppRouter {
       case WALLET_SCREEN_R:
         return MaterialPageRoute(builder: (_) => WalletScreen());
       case CATEGORIES_SCREEN_R:
-        return MaterialPageRoute(builder: (_) => CategoriesScreen());
+        return MaterialPageRoute(builder: (_) => CategoriesScreen(subCategoryId: 0,subCategoryName: '',));
       case PRODUCTS_IN_STOCK_SCREEN_R:
         return MaterialPageRoute(builder: (_) => ProdrctsInStockScreen());
       case ADDING_PRODUCT_TO_CART_SCREEN_R:
-        return MaterialPageRoute(builder: (_) => AddingProductToCartScreen());
+        return MaterialPageRoute(builder: (_) => const AddingProductToCartScreen());
       case DELIVERY_LOCATION_SCREEN_R:
-        return MaterialPageRoute(builder: (_) => DeliveryLocationScreen());
+        return MaterialPageRoute(builder: (_) => const DeliveryLocationScreen());
       case PAYMENT_METHOD_SCREEN_R:
-        return MaterialPageRoute(builder: (_) => PaymentMethodScreen());
+        return MaterialPageRoute(builder: (_) => const PaymentMethodScreen());
       case QR_CODE_SCREEN_R:
-        return MaterialPageRoute(builder: (_) => QrCodeScreen());
+        return MaterialPageRoute(builder: (_) => const QrCodeScreen());
       case DELIVERY_DETAILS_SCREEN_R:
         return MaterialPageRoute(builder: (_) => DeliveryDetailsScreen());
       case USER_ADDRESSES_SCREEN_R:
-        return MaterialPageRoute(builder: (_) => UserAddressesScreen());
+        return MaterialPageRoute(builder: (_) => const UserAddressesScreen());
       case ADDING_ADDITIONAL_LOCATION_SCREEN_R:
         return MaterialPageRoute(
-            builder: (_) => AddingAdditionalLocationScreen());
+            builder: (_) => const AddingAdditionalLocationScreen());
       case SEARCH_SCREEN_R:
         return MaterialPageRoute(builder: (_) => SearchScreen());
 

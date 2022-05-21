@@ -10,6 +10,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 import 'business_logic/user/ads/ads_cubit.dart';
+import 'business_logic/user/sub_category/sub_category_cubit.dart';
 import 'data/data_provider/local/cache_helper.dart';
 import 'data/data_provider/remote/dio_helper.dart';
 import 'l10n/l10n.dart';
@@ -33,8 +34,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-
-        BlocProvider(create: (context) => LanguageCubit(),)
+        BlocProvider(create: (context) => LanguageCubit(),),
       ],
       child: Builder(
           builder: (context) {
