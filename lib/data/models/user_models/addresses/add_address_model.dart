@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import '../../shared_models/shared_classes/api_address.dart';
-AddAddressModel addAddressModelFromJson(String str) => AddAddressModel.fromJson(json.decode(str));
-String addAddressModelToJson(AddAddressModel data) => json.encode(data.toJson());
-class AddAddressModel {
-  AddAddressModel({
+AddAndEditAddressModel addAddressModelFromJson(String str) => AddAndEditAddressModel.fromJson(json.decode(str));
+String addAddressModelToJson(AddAndEditAddressModel data) => json.encode(data.toJson());
+class AddAndEditAddressModel {
+  AddAndEditAddressModel({
       int? status, 
       String? message,
     ApiAddress? location,}){
@@ -13,7 +13,7 @@ class AddAddressModel {
     _location = location;
 }
 
-  AddAddressModel.fromJson(dynamic json) {
+  AddAndEditAddressModel.fromJson(dynamic json) {
     _status = json['status'];
     _message = json['message'];
     _location = json['location'] != null ? ApiAddress.fromJson(json['location']) : null;

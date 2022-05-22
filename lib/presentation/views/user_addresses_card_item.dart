@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sizer/sizer.dart';
 import 'package:uae_user/data/models/shared_models/shared_classes/api_address.dart';
 import 'package:uae_user/presentation/styles/colors.dart';
-import 'package:uae_user/presentation/widgets/default_text.dart';
+import 'package:uae_user/presentation/widgets/second_default_form_field.dart';
 
 import '../../business_logic/user/my_addresses/my_addresses_cubit.dart';
 import '../widgets/default_map.dart';
@@ -27,6 +28,8 @@ class UserAddressesCardItem extends StatefulWidget {
 class _UserAddressesCardItemState extends State<UserAddressesCardItem> {
   late CameraPosition initialCameraPosition;
   late LatLng latLng;
+  final TextEditingController addressController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
 
   @override
   void initState() {
@@ -36,6 +39,8 @@ class _UserAddressesCardItemState extends State<UserAddressesCardItem> {
       target: latLng,
       zoom: 8,
     );
+    addressController.text = widget.myAddress.address;
+    descriptionController.text = widget.myAddress.description;
     super.initState();
   }
 
@@ -54,48 +59,86 @@ class _UserAddressesCardItemState extends State<UserAddressesCardItem> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsetsDirectional.only(
-                      start: 10.0, top: 5.0, bottom: 5.0),
-                  child: DefaultText(
-                    text: widget.myAddress.address,
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.only(
-                      end: 15.0, bottom: 5.0, top: 5.0),
-                  child: InkWell(
-                    onTap: () {
-                      widget.myAddressesCubit.deleteAddress(
-                          locationId: widget.myAddress.id, index: widget.index);
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Colors.white,
-                          border: Border.all(width: 1, color: Colors.red)),
-                      child: const Padding(
-                        padding: EdgeInsets.all(2.0),
-                        child: Icon(
-                          Icons.delete,
-                          color: Colors.redAccent,
-                        ),
+            SecondDefaultFormField(
+              onEditingComplete: () {
+                if (addressController.text != widget.myAddress.address ||
+                    descriptionController.text !=
+                        widget.myAddress.description) {
+                  widget.myAddressesCubit.editAddressOrDescription(
+                      locationId: widget.myAddress.id,
+                      locationLongitude: widget.myAddress.longitude,
+                      locationLatitude: widget.myAddress.latitude,
+                      locationAddress: addressController.text,
+                      description: descriptionController.text,
+                      isDefaultAddress: widget.myAddress.isDefult,
+                      index: widget.index);
+
+                }
+                FocusScope.of(context).unfocus();
+
+              },
+              verticalPadding: 8,
+              inputEnabledBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey),
+              ),
+              inputFocusedBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(color: AppColors.blue),
+              ),
+              maxLines: 1,
+              controller: addressController,
+              keyboardType: TextInputType.text,
+              suffixIcon: Padding(
+                padding: const EdgeInsetsDirectional.only(
+                    end: 15.0, bottom: 5.0, top: 5.0, start: 5),
+                child: InkWell(
+                  onTap: () {
+                    widget.myAddressesCubit.deleteAddress(
+                        locationId: widget.myAddress.id, index: widget.index);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Colors.white,
+                        border: Border.all(width: 1, color: Colors.red)),
+                    child: const Padding(
+                      padding: EdgeInsets.all(2.0),
+                      child: Icon(
+                        Icons.delete,
+                        color: Colors.redAccent,
                       ),
                     ),
                   ),
-                )
-              ],
+                ),
+              ),
             ),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 3),
-              color: AppColors.grey,
-              height: 1,
-              width: double.maxFinite,
-            ),
+            SecondDefaultFormField(
+                onEditingComplete: () {
+                  if (addressController.text != widget.myAddress.address ||
+                      descriptionController.text !=
+                          widget.myAddress.description) {
+                    widget.myAddressesCubit.editAddressOrDescription(
+                        locationId: widget.myAddress.id,
+                        locationLongitude: widget.myAddress.longitude,
+                        locationLatitude: widget.myAddress.latitude,
+                        locationAddress: addressController.text,
+                        description: descriptionController.text,
+                        isDefaultAddress: widget.myAddress.isDefult,
+                        index: widget.index);
+                  }
+                  FocusScope.of(context).unfocus();
+
+                },
+                verticalPadding: 8,
+                inputEnabledBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+                inputFocusedBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.blue),
+                ),
+                hintText: AppLocalizations.of(context)!.addDescription,
+                maxLines: 1,
+                controller: descriptionController,
+                keyboardType: TextInputType.text),
             SizedBox(
               height: 30.h,
               child: DefaultMap(

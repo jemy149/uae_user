@@ -66,12 +66,14 @@ class _UserAddressesScreenState extends State<UserAddressesScreen> {
                         child: InkWell(
                           onTap: () {
                             Navigator.pushNamed(
-                                context, ADDING_ADDITIONAL_LOCATION_SCREEN_R,arguments: _myAddressesCubit);
+                                context, ADDING_ADDITIONAL_LOCATION_SCREEN_R,
+                                arguments: _myAddressesCubit);
                           },
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Flexible(child: Icon(Icons.add_box_outlined)),
+                              const Flexible(
+                                  child: Icon(Icons.add_box_outlined)),
                               Expanded(
                                   child: Padding(
                                 padding: const EdgeInsetsDirectional.only(
@@ -90,19 +92,32 @@ class _UserAddressesScreenState extends State<UserAddressesScreen> {
               ),
               BlocConsumer<MyAddressesCubit, MyAddressesState>(
                 listener: (context, state) {
-                  if(state is UserDeleteAddressSuccessState){
-                    showToastMsg(msg: 'تم الحذف', toastState: ToastStates.SUCCESS);
+                  if (state is UserDeleteAddressSuccessState) {
+                    showToastMsg(
+                        msg: state.message, toastState: ToastStates.SUCCESS);
+                  } else if (state is UserEditAddressSuccessState) {
+                    showToastMsg(
+                        msg: state.message, toastState: ToastStates.SUCCESS);
+                  }else if (state is UserEditAddAddressErrorState) {
+                    showToastMsg(
+                        msg: state.message, toastState: ToastStates.SUCCESS);
                   }
+
                 },
                 builder: (context, state) {
                   if (state is UserGetMyAddressesSuccessState ||
-                      state is UserDeleteAddressSuccessState) {
+                      state is UserDeleteAddressSuccessState ||
+                      state is UserEditAddressSuccessState ||
+                      state is UserEditAddAddressErrorState) {
                     _myAddressesCubit = MyAddressesCubit.get(context);
                     return SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (context, index) => UserAddressesCardItem(
-                            myAddress: _myAddressesCubit
-                                .myAddressesModel.myAddress[index],myAddressesCubit: _myAddressesCubit, index: index,),
+                          myAddress: _myAddressesCubit
+                              .myAddressesModel.myAddress[index],
+                          myAddressesCubit: _myAddressesCubit,
+                          index: index,
+                        ),
                         childCount:
                             _myAddressesCubit.myAddressesModel.myAddress.length,
                       ),

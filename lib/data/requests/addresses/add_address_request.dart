@@ -1,34 +1,37 @@
 import 'package:dio/dio.dart';
 import 'package:uae_user/constants/constants.dart';
 import 'package:uae_user/data/models/user_models/addresses/add_address_model.dart';
+import 'package:uae_user/data/requests/make_order/make_order_request/order_location_model.dart';
 
 import '../../../constants/constant_methods.dart';
 import '../../../constants/end_points.dart';
 import '../../data_provider/remote/dio_helper.dart';
 
-class AddAddressesRequest {
-   Future addAddressesRequest({
-     int? locationId,
+class AddAndEditAddressesRequest {
+  Future addAndEditAddressesRequest({
+    int? locationId,
     required num locationLongitude,
     required num locationLatitude,
     required String locationAddress,
     required int isDefaultAddress,
-    required String description,
+    String? description,
   }) async {
     try {
-      Response response = await DioHelper.postData(url: EP_USER_ADD_ADDRESSES, data: {
+      Response response =
+          await DioHelper.postData(url: EP_USER_ADD_ADDRESSES, data: {
         'apiToken': apiToken,
         'description': description,
         'isDefaultAddress': isDefaultAddress,
-        'location[longitude]': locationLongitude,
-        'location[latitude]': locationLatitude,
-        'location[address]': locationAddress,
+        'location': OrderLocation(
+            address: locationAddress,
+            latitude: locationLatitude.toDouble(),
+            longitude: locationLongitude.toDouble()).toJson(),
         'locationId': locationId,
       });
       printResponse(response.data.toString());
-      return AddAddressModel.fromJson(response.data);
+      return AddAndEditAddressModel.fromJson(response.data);
     } catch (error) {
-      printError("addAddressesRequest "+error.toString());
+      printError("addAndEditAddressesRequest " + error.toString());
       return null;
     }
   }

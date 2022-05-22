@@ -59,6 +59,8 @@ class ApiAddress {
 
   num get longitude => _longitude?? 0;
 
+
+
   String get address => _address??"";
 
   String get description => _description??"";
@@ -86,5 +88,12 @@ class ApiAddress {
     map['users_id'] = _usersId;
     map['deletedAt'] = _deletedAt;
     return map;
+  }
+
+  set setDescription(String value) {
+    _description = value;
+  }
+  set setAddress(String value) {
+    _address = value;
   }
 }
