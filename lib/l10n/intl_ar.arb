@@ -139,5 +139,9 @@
       "pleaseEnterVerificationCode":"برجاء إدخال كود التفعيل",
       "enterYourVerificationCode":"أدخل كود التفعيل",
       "verificationCode":"كود التفعيل",
-      "confirm":"تفعيل"
+      "confirm":"تفعيل",
+      "deleteCompleted":"تم الحذف",
+      "pickLocation":"اختر عنوان",
+      "addedSuccessfully":"اضيف بنجاح",
+      "addDescription":"اضف وصف"
 }

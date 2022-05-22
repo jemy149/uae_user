@@ -139,6 +139,12 @@
   "pleaseEnterVerificationCode":"Please Enter Verification Code",
   "enterYourVerificationCode":"Enter Your Verification Code",
   "verificationCode":"Verification Code",
-  "confirm":"Confirm"
+  "confirm":"Confirm",
+  "deleteCompleted":"Deleted",
+  "pickLocation":"Pick a location",
+  "addedSuccessfully":"added successfully",
+  "addDescription":"add Description"
+
+
 
 }

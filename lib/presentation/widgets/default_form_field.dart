@@ -11,7 +11,7 @@ class DefaultFormField extends StatelessWidget {
   final double? suffixIconHeight;
   final String? Function(String?)? validator;
 
-   DefaultFormField({
+   const DefaultFormField({
     Key? key,
     required this.controller,
     required this.imgPath,
