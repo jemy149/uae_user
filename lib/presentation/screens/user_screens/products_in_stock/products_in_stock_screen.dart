@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:uae_user/presentation/views/home_offers_card_item.dart';
 import 'package:uae_user/presentation/views/products_in_stock_item.dart';
+
 import '../../../../constants/screens.dart';
 import '../../../styles/colors.dart';
 import '../../../widgets/custome_search_field.dart';
@@ -34,10 +34,10 @@ class ProdrctsInStockScreen extends StatelessWidget {
                     child: DefaultText(
                       text: AppLocalizations.of(context)!.uaeStores,
                       style: Theme.of(context).textTheme.headline6?.copyWith(
-                        fontFamily: 'Bukra-Regular',
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
+                            fontFamily: 'Bukra-Regular',
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
                     )),
               ],
             ),
@@ -48,7 +48,7 @@ class ProdrctsInStockScreen extends StatelessWidget {
                 color: AppColors.lightBlue,
                 child: Center(
                   child: Padding(
-                    padding:const EdgeInsets.symmetric(vertical: 20),
+                    padding: const EdgeInsets.symmetric(vertical: 20),
                     child: SizedBox(
                         height: 35,
                         width: 300,
@@ -106,16 +106,16 @@ class ProdrctsInStockScreen extends StatelessWidget {
                                       ),
                                       Padding(
                                         padding:
-                                        const EdgeInsetsDirectional.only(
-                                            start: 5.0),
+                                            const EdgeInsetsDirectional.only(
+                                                start: 5.0),
                                         child: DefaultText(
                                           text:
-                                          AppLocalizations.of(context)!.all,
+                                              AppLocalizations.of(context)!.all,
                                           style: Theme.of(context)
                                               .textTheme
                                               .caption
                                               ?.copyWith(
-                                              color: AppColors.lightBlue),
+                                                  color: AppColors.lightBlue),
                                         ),
                                       )
                                     ],
@@ -128,14 +128,22 @@ class ProdrctsInStockScreen extends StatelessWidget {
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 20,
-                              crossAxisSpacing: 20,
-                              mainAxisExtent: 205),
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  mainAxisSpacing: 20,
+                                  crossAxisSpacing: 20,
+                                  mainAxisExtent: 205),
                           itemCount: 20,
                           itemBuilder: (BuildContext context, int index) {
-                            return  ProductsInStockItem(onTap: (){Navigator.pushNamed(context, ADDING_PRODUCT_TO_CART_SCREEN_R);},);
+                            return ProductsInStockItem(
+                              onTapCart: (){},
+                              itemName: 'item name',
+                              imageUrl: 'assets/images/fruits.png',
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, ADDING_PRODUCT_TO_CART_SCREEN_R);
+                              },
+                            );
                           }),
                     ],
                   ),

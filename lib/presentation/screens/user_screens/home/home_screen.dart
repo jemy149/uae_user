@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:uae_user/business_logic/user/ads/ads_cubit.dart';
 import 'package:uae_user/business_logic/user/category/category_cubit.dart';
+import 'package:uae_user/presentation/router/arguments/user_arguments/store_sub_category_args.dart';
 import 'package:uae_user/presentation/screens/user_screens/categories/categories_screen.dart';
 import 'package:uae_user/presentation/styles/colors.dart';
 import 'package:uae_user/presentation/views/custome_carousel_slider.dart';
@@ -37,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
         BlocProvider(
           create: (context) => CategoryCubit()..userCategories(),
         ),
+
       ],
       child: SafeArea(
         child: Scaffold(
@@ -229,21 +231,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                       homeGridViewItemImgageUrl:
                                           state.userCategories[index].image,
                                       onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  CategoriesScreen(
-                                                    subCategoryId: state
-                                                        .userCategories[index]
-                                                        .id,
-                                                    subCategoryName: state
-                                                        .userCategories[index]
-                                                        .name,
-                                                  )),
-                                        );
-                                        // Navigator.pushNamed(
-                                        //     context, CATEGORIES_SCREEN_R);
+                                        Navigator.pushNamed(
+                                            context, CATEGORIES_SCREEN_R,arguments:  state
+                                          .userCategories[index]
+                                          .id, );
                                       },
                                     );
                                   });

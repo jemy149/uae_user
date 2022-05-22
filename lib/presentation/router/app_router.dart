@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uae_user/constants/screens.dart';
+import 'package:uae_user/presentation/router/arguments/user_arguments/store_sub_category_args.dart';
 import 'package:uae_user/presentation/screens/user_screens/about/about_screen.dart';
 import 'package:uae_user/presentation/screens/user_screens/adding_additional_location/adding_additional_location_screen.dart';
 import 'package:uae_user/presentation/screens/user_screens/adding_product_to_cart/adding_product_to_cart_screen.dart';
@@ -105,7 +106,8 @@ class AppRouter {
       case WALLET_SCREEN_R:
         return MaterialPageRoute(builder: (_) => WalletScreen());
       case CATEGORIES_SCREEN_R:
-        return MaterialPageRoute(builder: (_) => CategoriesScreen(subCategoryId: 0,subCategoryName: '',));
+        final int subCategoryId = settings.arguments as int;
+        return MaterialPageRoute(builder: (_) => CategoriesScreen(subCategoryId: subCategoryId,));
       case PRODUCTS_IN_STOCK_SCREEN_R:
         return MaterialPageRoute(builder: (_) => ProdrctsInStockScreen());
       case ADDING_PRODUCT_TO_CART_SCREEN_R:

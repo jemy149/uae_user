@@ -1,16 +1,26 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:uae_user/data/models/user_models/categories/main_category_model.dart';
 import 'package:uae_user/data/requests/categories/main_category_request.dart';
 
 import '../../../constants/constant_methods.dart';
+import '../../../data/models/user_models/categories/sub_category_model.dart';
+import '../../../data/models/user_models/search/search_model.dart';
+import '../../../data/requests/categories/sub_category_request.dart';
+import '../../../data/requests/search/price_model.dart';
+import '../../../data/requests/search/search_request.dart';
 
 part 'category_state.dart';
 
 class CategoryCubit extends Cubit<CategoryStates> {
   CategoryCubit() : super(UserCategoryInitialState());
 
+  static CategoryCubit get(context) => BlocProvider.of(context);
 
+
+
+////////////////////////////////// main categories ////////////////////////////////
   MainCategoryModel categoryModel = MainCategoryModel();
 
   void userCategories (){
@@ -28,4 +38,56 @@ class CategoryCubit extends Cubit<CategoryStates> {
       printResponse('userCategories' + error.toString());
     });
   }
+
+
+  ////////////////////////////////// main categories ////////////////////////////////
+  SubCategoryModel subCategoryModel = SubCategoryModel();
+
+  void userSubCategories ({required int subCategoryId}){
+    emit(UserSubCategoryLoadingState());
+    SubCategoryRequest()
+        .subCategoryRequest(page: 0,categoryId: subCategoryId)
+        .then((value) {
+      if(value.status == 200){
+        subCategoryModel = value;
+        emit(UserSubCategorySuccessState(userSubCategories: subCategoryModel.categories));
+      }else {
+        emit(UserSubCategoryErrorState());
+      }
+    }).catchError((error){
+      printResponse('userSubCategories' + error.toString());
+    });
+  }
+
+
+
+
+  SearchModel searchModel = SearchModel();
+
+  void userSearch({int? subCategoryId,required int page,int? barcode,int? brandId,String? keyword,Price? rangPrice}) {
+    emit(UserSearchInitialState());
+    SearchRequest()
+        .searchRequest(
+      page: page,
+      categoryId: subCategoryId,
+      barcode: barcode,
+      brandId: brandId,
+      keyword: keyword,
+      rangPrice: rangPrice,
+    )
+        .then((value) {
+
+      if (value.status == 200) {
+
+
+        searchModel = value;
+        emit(UserSearchSuccessState(products: searchModel.products));
+      } else {
+        emit(UserSearchErrorState());
+      }
+    }).catchError((error) {
+      printResponse('userSearch' + error.toString());
+    });
+  }
+
 }

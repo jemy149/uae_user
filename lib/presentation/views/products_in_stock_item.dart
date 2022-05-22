@@ -5,8 +5,12 @@ import '../styles/colors.dart';
 import '../widgets/default_text.dart';
 
 class ProductsInStockItem extends StatelessWidget {
-  const ProductsInStockItem({Key? key,required this.onTap}) : super(key: key);
+
+  final String imageUrl;
+  final String itemName;
+  const ProductsInStockItem({Key? key,required this.onTap,required this.imageUrl,required this.itemName,required this.onTapCart}) : super(key: key);
   final Function() onTap;
+  final Function() onTapCart;
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +30,8 @@ class ProductsInStockItem extends StatelessWidget {
                     SizedBox(
                       width: 150,
                       height: 150,
-                      child: Image.asset(
-                        'assets/images/fruits.png',
+                      child: Image.network(
+                        imageUrl,
                         fit: BoxFit.contain,
                       ),
                     ),
@@ -54,7 +58,9 @@ class ProductsInStockItem extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 5.0),
               child: Row(
                 children: [
-                  Flexible(child: Icon(Icons.add_shopping_cart_outlined,color: AppColors.lightBlue,)),
+                  Flexible(child: InkWell(
+                      onTap: onTapCart,
+                      child: Icon(Icons.add_shopping_cart_outlined,color: AppColors.lightBlue,))),
                   Spacer(
                     flex: 1,
                   ),
@@ -67,7 +73,7 @@ class ProductsInStockItem extends StatelessWidget {
                           children: [
                             Expanded(
                               child: DefaultText(
-                                text: 'ietm nameee',
+                                text: itemName,
                                 style: Theme.of(context)
                                     .textTheme
                                     .button
