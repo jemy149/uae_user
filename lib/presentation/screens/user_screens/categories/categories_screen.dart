@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:uae_user/business_logic/user/search/search_cubit.dart';
 import 'package:uae_user/business_logic/user/sub_category/sub_category_cubit.dart';
+import 'package:uae_user/data/requests/search/search_request.dart';
 
 import '../../../../constants/screens.dart';
 import '../../../styles/colors.dart';
@@ -12,25 +14,36 @@ class CategoriesScreen extends StatefulWidget {
   final int subCategoryId;
   final String subCategoryName;
 
+
   const CategoriesScreen({
     Key? key,
     required this.subCategoryId,
     required this.subCategoryName,
+
   }) : super(key: key);
 
   @override
   State<CategoriesScreen> createState() => _CategoriesScreenState();
 }
-
+late String tabBarName ;
 class _CategoriesScreenState extends State<CategoriesScreen>
     with TickerProviderStateMixin {
   TextEditingController offersSearchController = TextEditingController();
 
+
+  List<Tab> tabBarItem = [
+    Tab(child: DefaultText(text: tabBarName,),),
+  ];
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => SubCategoryCubit()
-        ..userSubCategories(subCategoryId: widget.subCategoryId),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => SubCategoryCubit()
+          ..userSubCategories(subCategoryId: widget.subCategoryId),),
+        BlocProvider(create: (context) => SearchCubit()
+          ..userSearch(page: 0,),),
+
+      ],
       child: DefaultTabController(
         length: 3,
         child: Scaffold(
@@ -63,11 +76,7 @@ class _CategoriesScreenState extends State<CategoriesScreen>
               indicatorSize: TabBarIndicatorSize.label,
               indicatorWeight: 2,
               isScrollable: true,
-              tabs: [
-                Tab(text: 'helloooooo',),
-                Tab(text: 'helloooooojhkl'),
-                Tab(text: 'helloooooo000000000'),
-              ],
+              tabs:tabBarItem,
             ),
             // bottom: PreferredSize(
             //   preferredSize: const Size.fromHeight(120),

@@ -7,8 +7,8 @@ import '../../data_provider/remote/dio_helper.dart';
 import '../../models/user_models/search/search_model.dart';
 
 class SearchRequest {
-  static Future searchRequest({
-    required String page,
+   Future searchRequest({
+    required int page,
     String? keyword,
     int? barcode,
     int? categoryId,
