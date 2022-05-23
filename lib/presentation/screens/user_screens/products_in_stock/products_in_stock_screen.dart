@@ -124,27 +124,25 @@ class ProdrctsInStockScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      GridView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  mainAxisSpacing: 20,
-                                  crossAxisSpacing: 20,
-                                  mainAxisExtent: 205),
-                          itemCount: 20,
-                          itemBuilder: (BuildContext context, int index) {
-                            return ProductsInStockItem(
-                              onTapCart: (){},
-                              itemName: 'item name',
-                              imageUrl: 'assets/images/fruits.png',
-                              onTap: () {
-                                Navigator.pushNamed(
-                                    context, ADDING_PRODUCT_TO_CART_SCREEN_R);
-                              },
-                            );
-                          }),
+                      // GridView.builder(
+                      //     shrinkWrap: true,
+                      //     physics: const NeverScrollableScrollPhysics(),
+                      //     gridDelegate:
+                      //         const SliverGridDelegateWithFixedCrossAxisCount(
+                      //             crossAxisCount: 2,
+                      //             mainAxisSpacing: 20,
+                      //             crossAxisSpacing: 20,
+                      //             mainAxisExtent: 205),
+                      //     itemCount: 20,
+                      //     itemBuilder: (BuildContext context, int index) {
+                      //       return ProductsInStockItem(
+                      //        subCategoryId: ,
+                      //         onTap: () {
+                      //           Navigator.pushNamed(
+                      //               context, ADDING_PRODUCT_TO_CART_SCREEN_R);
+                      //         },
+                      //       );
+                      //     }),
                     ],
                   ),
                 ),

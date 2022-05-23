@@ -64,12 +64,12 @@ class CategoryCubit extends Cubit<CategoryStates> {
 
   SearchModel searchModel = SearchModel();
 
-  void userSearch({int? subCategoryId,required int page,int? barcode,int? brandId,String? keyword,Price? rangPrice}) {
+  void userSearch({int? categoryId,required int page,int? barcode,int? brandId,String? keyword,Price? rangPrice}) {
     emit(UserSearchInitialState());
     SearchRequest()
         .searchRequest(
       page: page,
-      categoryId: subCategoryId,
+      categoryId: categoryId,
       barcode: barcode,
       brandId: brandId,
       keyword: keyword,

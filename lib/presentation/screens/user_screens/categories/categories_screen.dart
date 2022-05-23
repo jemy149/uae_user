@@ -23,7 +23,6 @@ class CategoriesScreen extends StatefulWidget {
   State<CategoriesScreen> createState() => _CategoriesScreenState();
 }
 
-
 class _CategoriesScreenState extends State<CategoriesScreen>
     with TickerProviderStateMixin {
   TextEditingController offersSearchController = TextEditingController();
@@ -32,6 +31,7 @@ class _CategoriesScreenState extends State<CategoriesScreen>
 
   late final TabController controller;
   late CategoryCubit _categoryCubit;
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -65,14 +65,16 @@ class _CategoriesScreenState extends State<CategoriesScreen>
         ),
         body: BlocBuilder<CategoryCubit, CategoryStates>(
           builder: (context, state) {
-            if (state is UserSubCategorySuccessState || state is UserSearchSuccessState) {
+            if (state is UserSubCategorySuccessState) {
               _categoryCubit = CategoryCubit.get(context);
-              printTest(CategoryCubit.get(context).subCategoryModel.categories.toString());
+              printTest(CategoryCubit.get(context)
+                  .subCategoryModel
+                  .categories[1].id.toString());
               tabBarItemList = List.generate(
-                5,
+                state.userSubCategories.length,
                 (index) => Tab(
                   child: DefaultText(
-                    text: _categoryCubit.subCategoryModel.categories[index].name,
+                    text:state.userSubCategories[index].name,
                   ),
                 ),
               );
@@ -83,8 +85,7 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                 ColoredBox(
                   color: AppColors.lightBlue,
                   child: TabBar(
-
-                    isScrollable: true,
+                      isScrollable: true,
                       controller: controller,
                       tabs: tabBarItemList),
                 ),
@@ -164,12 +165,11 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                                     mainAxisSpacing: 20,
                                     crossAxisSpacing: 20,
                                     mainAxisExtent: 205),
-                            itemCount: 20,
+                            itemCount:
+                            state.userSubCategories.length,
                             itemBuilder: (BuildContext context, int index) {
                               return ProductsInStockItem(
-                                imageUrl: 'assets/images/fruits.png',
-                                itemName: 'item name',
-                                onTapCart: () {},
+                                subCategoryId: state.userSubCategories[index].id,
                                 onTap: () {
                                   Navigator.pushNamed(
                                       context, ADDING_PRODUCT_TO_CART_SCREEN_R);
@@ -181,7 +181,7 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                   ),
                 ),
               ]);
-            } else if (state is UserSearchLoadingState || state is UserSubCategoryLoadingState) {
+            } else if (state is UserSubCategoryLoadingState) {
               return const DefaultLoadingIndicator();
             } else {
               return const DefaultErrorWidget();
