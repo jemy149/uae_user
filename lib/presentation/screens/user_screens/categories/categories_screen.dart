@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:uae_user/business_logic/user/category/category_cubit.dart';
-import 'package:uae_user/constants/constant_methods.dart';
+import 'package:uae_user/business_logic/user/search/search_cubit.dart';
 
 import '../../../../constants/screens.dart';
 import '../../../styles/colors.dart';
@@ -12,11 +12,11 @@ import '../../../widgets/default_loading_indicator.dart';
 import '../../../widgets/default_text.dart';
 
 class CategoriesScreen extends StatefulWidget {
-  final int subCategoryId;
+  final int mainCategoryId;
 
   const CategoriesScreen({
     Key? key,
-    required this.subCategoryId,
+    required this.mainCategoryId,
   }) : super(key: key);
 
   @override
@@ -34,9 +34,13 @@ class _CategoriesScreenState extends State<CategoriesScreen>
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => CategoryCubit()
-        ..userSubCategories(subCategoryId: widget.subCategoryId),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => CategoryCubit()
+            ..userSubCategories(mainCategoryId: widget.mainCategoryId),
+        ),
+      ],
       child: Scaffold(
         appBar: AppBar(
           elevation: 1,
@@ -67,119 +71,171 @@ class _CategoriesScreenState extends State<CategoriesScreen>
           builder: (context, state) {
             if (state is UserSubCategorySuccessState) {
               _categoryCubit = CategoryCubit.get(context);
-              printTest(CategoryCubit.get(context)
-                  .subCategoryModel
-                  .categories[1].id.toString());
               tabBarItemList = List.generate(
                 state.userSubCategories.length,
                 (index) => Tab(
                   child: DefaultText(
-                    text:state.userSubCategories[index].name,
+                    text: state.userSubCategories[index].name,
                   ),
                 ),
               );
               controller =
                   TabController(length: tabBarItemList.length, vsync: this)
                     ..addListener(() {});
+
               return Column(children: [
                 ColoredBox(
                   color: AppColors.lightBlue,
                   child: TabBar(
+                      onTap: (index) {},
                       isScrollable: true,
                       controller: controller,
                       tabs: tabBarItemList),
                 ),
                 Expanded(
-                  child: Padding(
-                    padding: const EdgeInsetsDirectional.only(
-                      start: 12.0,
-                      end: 12.0,
-                    ),
-                    child: ListView(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsetsDirectional.only(
-                              bottom: 10.0, top: 10.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  Navigator.pushNamed(context, FILTER_SCREEN_R);
-                                },
-                                child: Card(
-                                    elevation: 5,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 8.0, horizontal: 5.0),
-                                      child: Image.asset(
-                                        'assets/icons/filter.png',
-                                        width: 20,
-                                        height: 20,
-                                      ),
-                                    )),
-                              ),
-                              Card(
-                                  elevation: 5,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 8.0, horizontal: 5.0),
-                                    child: Row(
+                  child: TabBarView(
+                      controller: controller,
+                      children: List.generate(
+                        state.userSubCategories.length,
+                        (index) {
+
+                          // _searchCubit.userSearch(
+                          //     page: 0,
+                          //     categoryId: state.userSubCategories[index].id);
+                          // controller.addListener(() {
+                          //   if(
+                          //   controller.index == index
+                          //   ){
+                          //     _searchCubit.userSearch(page: 0,categoryId: state.userSubCategories[index].id);
+                          //   }
+                          // }
+                          // );
+                          return BlocProvider(
+                            create: (context) => SearchCubit()..userSearch(
+                              page: 0,
+                              categoryId: state.userSubCategories[index].id),
+                            child: BlocBuilder<SearchCubit, SearchState>(
+                              builder: (context, searchState) {
+                                if (searchState is UserSearchSuccessState) {
+                                  SearchCubit _searchCubit = SearchCubit.get(context);
+                                  return Padding(
+                                    padding: const EdgeInsetsDirectional.only(
+                                      start: 12.0,
+                                      end: 12.0,
+                                    ),
+                                    child: Column(
                                       children: [
-                                        Image.asset(
-                                          'assets/images/menu@3x.png',
-                                          width: 20,
-                                          height: 20,
-                                        ),
                                         Padding(
                                           padding:
                                               const EdgeInsetsDirectional.only(
-                                                  start: 5.0),
-                                          child: DefaultText(
-                                            text: AppLocalizations.of(context)!
-                                                .all,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .caption
-                                                ?.copyWith(
-                                                    color: AppColors.lightBlue),
+                                                  bottom: 10.0, top: 10.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              InkWell(
+                                                onTap: () {
+                                                  Navigator.pushNamed(
+                                                      context, FILTER_SCREEN_R);
+                                                },
+                                                child: Card(
+                                                    elevation: 5,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10)),
+                                                    child: Padding(
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          vertical: 8.0,
+                                                          horizontal: 5.0),
+                                                      child: Image.asset(
+                                                        'assets/icons/filter.png',
+                                                        width: 20,
+                                                        height: 20,
+                                                      ),
+                                                    )),
+                                              ),
+                                              Card(
+                                                  elevation: 5,
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10)),
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        vertical: 8.0,
+                                                        horizontal: 5.0),
+                                                    child: Row(
+                                                      children: [
+                                                        Image.asset(
+                                                          'assets/images/menu@3x.png',
+                                                          width: 20,
+                                                          height: 20,
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsetsDirectional
+                                                                      .only(
+                                                                  start: 5.0),
+                                                          child: DefaultText(
+                                                            text: AppLocalizations
+                                                                    .of(context)!
+                                                                .all,
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .caption
+                                                                ?.copyWith(
+                                                                    color: AppColors
+                                                                        .lightBlue),
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  )),
+                                            ],
                                           ),
-                                        )
+                                        ),
+                                        Expanded(
+                                          child: GridView.builder(
+                                              gridDelegate:
+                                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                                      crossAxisCount: 2,
+                                                      mainAxisSpacing: 20,
+                                                      crossAxisSpacing: 20,
+                                                      mainAxisExtent: 250),
+                                              itemCount: _searchCubit
+                                                  .searchModel.products.length,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                return ProductsInStockItem(
+                                                    productModel: _searchCubit
+                                                        .searchModel
+                                                        .products[index]);
+                                              }),
+                                        ),
                                       ],
                                     ),
-                                  )),
-                            ],
-                          ),
-                        ),
-                        GridView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    mainAxisSpacing: 20,
-                                    crossAxisSpacing: 20,
-                                    mainAxisExtent: 205),
-                            itemCount:
-                            state.userSubCategories.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return ProductsInStockItem(
-                                subCategoryId: state.userSubCategories[index].id,
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, ADDING_PRODUCT_TO_CART_SCREEN_R);
-                                },
-                              );
-                            }),
-                      ],
-                    ),
-                  ),
-                ),
+                                  );
+                                } else if (searchState
+                                    is UserSearchLoadingState) {
+                                  return const DefaultLoadingIndicator();
+                                } else if(state is UserSearchEmptyState) {
+                                 return const Icon(Icons.add_box_rounded,size: 48,);
+                                }else{
+                                  return const DefaultErrorWidget();
+                                }
+                              },
+                            ),
+                          );
+                        },
+                      )),
+                )
               ]);
             } else if (state is UserSubCategoryLoadingState) {
               return const DefaultLoadingIndicator();

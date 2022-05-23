@@ -1,15 +1,16 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:uae_user/presentation/widgets/default_material_button.dart';
-
 import '../../../styles/colors.dart';
 import '../../../views/adding_product_to_cart_item.dart';
-import '../../../widgets/default_text.dart';
 
-class AddingProductToCartScreen extends StatelessWidget {
-  const AddingProductToCartScreen({Key? key}) : super(key: key);
+class AddingProductToCartScreen extends StatefulWidget {
+  final int productId;
+  const AddingProductToCartScreen({Key? key, required this.productId}) : super(key: key);
 
+  @override
+  State<AddingProductToCartScreen> createState() => _AddingProductToCartScreenState();
+}
+
+class _AddingProductToCartScreenState extends State<AddingProductToCartScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(

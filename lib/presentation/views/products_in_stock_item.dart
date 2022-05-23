@@ -1,118 +1,119 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:uae_user/business_logic/user/category/category_cubit.dart';
-import 'package:uae_user/constants/constant_methods.dart';
+import 'package:uae_user/data/models/user_models/search/search_model.dart';
 
+import '../../constants/screens.dart';
 import '../styles/colors.dart';
-import '../widgets/default_error_widget.dart';
-import '../widgets/default_loading_indicator.dart';
+import '../widgets/default_cached_network_image.dart';
 import '../widgets/default_text.dart';
 
-class ProductsInStockItem extends StatelessWidget {
-  final int subCategoryId;
-  final Function() onTap;
-  ProductsInStockItem({Key? key,required this.onTap,required this.subCategoryId}) : super(key: key);
- 
-  late CategoryCubit _categoryCubit;
+class ProductsInStockItem extends StatefulWidget {
+  final Products productModel;
+
+  const ProductsInStockItem({
+    Key? key,
+    required this.productModel,
+  }) : super(key: key);
+
+  @override
+  State<ProductsInStockItem> createState() => _ProductsInStockItemState();
+}
+
+class _ProductsInStockItemState extends State<ProductsInStockItem> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-  create: (context) => CategoryCubit()..userSearch(page: 0,
-      categoryId: subCategoryId
-  ),
-  child: BlocBuilder<CategoryCubit, CategoryStates>(
-  builder: (context, state) {
-
-    _categoryCubit = CategoryCubit.get(context);
-    if (state is UserSearchSuccessState) {
-      return InkWell(
-        onTap: onTap,
-        child: Card(
-          elevation: 5,
-          clipBehavior: Clip.antiAlias,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          child: Column(
-            children: [
-              Stack(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(state.products.length, (index) => SizedBox(
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(context, ADDING_PRODUCT_TO_CART_SCREEN_R,arguments: widget.productModel.id);
+      },
+      child: Card(
+        elevation: 5,
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
                       width: 150,
                       height: 150,
-                      child: Image.network(
-                        state.products[index].images.first,
+                      child: DefaultCachedNetworkImage(
+                        imageUrl:widget.productModel.images.isEmpty? '' :  widget.productModel.images[0],
                         fit: BoxFit.contain,
                       ),
-                    ),),
+                    )
+                  ],
+                ),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.only(
+                        top: 8.0, start: 5.0, end: 5.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: const [
+                        Icon(
+                          Icons.favorite_outline,
+                          color: AppColors.grey,
+                        ),
+                      ],
+                    ),
                   ),
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: Padding(
-                      padding: const EdgeInsetsDirectional.only(top: 8.0,start: 5.0,end: 5.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children:const [
-                          Icon(
-                            Icons.favorite_outline,
-                            color: AppColors.grey,
-                          ),
-                        ],
-                      ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+              child: Row(
+                children: [
+                  Flexible(
+                      child: InkWell(
+                          onTap: () {},
+                          child: const Icon(
+                            Icons.add_shopping_cart_outlined,
+                            color: AppColors.lightBlue,
+                          ))),
+                  const Spacer(
+                    flex: 1,
+                  ),
+                  Expanded(
+                    flex: 10,
+                    child: Column(
+                      children: [
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: DefaultText(
+                                  maxLines: 2,
+                                  text: widget.productModel.name,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .button
+                                      ?.copyWith(
+                                          fontFamily: 'Bukra-Regular',
+                                          fontWeight: FontWeight.bold),
+                                ),
+                              )
+                            ]),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            DefaultText(
+                                text: '${widget.productModel.price} RS'),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                child: Row(
-                  children: [
-                    Flexible(child: InkWell(
-                        onTap: (){},
-                        child: const Icon(Icons.add_shopping_cart_outlined,color: AppColors.lightBlue,))),
-                    const Spacer(
-                      flex: 1,
-                    ),
-                    Expanded(
-                      flex: 10,
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children:List.generate(state.products.length, (index) => Expanded(
-                              child: DefaultText(
-                                text: state.products[index].name,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .button
-                                    ?.copyWith(fontFamily: 'Bukra-Regular',fontWeight: FontWeight.bold),
-                              ),
-                            ),),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children:const [
-                              DefaultText(text: '${80.00} RS'),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
+            )
+          ],
         ),
-      );
-    }else if (state is UserSearchLoadingState) {
-      return const DefaultLoadingIndicator();
-    } else {
-      return const DefaultErrorWidget();
-    }
-  },
-),
-);
+      ),
+    );
   }
 }

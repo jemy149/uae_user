@@ -107,11 +107,12 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => WalletScreen());
       case CATEGORIES_SCREEN_R:
         final int subCategoryId = settings.arguments as int;
-        return MaterialPageRoute(builder: (_) => CategoriesScreen(subCategoryId: subCategoryId,));
+        return MaterialPageRoute(builder: (_) => CategoriesScreen(mainCategoryId: subCategoryId,));
       case PRODUCTS_IN_STOCK_SCREEN_R:
         return MaterialPageRoute(builder: (_) => ProdrctsInStockScreen());
       case ADDING_PRODUCT_TO_CART_SCREEN_R:
-        return MaterialPageRoute(builder: (_) => const AddingProductToCartScreen());
+        final int productId = settings.arguments as int;
+        return MaterialPageRoute(builder: (_) =>  AddingProductToCartScreen(productId: productId,));
       case DELIVERY_LOCATION_SCREEN_R:
         return MaterialPageRoute(builder: (_) => const DeliveryLocationScreen());
       case PAYMENT_METHOD_SCREEN_R:

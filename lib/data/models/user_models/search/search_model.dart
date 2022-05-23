@@ -49,7 +49,7 @@ class Products {
       String? barcode, 
       String? name, 
       String? description, 
-      double? price, 
+      num? price,
       bool? isFreeDelivered, 
       List<String>? images, 
       dynamic store, 
@@ -85,12 +85,12 @@ class Products {
     _images = json['images'] != null ? json['images'].cast<String>() : [];
     _store = json['store'];
     _quantity = json['quantity'];
-    if (json['prices'] != null) {
-      _prices = [];
-      // json['prices'].forEach((v) {
-      //   _prices?.add(Dynamic.fromJson(v));
-      // });
-    }
+    // if (json['prices'] != null) {
+    //   _prices = [];
+    //   json['prices'].forEach((v) {
+    //     _prices?.add(Dynamic.fromJson(v));
+    //   });
+    // }
     _hasOffer = json['hasOffer'];
     _point = json['point'];
     // if (json['features'] != null) {
@@ -105,31 +105,31 @@ class Products {
   String? _barcode;
   String? _name;
   String? _description;
-  double? _price;
+  num? _price;
   bool? _isFreeDelivered;
   List<String>? _images;
   dynamic _store;
   int? _quantity;
-  List<dynamic>? _prices;
+  // List<dynamic>? _prices;
   bool? _hasOffer;
   int? _point;
-  List<dynamic>? _features;
+  // List<dynamic>? _features;
   int? _viewers;
 
   int get id => _id ?? 0;
   String get barcode => _barcode ?? '';
   String get name => _name ?? '';
   String get description => _description ?? '';
-  double get price => _price ?? 0.0;
+  num get price => _price ?? 0.0;
   bool get isFreeDelivered => _isFreeDelivered ?? false;
   List<String> get images => _images ?? [];
-  dynamic get store => _store;
+  dynamic get store => _store ?? '';
   int get quantity => _quantity ?? 0;
-  // List<dynamic> get prices => _prices;
+  // List<dynamic>? get prices => _prices;
   bool get hasOffer => _hasOffer ?? false;
   int get point => _point ?? 0;
   // List<dynamic>? get features => _features;
-  int? get viewers => _viewers;
+  int get viewers => _viewers ?? 0;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -142,14 +142,14 @@ class Products {
     map['images'] = _images;
     map['store'] = _store;
     map['quantity'] = _quantity;
-    if (_prices != null) {
-      map['prices'] = _prices?.map((v) => v.toJson()).toList();
-    }
+    // if (_prices != null) {
+    //   map['prices'] = _prices?.map((v) => v.toJson()).toList();
+    // }
     map['hasOffer'] = _hasOffer;
     map['point'] = _point;
-    if (_features != null) {
-      map['features'] = _features?.map((v) => v.toJson()).toList();
-    }
+    // if (_features != null) {
+    //   map['features'] = _features?.map((v) => v.toJson()).toList();
+    // }
     map['viewers'] = _viewers;
     return map;
   }

@@ -43,13 +43,14 @@ class CategoryCubit extends Cubit<CategoryStates> {
   ////////////////////////////////// main categories ////////////////////////////////
   SubCategoryModel subCategoryModel = SubCategoryModel();
 
-  void userSubCategories ({required int subCategoryId}){
+  void userSubCategories ({required int mainCategoryId}){
     emit(UserSubCategoryLoadingState());
     SubCategoryRequest()
-        .subCategoryRequest(page: 0,categoryId: subCategoryId)
+        .subCategoryRequest(page: 0,categoryId: mainCategoryId)
         .then((value) {
       if(value.status == 200){
         subCategoryModel = value;
+
         emit(UserSubCategorySuccessState(userSubCategories: subCategoryModel.categories));
       }else {
         emit(UserSubCategoryErrorState());
@@ -60,34 +61,5 @@ class CategoryCubit extends Cubit<CategoryStates> {
   }
 
 
-
-
-  SearchModel searchModel = SearchModel();
-
-  void userSearch({int? categoryId,required int page,int? barcode,int? brandId,String? keyword,Price? rangPrice}) {
-    emit(UserSearchInitialState());
-    SearchRequest()
-        .searchRequest(
-      page: page,
-      categoryId: categoryId,
-      barcode: barcode,
-      brandId: brandId,
-      keyword: keyword,
-      rangPrice: rangPrice,
-    )
-        .then((value) {
-
-      if (value.status == 200) {
-
-
-        searchModel = value;
-        emit(UserSearchSuccessState(products: searchModel.products));
-      } else {
-        emit(UserSearchErrorState());
-      }
-    }).catchError((error) {
-      printResponse('userSearch' + error.toString());
-    });
-  }
 
 }

@@ -23,12 +23,12 @@ class SearchRequest {
         'barcode': barcode,
         'categoryId': categoryId,
         'brandId': brandId,
-        'rangPrice': rangPrice!.toJson(),
+        'rangPrice': rangPrice,
       });
       printResponse(response.data.toString());
       return SearchModel.fromJson(response.data);
     } catch (error) {
-      printError(error.toString());
+      printError('searchRequest '+error.toString());
       return null;
     }
   }

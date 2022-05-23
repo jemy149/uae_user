@@ -26,10 +26,3 @@ class UserSubCategoryErrorState extends CategoryStates {}
 
 
 
-class UserSearchInitialState extends CategoryStates {}
-class UserSearchLoadingState extends CategoryStates {}
-class UserSearchSuccessState extends CategoryStates {
-  List<Products> products;
-  UserSearchSuccessState({required this.products});
-}
-class UserSearchErrorState extends CategoryStates {}
