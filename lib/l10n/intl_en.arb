@@ -114,7 +114,7 @@
   "cash":"Cash",
   "onlinePayment":"Online Payment",
   "additionalDetailsForOrdering":"Additional Details For Ordering",
-  "scanQRCode":"Scan QR Code",
+  "scanQRCode":"Scan Barcode Code",
   "scan":"Scan",
   "scanProductForDetails":"Scan Product For Details",
   "deliveryDetails":"Delivery Details",

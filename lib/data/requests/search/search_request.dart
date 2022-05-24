@@ -12,7 +12,7 @@ class SearchRequest {
     String? keyword,
     int? barcode,
     int? categoryId,
-    int? brandId,
+     List? brandId,
     Price? rangPrice,
   }) async {
     try {
@@ -23,7 +23,7 @@ class SearchRequest {
         'barcode': barcode,
         'categoryId': categoryId,
         'brandId': brandId,
-        'rangPrice': rangPrice,
+        'rangPrice': rangPrice?.toJson(),
       });
       printResponse(response.data.toString());
       return SearchModel.fromJson(response.data);

@@ -1,12 +1,12 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:uae_user/business_logic/user/search/search_cubit.dart';
+import 'package:uae_user/presentation/screens/user_screens/barcode/barcode_result_screen.dart';
 import 'package:uae_user/presentation/widgets/default_material_button.dart';
-
 import '../../../../constants/constant_methods.dart';
 import '../../../styles/colors.dart';
 import '../../../widgets/default_text.dart';
@@ -143,9 +143,7 @@ class _BarCodeScreenState extends State<BarCodeScreen> {
                               await scanBarcodeNormal();
                               printTest(_scanBarcode);
                                navigateTo(context,
-                                   SearchScreen(searchBarCode: int.parse(_scanBarcode),));
-                                   // SearchScreen(searchBarCode: int.parse('818120'),));
-
+                                   BarcodeResultScreen(searchBarCode: int.parse(_scanBarcode),));
 
                             },
                             height: 60,
