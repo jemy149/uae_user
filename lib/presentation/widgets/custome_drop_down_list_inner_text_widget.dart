@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:uae_user/business_logic/user/my_addresses/my_addresses_cubit.dart';
+import 'package:uae_user/data/models/shared_models/shared_classes/api_address.dart';
 import '../styles/colors.dart';
 import 'default_text.dart';
 
 class CustomeDropDownListInnerTextWidget extends StatelessWidget {
-  const CustomeDropDownListInnerTextWidget({Key? key}) : super(key: key);
+  final ApiAddress myAddressModel;
+  final MyAddressesCubit myAddressesCubit;
+  const CustomeDropDownListInnerTextWidget( {Key? key,required this.myAddressModel,required this.myAddressesCubit}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
+    return InkWell(
+      onTap: () {
+        myAddressesCubit.chooseAddress(apiAddress: myAddressModel);
+      },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -18,8 +25,8 @@ class CustomeDropDownListInnerTextWidget extends StatelessWidget {
             margin: const EdgeInsetsDirectional.only(bottom: 8,top: 5),
           ),
           DefaultText(
-            text: 'an added address',
-            maxLines: 2,
+            text: myAddressModel.address,
+            maxLines: 1,
             style: Theme.of(context)
                 .textTheme
                 .subtitle1

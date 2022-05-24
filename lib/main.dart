@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sizer/sizer.dart';
 import 'package:uae_user/business_logic/shared/language/language_cubit.dart';
 import 'package:uae_user/presentation/router/app_router.dart';
 import 'package:uae_user/presentation/styles/themes.dart';
@@ -40,22 +41,23 @@ class MyApp extends StatelessWidget {
             LanguageCubit _langCubit;
             _langCubit = LanguageCubit.get(context);
 
-            return MaterialApp(
-              useInheritedMediaQuery: true,
-              supportedLocales: L10n.all,
-              locale: _langCubit.locale,
-              // locale: Locale(CacheHelper.getCurrentLanguage()),
-              localizationsDelegates: const [
-                AppLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-              ],
-              debugShowCheckedModeBanner: false,
-              theme: lightTheme,
-              onGenerateRoute: appRouter.onGenerateRoute,
+            return Sizer(builder: (context, orientation, deviceType) =>  MaterialApp(
+                useInheritedMediaQuery: true,
+                supportedLocales: L10n.all,
+                locale: _langCubit.locale,
+                // locale: Locale(CacheHelper.getCurrentLanguage()),
+                localizationsDelegates: const [
+                  AppLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                ],
+                debugShowCheckedModeBanner: false,
+                theme: lightTheme,
+                onGenerateRoute: appRouter.onGenerateRoute,
 
 
+              ),
             );
           }
 

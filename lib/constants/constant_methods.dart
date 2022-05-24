@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geocoding/geocoding.dart';
 import '../presentation/styles/colors.dart';
 import 'enums.dart';
 
@@ -14,7 +15,14 @@ Color getColor(Set<MaterialState> states,Color color) {
   return color;
 }
 
-
+Future<String> convertPositionToAddress({
+  required double lat,
+  required double lon,
+}) async {
+  List<Placemark> placeMarks = await placemarkFromCoordinates(lat, lon);
+  Placemark place = placeMarks[0];
+  return '${place.street} ${place.locality}';
+}
 
 
 

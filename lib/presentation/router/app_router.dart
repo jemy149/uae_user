@@ -23,8 +23,8 @@ import 'package:uae_user/presentation/screens/user_screens/tracking_order/tracki
 import 'package:uae_user/presentation/screens/user_screens/user_addresses/user_addresses_screen.dart';
 import 'package:uae_user/presentation/screens/user_screens/verification/verification_screen.dart';
 import 'package:uae_user/presentation/screens/user_screens/wallet/wallet_screen.dart';
-
 import '../screens/user_screens/bar_Code/bar_code_screen.dart';
+import '../../business_logic/user/my_addresses/my_addresses_cubit.dart';
 import '../screens/user_screens/delivery_information/delivery_information_screen.dart';
 import '../screens/user_screens/frequently_asked_questions/frequently_asked_questions_screen.dart';
 import '../screens/user_screens/login/login_screen.dart';
@@ -124,8 +124,10 @@ class AppRouter {
       case USER_ADDRESSES_SCREEN_R:
         return MaterialPageRoute(builder: (_) => const UserAddressesScreen());
       case ADDING_ADDITIONAL_LOCATION_SCREEN_R:
+        final MyAddressesCubit args =
+        settings.arguments as MyAddressesCubit;
         return MaterialPageRoute(
-            builder: (_) => const AddingAdditionalLocationScreen());
+            builder: (_) =>  AddingAdditionalLocationScreen(myAddressesCubit: args,));
       case SEARCH_SCREEN_R:
         return MaterialPageRoute(builder: (_) => SearchScreen());
 
