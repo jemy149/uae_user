@@ -40,6 +40,10 @@ const EP_CLEAR_CART  = 'clearCart';
 const EP_DELETE_CART  = 'deleteCart';
 const EP_GET_PRODUCTS  = 'getProducts';
 const EP_GET_BRANDS  = 'getBrands';
+const EP_USER_GET_MY_ADDRESSES= 'getMyAddresses';
+const EP_USER_ADD_ADDRESSES= 'addAddresses';
+const EP_USER_DELETE_ADDRESSES= 'deleteAddress';
+
 
 
 
