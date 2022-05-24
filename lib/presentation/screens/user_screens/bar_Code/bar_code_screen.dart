@@ -143,7 +143,8 @@ class _BarCodeScreenState extends State<BarCodeScreen> {
                               await scanBarcodeNormal();
                               printTest(_scanBarcode);
                                navigateTo(context,
-                                   SearchScreen(searchBarCode: int.parse('818120'),));
+                                   SearchScreen(searchBarCode: int.parse(_scanBarcode),));
+                                   // SearchScreen(searchBarCode: int.parse('818120'),));
 
 
                             },

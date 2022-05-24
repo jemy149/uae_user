@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -16,14 +15,14 @@ class SearchScreen extends StatefulWidget {
   final String? searchText;
   final int? searchBarCode;
 
-  SearchScreen({Key? key, this.searchText, this.searchBarCode}) : super(key: key);
+  const SearchScreen({Key? key, this.searchText, this.searchBarCode}) : super(key: key);
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  TextEditingController _searchController = TextEditingController();
+   TextEditingController _searchController = TextEditingController();
   final ScrollController productGridController = ScrollController();
   bool loading = false;
 
@@ -45,7 +44,7 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => UserProductSearchCubit()
-        ..userProductSearch(keyword: _searchController.text, page: 1,barcode: widget.searchBarCode),
+        ..userProductSearch(keyword: _searchController.text, page: 0,barcode: widget.searchBarCode),
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
@@ -118,15 +117,15 @@ class _SearchScreenState extends State<SearchScreen> {
                           UserProductSearchStates>(
                         builder: (context, state) {
                           if (state is UserProductSearchSuccessState) {
-                            return GridView.count(
+                            return  GridView.count(
                                 controller: productGridController,
                                 crossAxisCount: 2,
                                 crossAxisSpacing: 6,
                                 mainAxisSpacing: 6,
                                 childAspectRatio: 1 / 1.3,
-                                children: List.generate(
-                                    searchCubit
-                                        .userSearchModel!.products!.length,
+                                children:
+                                List.generate(
+                                    searchCubit.userSearchModel!.products!.length,
                                     (index) => ProductsInStockItem(
                                         productModel: searchCubit
                                             .userSearchModel!
