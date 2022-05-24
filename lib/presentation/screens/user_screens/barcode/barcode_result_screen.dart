@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:uae_user/data/requests/search/price_model.dart';
 import 'package:uae_user/presentation/views/products_in_stock_item.dart';
 import '../../../../business_logic/user/home_product_search/home_product_search_cubit.dart';
 import '../../../styles/colors.dart';
@@ -10,40 +11,27 @@ import '../../../widgets/default_error_widget.dart';
 import '../../../widgets/default_loading_indicator.dart';
 import '../../../widgets/default_text.dart';
 
-class SearchScreen extends StatefulWidget {
-  final String? searchText;
+class BarcodeResultScreen extends StatefulWidget {
+  final int? searchBarCode;
+  final List? brandId;
+  final int? categoryId;
+  final Price? rangPrice;
 
-
-  const SearchScreen({Key? key, this.searchText,}) : super(key: key);
+  const BarcodeResultScreen({Key? key, this.searchBarCode, this.brandId, this.categoryId, this.rangPrice, }) : super(key: key);
 
   @override
-  State<SearchScreen> createState() => _SearchScreenState();
+  State<BarcodeResultScreen> createState() => _BarcodeResultScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
-   final TextEditingController _searchController = TextEditingController();
+class _BarcodeResultScreenState extends State<BarcodeResultScreen> {
+
   final ScrollController productGridController = ScrollController();
-
-
-  @override
-  void initState() {
-    _searchController.text = widget.searchText ?? '';
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _searchController.dispose();
-  }
-
-  late UserProductSearchCubit searchCubit;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => UserProductSearchCubit()
-        ..userProductSearch(keyword: _searchController.text, page: 1,),
+        ..userBarcodeProductSearch(barcode: widget.searchBarCode, page: 0,),
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
@@ -63,77 +51,52 @@ class _SearchScreenState extends State<SearchScreen> {
                     child: DefaultText(
                       text: AppLocalizations.of(context)!.search,
                       style: Theme.of(context).textTheme.headline6?.copyWith(
-                            fontFamily: 'Bukra-Regular',
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        fontFamily: 'Bukra-Regular',
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
                     )),
               ],
             ),
           ),
-          body: BlocConsumer<UserProductSearchCubit, UserProductSearchStates>(
-            listener: (context, state) {
-              // TODO: implement listener
-            },
+          body: 
+          BlocBuilder<UserProductSearchCubit, UserProductSearchStates>(
             builder: (context, state) {
-
-              searchCubit = UserProductSearchCubit.get(context);
+              UserProductSearchCubit  searchCubit = UserProductSearchCubit.get(context);
               productGridController.addListener(() {
                 if (productGridController.position.pixels >=
                     productGridController.position.maxScrollExtent &&
                     !searchCubit.isLoadingMoreData) {
 
                   searchCubit.userProductSearch(
-                      keyword: _searchController.text, page: searchCubit.nextPage);
+                      barcode: widget.searchBarCode, page: searchCubit.nextPage);
                 }
               });
               return Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10.0, horizontal: 15.0),
-                    child: CustomeSearchField(
-                      keyboardType: TextInputType.text,
-                      prefixIcon: IconButton(
-                        icon: Image.asset('assets/images/search.png'),
-                        onPressed: () {},
-                      ),
-                      controller: _searchController,
-                      validator: (text) {
-                        if (text!.isEmpty) {
-                          return 'البحث فارغ';
-                        }
-                      },
-                      onFieldSubmitted: (text) {
-                        searchCubit.userProductSearch(
-                            keyword: _searchController.text, page: 1);
-                      },
-                    ),
-                  ),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: BlocBuilder<UserProductSearchCubit,
                           UserProductSearchStates>(
                         builder: (context, state) {
-                          if (state is UserProductSearchSuccessState) {
+                          if (state is UserProductBarcodeSearchSuccessState) {
                             return GridView.count(
                               controller: productGridController,
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 6,
-                              mainAxisSpacing: 6,
-                              childAspectRatio: 1 / 1.30,
-                              children: List.generate(
-                                  searchCubit
-                                      .userSearchModel.products.length,
-                                      (index) => ProductsInStockItem(
-                                      productModel: searchCubit
-                                          .userSearchModel
-                                          .products[index])),
-                            );
-                          } else if (state is UserProductSearchLoadingState) {
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 6,
+                                mainAxisSpacing: 6,
+                                childAspectRatio: 1 / 1.3,
+                                children:
+                                List.generate(
+                                    searchCubit.userBarcodeSearchModel.products.length,
+                                        (index) => ProductsInStockItem(
+                                        productModel: searchCubit
+                                            .userBarcodeSearchModel
+                                            .products[index])));
+                          } else if (state is UserProductBarcodeSearchLoadingState) {
                             return const DefaultLoadingIndicator();
-                          } else if (state is UserProductSearchEmptyState) {
+                          } else if (state is UserProductBarcodeSearchEmptyState) {
                             return Center(
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
@@ -141,11 +104,10 @@ class _SearchScreenState extends State<SearchScreen> {
                                   const DefaultSvg(
                                     imagePath:
                                     'assets/icons/no_search_data.svg',
-
+                                    color: AppColors.lightBlue2,
                                   ),
                                   DefaultText(
                                     text: 'لم يتم العثور على نتائج',
-
                                     textStyle:
                                     Theme.of(context).textTheme.headline6,
                                   )
@@ -162,7 +124,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 ],
               );
             },
-          ),
+),
         ),
       ),
     );

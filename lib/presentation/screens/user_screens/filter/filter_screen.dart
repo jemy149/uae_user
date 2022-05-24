@@ -1,22 +1,27 @@
-import 'dart:math';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_sliders/sliders.dart';
-import 'package:uae_user/constants/constants.dart';
-import 'package:uae_user/presentation/views/filter_list_tile_item.dart';
-import 'package:uae_user/presentation/widgets/default_material_button.dart';
-import '../../../styles/colors.dart';
-import '../../../widgets/default_text.dart';
-
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
+import 'package:uae_user/business_logic/user/filter/filter_cubit.dart';
+import 'package:uae_user/business_logic/user/search/search_cubit.dart';
+import 'package:uae_user/constants/constant_methods.dart';
+import 'package:uae_user/data/models/user_models/get_brands/get_brands_model.dart';
+import 'package:uae_user/data/requests/search/price_model.dart';
+import 'package:uae_user/presentation/views/filter_list_tile_item.dart';
+import 'package:uae_user/presentation/widgets/default_material_button.dart';
+
+import '../../../styles/colors.dart';
+import '../../../widgets/default_text.dart';
+import '../barcode/barcode_result_screen.dart';
 
 class FilterScreen extends StatefulWidget {
-  FilterScreen({
+  final int subCategoryId;
+
+  const FilterScreen({
     Key? key,
+    required this.subCategoryId,
   }) : super(key: key);
 
   @override
@@ -24,7 +29,7 @@ class FilterScreen extends StatefulWidget {
 }
 
 class _FilterScreenState extends State<FilterScreen> {
-  bool isTrue = true;
+  bool isTrue = false;
 
   late SfRangeValues _initialValues;
 
@@ -38,6 +43,8 @@ class _FilterScreenState extends State<FilterScreen> {
 
   bool isBrand = true;
 
+  late List<Brands> brands;
+
   @override
   void initState() {
     min = 1;
@@ -48,175 +55,252 @@ class _FilterScreenState extends State<FilterScreen> {
     super.initState();
   }
 
+  List brandId = [];
+  late List<bool> brandCheck = List.generate(brands.length, (index) => false);
+  late FilterCubit _filterCubit;
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: AppColors.lightBlue,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-                padding: const EdgeInsetsDirectional.only(end: 60),
-                child: DefaultText(
-                  text: AppLocalizations.of(context)!.filtering,
-                  style: Theme.of(context).textTheme.headline6?.copyWith(
-                        fontFamily: 'Bukra-Regular',
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                )),
-          ],
-        ),
-      ),
-      body: Row(
-        children: [
-          Flexible(
-            child: Container(
-              color: AppColors.lightBlue,
-              child: Column(
-                children: [
-                  SizedBox(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Image.asset(
-                          'assets/icons/filter.png',
-                          height: 20,
-                          width: 20,
-                          color: Colors.white,
-                        ),
-                        DefaultText(
-                          text: AppLocalizations.of(context)!.filtering,
-                          style:
-                              Theme.of(context).textTheme.bodyText1?.copyWith(
-                                    color: Colors.white,
-                                  ),
-                        )
-                      ],
-                    ),
-                    height: 40,
-                  ),
-                  FilterListTileItem(
-                    text: AppLocalizations.of(context)!.brand,
-                    isColorTrue: isBrand,
-                    onTap: () {
-                      setState(() {
-                        isBrand = true;
-                      });
-
-                    },
-                  ),
-                  FilterListTileItem(
-                    text: AppLocalizations.of(context)!.price,
-                    isColorTrue: !isBrand,
-                    onTap: () {
-                      setState(() {
-                        isBrand = false;
-                      });
-
-                    },
-                  ),
-                ],
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => FilterCubit()
+              ..userGetBrandsCubit(
+                subCategoryId: widget.subCategoryId,
               ),
-            ),
           ),
-         isBrand == true? Expanded(
-            flex: 2,
-            child: Container(
-                color: AppColors.blue,
-                child: ListView.builder(
-                  itemBuilder: (context, index) => CheckboxListTile(
-                    value: isTrue,
-                    onChanged: (p) {},
-                    title: DefaultText(
-                      text: 'item name',style: Theme.of(context).textTheme.bodyText1?.copyWith(color: Colors.white),
-                    ),
-                    controlAffinity: ListTileControlAffinity.leading,
-                  ),
-                  itemCount: 30,
-                )),
-          ) :
-          Expanded(
-            flex: 2,
-            child: Container(
-                color: AppColors.blue,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      DefaultText(
-                        style: Theme.of(context).textTheme.headline6?.copyWith(
+          BlocProvider(create: (context) => SearchCubit())
+        ],
+        child: SafeArea(
+            child: Scaffold(
+          appBar: AppBar(
+            elevation: 0,
+            backgroundColor: AppColors.lightBlue,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back_ios),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                    padding: const EdgeInsetsDirectional.only(end: 60),
+                    child: DefaultText(
+                      text: AppLocalizations.of(context)!.filtering,
+                      style: Theme.of(context).textTheme.headline6?.copyWith(
+                            fontFamily: 'Bukra-Regular',
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
-                            fontFamily: 'Bukra-Regular'),
-                        text: AppLocalizations.of(context)!.priceRange,
-                      ),
-                      Padding(
-                        padding: const EdgeInsetsDirectional.only(
-                            bottom: 60.0, top: 10.0),
-                        child: DefaultText(
-                          style:
-                              Theme.of(context).textTheme.headline6?.copyWith(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                          text:
-                              '${firstSliderValue.round().toString()} - ${secondSliderValue.round().toString()}',
-                        ),
-                      ),
-                      SfRangeSelectorTheme(
-                        data: SfRangeSelectorThemeData(
-                            tooltipBackgroundColor: AppColors.lightBlue,
-                            activeTrackColor: AppColors.lightBlue,
-                            inactiveTrackColor: AppColors.lightBlue,
-                            thumbColor: Colors.white,
-                            inactiveRegionColor: Colors.transparent,
-                            activeRegionColor: Colors.white38),
-                        child: SfRangeSelector(
-                          min: min,
-                          max: max,
-                          initialValues: _initialValues,
-                          enableTooltip: true,
-                          onChanged: (value) {
-                            setState(() {
-                              firstSliderValue = value.start;
-                              secondSliderValue = value.end;
-                            });
-                          },
-                          child: SizedBox(
-                            child: buildChart(),
-                            height: 100,
                           ),
-                        ),
+                    )),
+              ],
+            ),
+          ),
+          body: BlocBuilder<FilterCubit, FilterState>(
+            builder: (context, state) {
+              _filterCubit = FilterCubit.get(context);
+              return Row(
+                children: [
+                  Flexible(
+                    child: Container(
+                      color: AppColors.lightBlue,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Image.asset(
+                                  'assets/icons/filter.png',
+                                  height: 20,
+                                  width: 20,
+                                  color: Colors.white,
+                                ),
+                                DefaultText(
+                                  text: AppLocalizations.of(context)!.filtering,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1
+                                      ?.copyWith(
+                                        color: Colors.white,
+                                      ),
+                                )
+                              ],
+                            ),
+                            height: 40,
+                          ),
+                          FilterListTileItem(
+                            text: AppLocalizations.of(context)!.brand,
+                            isColorTrue: isBrand,
+                            onTap: () {
+                              setState(() {
+                                isBrand = true;
+                              });
+                            },
+                          ),
+                          FilterListTileItem(
+                            text: AppLocalizations.of(context)!.price,
+                            isColorTrue: !isBrand,
+                            onTap: () {
+                              setState(() {
+                                isBrand = false;
+                              });
+                            },
+                          ),
+                        ],
                       ),
-                      Padding(
-                        padding: const EdgeInsetsDirectional.only(top: 30),
-                        child: DefaultMaterialButton(
-                          text: AppLocalizations.of(context)!.filtering,
-                          onTap: () {},
-                          height: 60,
-                          width: 120,
-                          fontSize: 20,
-                          textColor: Colors.white,
-                          color: AppColors.lightBlue,
-                        ),
-                      )
-                    ],
+                    ),
                   ),
-                )),
-          )
-        ],
-      ),
-    ));
+                  isBrand == true
+                      ? Expanded(
+                          flex: 2,
+                          child: Container(
+                              color: AppColors.blue,
+                              child: Builder(builder: (context) {
+                                brands = _filterCubit.getBrandsModel.brands;
+
+                                return ListView.builder(
+                                  itemBuilder: (context, index) {
+                                    return CheckboxListTile(
+                                      value: brandCheck[index],
+                                      onChanged: (value) {
+                                        setState(() {
+                                          brandCheck[index] = value!;
+                                        });
+                                      },
+                                      title: DefaultText(
+                                        text: _filterCubit.getBrandsModel
+                                            .brands[index].nameAr,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1
+                                            ?.copyWith(color: Colors.white),
+                                      ),
+                                      controlAffinity:
+                                          ListTileControlAffinity.leading,
+                                    );
+                                  },
+                                  itemCount:
+                                      _filterCubit.getBrandsModel.brands.length,
+                                );
+                              })),
+                        )
+                      : Expanded(
+                          flex: 2,
+                          child: Container(
+                              color: AppColors.blue,
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    DefaultText(
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline6
+                                          ?.copyWith(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: 'Bukra-Regular'),
+                                      text: AppLocalizations.of(context)!
+                                          .priceRange,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsetsDirectional.only(
+                                          bottom: 60.0, top: 10.0),
+                                      child: DefaultText(
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6
+                                            ?.copyWith(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                        text:
+                                            '${firstSliderValue.round().toString()} - ${secondSliderValue.round().toString()}',
+                                      ),
+                                    ),
+                                    SfRangeSelectorTheme(
+                                      data: SfRangeSelectorThemeData(
+                                          tooltipBackgroundColor:
+                                              AppColors.lightBlue,
+                                          activeTrackColor: AppColors.lightBlue,
+                                          inactiveTrackColor:
+                                              AppColors.lightBlue,
+                                          thumbColor: Colors.white,
+                                          inactiveRegionColor:
+                                              Colors.transparent,
+                                          activeRegionColor: Colors.white38),
+                                      child: SfRangeSelector(
+                                        min: min,
+                                        max: max,
+                                        initialValues: _initialValues,
+                                        enableTooltip: true,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            firstSliderValue = value.start;
+                                            secondSliderValue = value.end;
+                                          });
+                                        },
+                                        child: SizedBox(
+                                          child: buildChart(),
+                                          height: 100,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsetsDirectional.only(
+                                          top: 30),
+                                      child:
+                                          BlocBuilder<SearchCubit, SearchState>(
+                                        builder: (context, state) {
+                                          return DefaultMaterialButton(
+                                            text: AppLocalizations.of(context)!
+                                                .filtering,
+                                            onTap: () async {
+                                              brandId.clear();
+                                              for (int index = 0;
+                                                  index < brandCheck.length;
+                                                  index++) {
+                                                if (brandCheck[index] == true) {
+                                                  brandId.add(brands[index].id);
+                                                }
+                                                printTest(brands[index]
+                                                    .id
+                                                    .toString());
+                                              }
+
+                                              navigateTo(
+                                                  context,
+                                                  BarcodeResultScreen(
+                                                    brandId: brandId,
+                                                    rangPrice: Price(
+                                                        from: firstSliderValue
+                                                            .toInt(),
+                                                        to: secondSliderValue
+                                                            .toInt()),
+                                                    categoryId: widget.subCategoryId,
+                                                  ));
+                                            },
+                                            height: 60,
+                                            width: 120,
+                                            fontSize: 20,
+                                            textColor: Colors.white,
+                                            color: AppColors.lightBlue,
+                                          );
+                                        },
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )),
+                        )
+                ],
+              );
+            },
+          ),
+        )));
   }
 
   Widget buildChart() {

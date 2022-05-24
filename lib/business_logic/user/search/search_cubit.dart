@@ -16,11 +16,11 @@ class SearchCubit extends Cubit<SearchState> {
 
   SearchModel searchModel = SearchModel();
 
-  void userSearch({
+   userSearch({
     int? categoryId,
     required int page,
     int? barcode,
-    int? brandId,
+    List? brandId,
     String? keyword,
     Price? rangPrice,
   }) {
