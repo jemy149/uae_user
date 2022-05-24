@@ -33,6 +33,11 @@ const EP_USER_PROFILE_UPDATE_ADDRESS= 'profile/update/address';
 const EP_USER_PROFILE_SHOW= 'profile/show';
 const EP_USER_PROFILE_UPDATE= 'profile/update';
 const EP_USER_PROFILE_CHANGE_ACCOUNT= 'profile/change_account';
+const EP_ADD_TO_CART  = 'addToCart';
+const EP_GET_MY_CART  = 'getMyCart';
+const EP_EDIT_CART  = 'editCart';
+const EP_CLEAR_CART  = 'clearCart';
+const EP_DELETE_CART  = 'deleteCart';
 
 
 

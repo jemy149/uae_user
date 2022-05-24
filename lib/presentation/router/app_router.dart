@@ -17,7 +17,6 @@ import 'package:uae_user/presentation/screens/user_screens/offers/offers_screen.
 import 'package:uae_user/presentation/screens/user_screens/orders/orders_screen.dart';
 import 'package:uae_user/presentation/screens/user_screens/payment_method/payment_method_screen.dart';
 import 'package:uae_user/presentation/screens/user_screens/policy_and_terms/policy_and_terms_screen.dart';
-import 'package:uae_user/presentation/screens/user_screens/qr_code/qr_code_screen.dart';
 import 'package:uae_user/presentation/screens/user_screens/search/search_screen.dart';
 import 'package:uae_user/presentation/screens/user_screens/splash/splash_screen.dart';
 import 'package:uae_user/presentation/screens/user_screens/tracking_order/tracking_order_screen.dart';
@@ -25,6 +24,7 @@ import 'package:uae_user/presentation/screens/user_screens/user_addresses/user_a
 import 'package:uae_user/presentation/screens/user_screens/verification/verification_screen.dart';
 import 'package:uae_user/presentation/screens/user_screens/wallet/wallet_screen.dart';
 
+import '../screens/user_screens/bar_Code/bar_code_screen.dart';
 import '../screens/user_screens/delivery_information/delivery_information_screen.dart';
 import '../screens/user_screens/frequently_asked_questions/frequently_asked_questions_screen.dart';
 import '../screens/user_screens/login/login_screen.dart';
@@ -117,8 +117,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const DeliveryLocationScreen());
       case PAYMENT_METHOD_SCREEN_R:
         return MaterialPageRoute(builder: (_) => const PaymentMethodScreen());
-      case QR_CODE_SCREEN_R:
-        return MaterialPageRoute(builder: (_) => const QrCodeScreen());
+      case BAR_CODE_SCREEN_R:
+        return MaterialPageRoute(builder: (_) => const BarCodeScreen());
       case DELIVERY_DETAILS_SCREEN_R:
         return MaterialPageRoute(builder: (_) => DeliveryDetailsScreen());
       case USER_ADDRESSES_SCREEN_R:

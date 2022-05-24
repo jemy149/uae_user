@@ -53,6 +53,15 @@ class OffersScreen extends StatelessWidget {
                         height: 35,
                         width: 300,
                         child: CustomeSearchField(
+                          keyboardType: TextInputType.text,
+                          prefixIcon: IconButton(
+                            icon: Image.asset('assets/images/search.png'),
+                            onPressed: () {Navigator.pushNamed(context, SEARCH_SCREEN_R);},
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Image.asset('assets/images/barcode.png'),
+                            onPressed: () {Navigator.pushNamed(context, BAR_CODE_SCREEN_R);},
+                          ),
                           controller: offersSearchController,
                         )),
                   ),

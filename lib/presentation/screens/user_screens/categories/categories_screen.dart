@@ -26,6 +26,7 @@ class CategoriesScreen extends StatefulWidget {
 class _CategoriesScreenState extends State<CategoriesScreen>
     with TickerProviderStateMixin {
   TextEditingController offersSearchController = TextEditingController();
+  final ScrollController productGridController = ScrollController();
 
   late List<Tab> tabBarItemList;
 
@@ -98,18 +99,6 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                       children: List.generate(
                         state.userSubCategories.length,
                         (index) {
-
-                          // _searchCubit.userSearch(
-                          //     page: 0,
-                          //     categoryId: state.userSubCategories[index].id);
-                          // controller.addListener(() {
-                          //   if(
-                          //   controller.index == index
-                          //   ){
-                          //     _searchCubit.userSearch(page: 0,categoryId: state.userSubCategories[index].id);
-                          //   }
-                          // }
-                          // );
                           return BlocProvider(
                             create: (context) => SearchCubit()..userSearch(
                               page: 0,
@@ -201,23 +190,19 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                                           ),
                                         ),
                                         Expanded(
-                                          child: GridView.builder(
-                                              gridDelegate:
-                                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                                      crossAxisCount: 2,
-                                                      mainAxisSpacing: 20,
-                                                      crossAxisSpacing: 20,
-                                                      mainAxisExtent: 250),
-                                              itemCount: _searchCubit
-                                                  .searchModel.products.length,
-                                              itemBuilder:
-                                                  (BuildContext context,
-                                                      int index) {
-                                                return ProductsInStockItem(
-                                                    productModel: _searchCubit
-                                                        .searchModel
-                                                        .products[index]);
-                                              }),
+                                          child:GridView.count(
+                                        controller: productGridController,
+                                        crossAxisCount: 2,
+                                        crossAxisSpacing: 6,
+                                        mainAxisSpacing: 6,
+                                        childAspectRatio: 1 / 1.3,
+                                        children: List.generate(
+                                        _searchCubit
+                                            .searchModel.products!.length,
+                                        (index) => ProductsInStockItem(
+                                        productModel: _searchCubit
+                                            .searchModel
+                                            .products![index])))
                                         ),
                                       ],
                                     ),
