@@ -96,8 +96,5 @@ class MyAddressesCubit extends Cubit<MyAddressesState> {
 
 
 
-  void chooseAddress({required   ApiAddress apiAddress
-  }){
-    emit(UserChooseLocationState(apiAddress));
-  }
+
 }

@@ -41,9 +41,3 @@ class UserEditAddAddressErrorState extends MyAddressesState {
 }
 
 
-class UserChooseLocationState extends MyAddressesState {
-  final ApiAddress apiAddress;
-
-  UserChooseLocationState( this.apiAddress);
-
-}

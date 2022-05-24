@@ -113,9 +113,10 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
     LoginRequest.loginRequest(password: password, phone: phone).then((value) {
       userLoginModel = value;
       if (userLoginModel!.status.toString() == '200') {
+        apiToken=userLoginModel!.account!.apiToken;
         CacheHelper.saveDataToSP(
             key: SharedPreferencesKeys.SP_API_TOKEN_KEY,
-            value: userLoginModel!.account!.apiToken);
+            value: apiToken);
 
         CacheHelper.saveDataToSP(
             key: SharedPreferencesKeys.SP_ACCOUNT_TYPE_KEY,
