@@ -199,22 +199,21 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                                           ),
                                         ),
                                         Expanded(
-                                            child: GridView.count(
-                                                controller:
-                                                    productGridController,
-                                                crossAxisCount: 2,
-                                                crossAxisSpacing: 6,
-                                                mainAxisSpacing: 6,
-                                                childAspectRatio: 1 / 1.3,
-                                                children: List.generate(
-                                                    _searchCubit.searchModel
-                                                        .products!.length,
-                                                    (index) => ProductsInStockItem(
-                                                        productModel:
-                                                            _searchCubit
-                                                                    .searchModel
-                                                                    .products![
-                                                                index])))),
+                                          child:GridView.count(
+                                        controller: productGridController,
+                                        crossAxisCount: 2,
+                                        crossAxisSpacing: 6,
+                                        mainAxisSpacing: 6,
+                                        childAspectRatio: 1 / 1.3,
+                                        children: List.generate(
+                                        _searchCubit
+                                            .searchModel.products.length,
+                                        (index) => ProductsInStockItem(
+                                        productModel: _searchCubit
+                                            .searchModel
+                                            .products[index])))
+                                        ),
+
                                       ],
                                     ),
                                   );
