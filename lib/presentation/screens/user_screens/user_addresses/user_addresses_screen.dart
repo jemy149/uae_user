@@ -53,92 +53,97 @@ class _UserAddressesScreenState extends State<UserAddressesScreen> {
               ],
             ),
           ),
-          body: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding:
-                      const EdgeInsetsDirectional.only(top: 20.0, bottom: 10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Flexible(
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.pushNamed(
-                                context, ADDING_ADDITIONAL_LOCATION_SCREEN_R,
-                                arguments: _myAddressesCubit);
-                          },
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Flexible(
-                                  child: Icon(Icons.add_box_outlined)),
-                              Expanded(
-                                  child: Padding(
-                                padding: const EdgeInsetsDirectional.only(
-                                    start: 15.0),
-                                child: DefaultText(
-                                    text: AppLocalizations.of(context)!
-                                        .addNewAddress),
-                              )),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              BlocConsumer<MyAddressesCubit, MyAddressesState>(
-                listener: (context, state) {
-                  if (state is UserDeleteAddressSuccessState) {
-                    showToastMsg(
-                        msg: state.message, toastState: ToastStates.SUCCESS);
-                  } else if (state is UserEditAddressSuccessState) {
-                    showToastMsg(
-                        msg: state.message, toastState: ToastStates.SUCCESS);
-                  }else if (state is UserEditAddAddressErrorState) {
-                    showToastMsg(
-                        msg: state.message, toastState: ToastStates.SUCCESS);
-                  }
+          body: Builder(
+            builder: (context) {
+              _myAddressesCubit = MyAddressesCubit.get(context);
 
-                },
-                builder: (context, state) {
-                  if (state is UserGetMyAddressesSuccessState ||
-                      state is UserDeleteAddressSuccessState ||
-                      state is UserEditAddressSuccessState ||
-                      state is UserEditAddAddressErrorState) {
-                    _myAddressesCubit = MyAddressesCubit.get(context);
-                    return SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) => UserAddressesCardItem(
-                          myAddress: _myAddressesCubit
-                              .myAddressesModel.myAddress[index],
-                          myAddressesCubit: _myAddressesCubit,
-                          index: index,
-                        ),
-                        childCount:
-                            _myAddressesCubit.myAddressesModel.myAddress.length,
+              return CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding:
+                          const EdgeInsetsDirectional.only(top: 20.0, bottom: 10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, ADDING_ADDITIONAL_LOCATION_SCREEN_R,
+                                    arguments: _myAddressesCubit);
+                              },
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Flexible(
+                                      child: Icon(Icons.add_box_outlined)),
+                                  Expanded(
+                                      child: Padding(
+                                    padding: const EdgeInsetsDirectional.only(
+                                        start: 15.0),
+                                    child: DefaultText(
+                                        text: AppLocalizations.of(context)!
+                                            .addNewAddress),
+                                  )),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    );
-                  } else if (state is UserGetMyAddressesLoadingState ||
-                      state is UserDeleteAddressLoadingState) {
-                    return const SliverFillRemaining(
-                        child: DefaultLoadingIndicator());
-                  } else if (state is UserGetMyAddressesEmptyState) {
-                    return const SliverFillRemaining(
-                        child: Icon(
-                      Icons.add_location_alt_outlined,
-                      size: 48,
-                    ));
-                  } else {
-                    return const SliverFillRemaining(
-                        child: DefaultErrorWidget());
-                  }
-                },
-              ),
-            ],
+                    ),
+                  ),
+                  BlocConsumer<MyAddressesCubit, MyAddressesState>(
+                    listener: (context, state) {
+                      if (state is UserDeleteAddressSuccessState) {
+                        showToastMsg(
+                            msg: state.message, toastState: ToastStates.SUCCESS);
+                      } else if (state is UserEditAddressSuccessState) {
+                        showToastMsg(
+                            msg: state.message, toastState: ToastStates.SUCCESS);
+                      }else if (state is UserEditAddAddressErrorState) {
+                        showToastMsg(
+                            msg: state.message, toastState: ToastStates.SUCCESS);
+                      }
+
+                    },
+                    builder: (context, state) {
+                      if (state is UserGetMyAddressesSuccessState ||
+                          state is UserDeleteAddressSuccessState ||
+                          state is UserEditAddressSuccessState ||
+                          state is UserEditAddAddressErrorState) {
+                        return SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) => UserAddressesCardItem(
+                              myAddress: _myAddressesCubit
+                                  .myAddressesModel.myAddress[index],
+                              myAddressesCubit: _myAddressesCubit,
+                              index: index,
+                            ),
+                            childCount:
+                                _myAddressesCubit.myAddressesModel.myAddress.length,
+                          ),
+                        );
+                      } else if (state is UserGetMyAddressesLoadingState ||
+                          state is UserDeleteAddressLoadingState) {
+                        return const SliverFillRemaining(
+                            child: DefaultLoadingIndicator());
+                      } else if (state is UserGetMyAddressesEmptyState) {
+                        return const SliverFillRemaining(
+                            child: Icon(
+                          Icons.add_location_alt_outlined,
+                          size: 48,
+                        ));
+                      } else {
+                        return const SliverFillRemaining(
+                            child: DefaultErrorWidget());
+                      }
+                    },
+                  ),
+                ],
+              );
+            }
           ),
         ),
       ),

@@ -3,10 +3,10 @@ import 'package:uae_user/constants/constants.dart';
 import '../../../constants/constant_methods.dart';
 import '../../../constants/end_points.dart';
 import '../../data_provider/remote/dio_helper.dart';
-import '../../models/user_models/favorites/favorite_model.dart';
+import '../../models/user_models/favorites/change_favorite_model.dart';
 
-class FavoriteRequest {
-   Future favoriteRequest({
+class ChangeFavoriteRequest {
+   Future changeFavoriteRequest({
   required int productId,
   }) async {
     try {
@@ -16,7 +16,7 @@ class FavoriteRequest {
         'productId': productId,
       });
       printResponse(response.data.toString());
-      return FavoriteModel.fromJson(response.data);
+      return ChangeFavoriteModel.fromJson(response.data);
     } catch (error) {
       printError(error.toString());
       return null;

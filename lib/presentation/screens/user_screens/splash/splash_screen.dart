@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:splash_screen_view/SplashScreenView.dart';
+import 'package:uae_user/constants/constant_methods.dart';
 import '../../../../constants/constants.dart';
 import '../../../../constants/shared_preferences_keys.dart';
 import '../../../../data/data_provider/local/cache_helper.dart';

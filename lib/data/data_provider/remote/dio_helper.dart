@@ -34,7 +34,7 @@ class DioHelper {
     required String url,
     Map<String, dynamic>? query,
     Map<String, dynamic>? data,
-    bool formData=false,
+    bool formData=true,
     String? token,
   }) {
     dio.options.headers = {
