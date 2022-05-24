@@ -18,16 +18,16 @@ class ChangeFavoriteCubit extends Cubit<ChangeFavoriteStates> {
 
   void changeFavorite({
     required int productId,
-    required int index
+     int? index
   }) {
     ChangeFavoriteRequest()
         .changeFavoriteRequest(productId: productId)
         .then((value) {
       changeFavoriteModel = value;
       if (value.status == 200) {
-        emit(FavoriteChangeSuccessState(index:index));
+        emit(FavoriteChangeSuccessState(index:index!,productId: productId));
       } else {
-        emit(FavoriteChangeErrorState(msg: changeFavoriteModel.message));
+        emit(FavoriteChangeErrorState(msg: changeFavoriteModel.message,));
       }
     }).catchError((error) {
       emit(FavoriteChangeErrorState());

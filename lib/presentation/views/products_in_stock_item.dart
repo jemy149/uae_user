@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uae_user/business_logic/user/change_favorite/favorite_change_cubit.dart';
 import 'package:uae_user/data/models/user_models/search/search_model.dart';
 
 import '../../constants/screens.dart';
@@ -23,7 +25,8 @@ class _ProductsInStockItemState extends State<ProductsInStockItem> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, ADDING_PRODUCT_TO_CART_SCREEN_R,arguments: widget.productModel.id);
+        Navigator.pushNamed(context, ADDING_PRODUCT_TO_CART_SCREEN_R,
+            arguments: widget.productModel.id);
       },
       child: Card(
         elevation: 5,
@@ -40,7 +43,9 @@ class _ProductsInStockItemState extends State<ProductsInStockItem> {
                       width: 150,
                       height: 150,
                       child: DefaultCachedNetworkImage(
-                        imageUrl:widget.productModel.images.isEmpty? '' :  widget.productModel.images[0],
+                        imageUrl: widget.productModel.images.isEmpty
+                            ? ''
+                            : widget.productModel.images[0],
                         fit: BoxFit.contain,
                       ),
                     )
@@ -69,12 +74,26 @@ class _ProductsInStockItemState extends State<ProductsInStockItem> {
               child: Row(
                 children: [
                   Flexible(
-                      child: InkWell(
-                          onTap: () {},
-                          child: const Icon(
-                            Icons.add_shopping_cart_outlined,
-                            color: AppColors.lightBlue,
-                          ))),
+                      child: BlocListener<ChangeFavoriteCubit,
+                          ChangeFavoriteStates>(
+                    listener: (context, state) {
+                      if(state is FavoriteChangeSuccessState){
+                        if(widget.productModel.id==state.productId){
+                          // widget.productModel.favorite=!  widget.productModel.favorite;
+                        }
+                      }
+                    },
+                    child: InkWell(
+                        onTap: () {
+                          ChangeFavoriteCubit.get(context).changeFavorite(
+                            productId: widget.productModel.id,
+                          );
+                        },
+                        child: const Icon(
+                          Icons.add_shopping_cart_outlined,
+                          color: AppColors.lightBlue,
+                        )),
+                  )),
                   const Spacer(
                     flex: 1,
                   ),

@@ -198,11 +198,11 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                                         childAspectRatio: 1 / 1.3,
                                         children: List.generate(
                                         _searchCubit
-                                            .searchModel.products!.length,
+                                            .searchModel.products.length,
                                         (index) => ProductsInStockItem(
                                         productModel: _searchCubit
                                             .searchModel
-                                            .products![index])))
+                                            .products[index])))
                                         ),
                                       ],
                                     ),

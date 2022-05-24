@@ -30,9 +30,7 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
         BlocProvider(
           create: (context) => GetFavoriteCubit()..getFavorite(),
         ),
-        BlocProvider(
-          create: (context) => ChangeFavoriteCubit(),
-        ),
+
       ],
       child: SafeArea(
         child: Scaffold(

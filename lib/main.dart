@@ -11,6 +11,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 import 'business_logic/user/ads/ads_cubit.dart';
+import 'business_logic/user/change_favorite/favorite_change_cubit.dart';
 import 'data/data_provider/local/cache_helper.dart';
 import 'data/data_provider/remote/dio_helper.dart';
 import 'l10n/l10n.dart';
@@ -35,6 +36,8 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => LanguageCubit(),),
+        BlocProvider(create: (context) => ChangeFavoriteCubit(),),
+
       ],
       child: Builder(
           builder: (context) {
