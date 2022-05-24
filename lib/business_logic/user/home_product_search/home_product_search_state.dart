@@ -10,3 +10,13 @@ class UserProductSearchSuccessState extends UserProductSearchStates {}
 class UserProductSearchEmptyState extends UserProductSearchStates {}
 
 class UserProductSearchErrorState extends UserProductSearchStates {}
+
+
+
+
+class UserProductBarcodeSearchLoadingState extends UserProductSearchStates {}
+
+class UserProductBarcodeSearchSuccessState extends UserProductSearchStates {}
+class UserProductBarcodeSearchEmptyState extends UserProductSearchStates {}
+
+class UserProductBarcodeSearchErrorState extends UserProductSearchStates {}

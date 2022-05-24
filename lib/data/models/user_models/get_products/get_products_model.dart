@@ -1,110 +1,29 @@
 import 'dart:convert';
-GetMyCartModel getMyCartModelFromJson(String str) => GetMyCartModel.fromJson(json.decode(str));
-String getMyCartModelToJson(GetMyCartModel data) => json.encode(data.toJson());
-class GetMyCartModel {
-  GetMyCartModel({
+GetProductsModel getProductsModelFromJson(String str) => GetProductsModel.fromJson(json.decode(str));
+String getProductsModelToJson(GetProductsModel data) => json.encode(data.toJson());
+class GetProductsModel {
+  GetProductsModel({
       int? status, 
-      int? totalPages, 
-      List<Carts>? carts,}){
+      Product? product,}){
     _status = status;
-    _totalPages = totalPages;
-    _carts = carts;
+    _product = product;
 }
 
-  GetMyCartModel.fromJson(dynamic json) {
+  GetProductsModel.fromJson(dynamic json) {
     _status = json['status'];
-    _totalPages = json['totalPages'];
-    if (json['carts'] != null) {
-      _carts = [];
-      json['carts'].forEach((v) {
-        _carts?.add(Carts.fromJson(v));
-      });
-    }
+    _product = json['product'] != null ? Product.fromJson(json['product']) : null;
   }
   int? _status;
-  int? _totalPages;
-  List<Carts>? _carts;
-  List<dynamic>? _account;
+  Product? _product;
 
   int get status => _status ?? 0;
-  int get totalPages => _totalPages ?? 0;
-  List<Carts> get carts => _carts ?? [];
-  List<dynamic> get account => _account ?? [];
+  Product get product => _product ?? Product();
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['status'] = _status;
-    map['totalPages'] = _totalPages;
-    if (_carts != null) {
-      map['carts'] = _carts?.map((v) => v.toJson()).toList();
-    }
-    return map;
-  }
-
-}
-
-Carts cartsFromJson(String str) => Carts.fromJson(json.decode(str));
-String cartsToJson(Carts data) => json.encode(data.toJson());
-class Carts {
-  Carts({
-      int? id, 
-      Product? product, 
-      int? productId, 
-      int? quantity, 
-      dynamic description, 
-      double? price, 
-      List<dynamic>? features,}){
-    _id = id;
-    _product = product;
-    _productId = productId;
-    _quantity = quantity;
-    _description = description;
-    _price = price;
-    _features = features;
-}
-
-  Carts.fromJson(dynamic json) {
-    _id = json['id'];
-    _product = json['product'] != null ? Product.fromJson(json['product']) : null;
-    _productId = json['productId'];
-    _quantity = json['quantity'];
-    _description = json['description'];
-    _price = json['price'];
-    // if (json['features'] != null) {
-    //   _features = [];
-    //   json['features'].forEach((v) {
-    //     _features?.add(Dynamic.fromJson(v));
-    //   });
-    // }
-  }
-  int? _id;
-  Product? _product;
-  int? _productId;
-  int? _quantity;
-  dynamic _description;
-  double? _price;
-  List<dynamic>? _features;
-
-  int get id => _id ?? 0;
-  Product get product => _product ?? Product();
-  int get productId => _productId ?? 0;
-  int get quantity => _quantity ?? 0;
-  dynamic get description => _description ?? [];
-  double get price => _price ?? 0.0;
-  List<dynamic> get features => _features ?? [];
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['id'] = _id;
     if (_product != null) {
       map['product'] = _product?.toJson();
-    }
-    map['productId'] = _productId;
-    map['quantity'] = _quantity;
-    map['description'] = _description;
-    map['price'] = _price;
-    if (_features != null) {
-      map['features'] = _features?.map((v) => v.toJson()).toList();
     }
     return map;
   }
@@ -119,13 +38,12 @@ class Product {
       String? barcode, 
       String? name, 
       String? description, 
-      double? price, 
+      num? price,
       bool? isFreeDelivered, 
       List<String>? images, 
       dynamic store, 
       int? quantity, 
-      List<dynamic>? prices, 
-      bool? isFav, 
+      List<Prices>? prices, 
       bool? hasOffer, 
       int? point, 
       List<dynamic>? features, 
@@ -140,7 +58,6 @@ class Product {
     _store = store;
     _quantity = quantity;
     _prices = prices;
-    _isFav = isFav;
     _hasOffer = hasOffer;
     _point = point;
     _features = features;
@@ -157,13 +74,12 @@ class Product {
     _images = json['images'] != null ? json['images'].cast<String>() : [];
     _store = json['store'];
     _quantity = json['quantity'];
-    // if (json['prices'] != null) {
-    //   _prices = [];
-    //   json['prices'].forEach((v) {
-    //     _prices?.add(Dynamic.fromJson(v));
-    //   });
-    // }
-    _isFav = json['isFav'];
+    if (json['prices'] != null) {
+      _prices = [];
+      json['prices'].forEach((v) {
+        _prices?.add(Prices.fromJson(v));
+      });
+    }
     _hasOffer = json['hasOffer'];
     _point = json['point'];
     // if (json['features'] != null) {
@@ -178,13 +94,12 @@ class Product {
   String? _barcode;
   String? _name;
   String? _description;
-  double? _price;
+  num? _price;
   bool? _isFreeDelivered;
   List<String>? _images;
   dynamic _store;
   int? _quantity;
-  List<dynamic>? _prices;
-  bool? _isFav;
+  List<Prices>? _prices;
   bool? _hasOffer;
   int? _point;
   List<dynamic>? _features;
@@ -194,13 +109,12 @@ class Product {
   String get barcode => _barcode ?? '';
   String get name => _name ?? '';
   String get description => _description ?? '';
-  double get price => _price ?? 0.0;
+  num get price => _price ?? 0.0;
   bool get isFreeDelivered => _isFreeDelivered ?? false;
   List<String> get images => _images ?? [];
   dynamic get store => _store ?? [];
   int get quantity => _quantity ?? 0;
-  List<dynamic> get prices => _prices ?? [];
-  bool get isFav => _isFav ?? false;
+  List<Prices> get prices => _prices ?? [];
   bool get hasOffer => _hasOffer ?? false;
   int get point => _point ?? 0;
   List<dynamic> get features => _features ?? [];
@@ -220,13 +134,53 @@ class Product {
     if (_prices != null) {
       map['prices'] = _prices?.map((v) => v.toJson()).toList();
     }
-    map['isFav'] = _isFav;
     map['hasOffer'] = _hasOffer;
     map['point'] = _point;
     if (_features != null) {
       map['features'] = _features?.map((v) => v.toJson()).toList();
     }
     map['viewers'] = _viewers;
+    return map;
+  }
+
+}
+
+Prices pricesFromJson(String str) => Prices.fromJson(json.decode(str));
+String pricesToJson(Prices data) => json.encode(data.toJson());
+class Prices {
+  Prices({
+      int? id, 
+      num? price,
+      int? quantity, 
+      String? image,}){
+    _id = id;
+    _price = price;
+    _quantity = quantity;
+    _image = image;
+}
+
+  Prices.fromJson(dynamic json) {
+    _id = json['id'];
+    _price = json['price'];
+    _quantity = json['quantity'];
+    _image = json['image'];
+  }
+  int? _id;
+  num? _price;
+  int? _quantity;
+  String? _image;
+
+  int get id => _id ?? 0;
+  num get price => _price ?? 0;
+  int get quantity => _quantity ?? 0;
+  String get image => _image ?? '';
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['id'] = _id;
+    map['price'] = _price;
+    map['quantity'] = _quantity;
+    map['image'] = _image;
     return map;
   }
 

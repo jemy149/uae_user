@@ -7,7 +7,7 @@ import '../../../constants/end_points.dart';
 import '../../data_provider/remote/dio_helper.dart';
 
 class GetMyCartRequest {
-  static Future getMyCartRequest() async {
+   Future getMyCartRequest() async {
     try {
       Response response = await DioHelper.postData(url: EP_GET_MY_CART, data: {
         'apiToken': apiToken,

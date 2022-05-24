@@ -100,13 +100,16 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                         state.userSubCategories.length,
                         (index) {
                           return BlocProvider(
-                            create: (context) => SearchCubit()..userSearch(
-                              page: 0,
-                              categoryId: state.userSubCategories[index].id),
+                            create: (context) => SearchCubit()
+                              ..userSearch(
+                                  page: 0,
+                                  categoryId:
+                                      state.userSubCategories[index].id),
                             child: BlocBuilder<SearchCubit, SearchState>(
                               builder: (context, searchState) {
                                 if (searchState is UserSearchSuccessState) {
-                                  SearchCubit _searchCubit = SearchCubit.get(context);
+                                  SearchCubit _searchCubit =
+                                      SearchCubit.get(context);
                                   return Padding(
                                     padding: const EdgeInsetsDirectional.only(
                                       start: 12.0,
@@ -125,7 +128,13 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                                               InkWell(
                                                 onTap: () {
                                                   Navigator.pushNamed(
-                                                      context, FILTER_SCREEN_R);
+                                                    context,
+                                                    FILTER_SCREEN_R,
+                                                    arguments: state
+                                                        .userSubCategories[
+                                                            index]
+                                                        .id,
+                                                  );
                                                 },
                                                 child: Card(
                                                     elevation: 5,
@@ -204,15 +213,19 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                                             .searchModel
                                             .products[index])))
                                         ),
+
                                       ],
                                     ),
                                   );
                                 } else if (searchState
                                     is UserSearchLoadingState) {
                                   return const DefaultLoadingIndicator();
-                                } else if(state is UserSearchEmptyState) {
-                                 return const Icon(Icons.add_box_rounded,size: 48,);
-                                }else{
+                                } else if (state is UserSearchEmptyState) {
+                                  return const Icon(
+                                    Icons.add_box_rounded,
+                                    size: 48,
+                                  );
+                                } else {
                                   return const DefaultErrorWidget();
                                 }
                               },
@@ -233,120 +246,3 @@ class _CategoriesScreenState extends State<CategoriesScreen>
     );
   }
 }
-//   ListView(
-//   children: [
-//     Row(
-//       children: [
-//         Padding(
-//           padding: const EdgeInsetsDirectional.only(
-//               start: 15, top: 10, bottom: 25),
-//           child: DefaultText(
-//             text: widget.subCategoryName,
-//             style:
-//             Theme.of(context).textTheme.headline6?.copyWith(
-//               fontFamily: 'Bukra-Regular',
-//               fontWeight: FontWeight.bold,
-//             ),
-//           ),
-//         ),
-//       ],
-//     ),
-//     BlocBuilder<SubCategoryCubit, SubCategoryState>(
-//       builder: (context, state) {
-//         if (state is UserSubCategorySuccessState) {
-//           return GridView.builder(
-//               shrinkWrap: true,
-//               physics: const NeverScrollableScrollPhysics(),
-//               gridDelegate:
-//               const SliverGridDelegateWithFixedCrossAxisCount(
-//                   crossAxisCount: 3,
-//                   mainAxisSpacing: 20,
-//                   mainAxisExtent: 150),
-//               itemCount: state.userSubCategories.length,
-//               itemBuilder: (BuildContext context, int index) {
-//                 return HomeGridViewItem(
-//                   homeGridViewItemText: state.userSubCategories[index].name,
-//                   homeGridViewItemImgageUrl: state.userSubCategories[index].image,
-//                   onTap: () {
-//                     Navigator.pushNamed(context, PRODUCTS_IN_STOCK_SCREEN_R);
-//
-//                   },
-//                 );
-//               });
-//         } else if (state is UserSubCategoryLoadingState) {
-//           return const DefaultLoadingIndicator();
-//         } else {
-//           return const DefaultErrorWidget();
-//         }
-//
-//       },
-//     ),
-//
-//   ],
-// ),
-//   ListView(
-//   children: [
-//     Row(
-//       children: [
-//         Padding(
-//           padding: const EdgeInsetsDirectional.only(
-//               start: 15, top: 10, bottom: 25),
-//           child: DefaultText(
-//             text: widget.subCategoryName,
-//             style:
-//             Theme.of(context).textTheme.headline6?.copyWith(
-//               fontFamily: 'Bukra-Regular',
-//               fontWeight: FontWeight.bold,
-//             ),
-//           ),
-//         ),
-//       ],
-//     ),
-//     BlocBuilder<SubCategoryCubit, SubCategoryState>(
-//       builder: (context, state) {
-//         if (state is UserSubCategorySuccessState) {
-//           return GridView.builder(
-//               shrinkWrap: true,
-//               physics: const NeverScrollableScrollPhysics(),
-//               gridDelegate:
-//               const SliverGridDelegateWithFixedCrossAxisCount(
-//                   crossAxisCount: 3,
-//                   mainAxisSpacing: 20,
-//                   mainAxisExtent: 150),
-//               itemCount: state.userSubCategories.length,
-//               itemBuilder: (BuildContext context, int index) {
-//                 return HomeGridViewItem(
-//                   homeGridViewItemText: state.userSubCategories[index].name,
-//                   homeGridViewItemImgageUrl: state.userSubCategories[index].image,
-//                   onTap: () {
-//                     Navigator.pushNamed(context, PRODUCTS_IN_STOCK_SCREEN_R);
-//
-//                   },
-//                 );
-//               });
-//         } else if (state is UserSubCategoryLoadingState) {
-//           return const DefaultLoadingIndicator();
-//         } else {
-//           return const DefaultErrorWidget();
-//         }
-//
-//       },
-//     ),
-//     // GridView.builder(
-//     //     shrinkWrap: true,
-//     //     physics: const NeverScrollableScrollPhysics(),
-//     //     gridDelegate:
-//     //     const SliverGridDelegateWithFixedCrossAxisCount(
-//     //         crossAxisCount: 3,
-//     //         mainAxisSpacing: 23,
-//     //         mainAxisExtent: 150),
-//     //     itemCount: 3,
-//     //     itemBuilder: (BuildContext context, int index) {
-//     //       return HomeGridViewItem(
-//     //         homeGridViewItemText: 'Home Grid View Item Text',
-//     //         homeGridViewItemImgageUrl: 'assets/images/chocolate.png',
-//     //         onTap: () {Navigator.pushNamed(context, PRODUCTS_IN_STOCK_SCREEN_R);},
-//     //       );
-//     //     }),
-//   ],
-// ),

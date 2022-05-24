@@ -10,7 +10,7 @@ class UserProductSearchCubit extends Cubit<UserProductSearchStates> {
   UserProductSearchCubit() : super(HomeProductSearchInitial());
 
   static UserProductSearchCubit get(context) => BlocProvider.of(context);
-  SearchModel? userSearchModel;
+  SearchModel userSearchModel = SearchModel();
   int nextPage = 2;
   bool isLoadingMoreData = false;
 
@@ -50,6 +50,57 @@ class UserProductSearchCubit extends Cubit<UserProductSearchStates> {
       }
     }).catchError((error) {
       emit(UserProductSearchErrorState());
+      printError('userProductSearch ' + error.toString());
+    });
+  }
+
+
+
+
+
+
+
+  ///////////////////////////////////// search using barcode//////////////////////////
+
+  SearchModel userBarcodeSearchModel = SearchModel();
+  int nextBarcodePage = 1;
+  bool isBarcodeLoadingMoreData = false;
+
+  void userBarcodeProductSearch({
+    int? barcode,
+    required int page,
+  }) async {
+    if (page == 0) {
+      nextBarcodePage=1;
+      emit(UserProductBarcodeSearchLoadingState());
+    } else {
+      isBarcodeLoadingMoreData = true;
+    }
+
+    SearchRequest().searchRequest(page: page,barcode: barcode)
+        .then((value) {
+      if (value.status == 200) {
+        if (page == 0) {
+          userBarcodeSearchModel = value;
+        } else {
+          SearchModel tempUserProductSearchModel = value;
+          userBarcodeSearchModel.products
+              .addAll(tempUserProductSearchModel.products);
+          isBarcodeLoadingMoreData = false;
+
+          nextBarcodePage+=1;
+        }
+        emit(UserProductBarcodeSearchSuccessState());
+      } else if (value.status == 204) {
+        if (page == 0) {
+          emit(UserProductBarcodeSearchEmptyState());
+        }else{
+          isBarcodeLoadingMoreData = false;
+
+        }
+      }
+    }).catchError((error) {
+      emit(UserProductBarcodeSearchErrorState());
       printError('userProductSearch ' + error.toString());
     });
   }
