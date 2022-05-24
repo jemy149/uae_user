@@ -1,17 +1,17 @@
 import 'dart:convert';
-FavoriteModel favoriteModelFromJson(String str) => FavoriteModel.fromJson(json.decode(str));
-String favoriteModelToJson(FavoriteModel data) => json.encode(data.toJson());
-class FavoriteModel {
-  FavoriteModel({
+AddToCartModel addToCartModelFromJson(String str) => AddToCartModel.fromJson(json.decode(str));
+String addToCartModelToJson(AddToCartModel data) => json.encode(data.toJson());
+class AddToCartModel {
+  AddToCartModel({
       int? status, 
       String? message, 
       List<dynamic>? account,}){
     _status = status;
     _message = message;
-    // _account = account;
+    _account = account;
 }
 
-  FavoriteModel.fromJson(dynamic json) {
+  AddToCartModel.fromJson(dynamic json) {
     _status = json['status'];
     _message = json['message'];
     // if (json['Account'] != null) {
@@ -23,19 +23,19 @@ class FavoriteModel {
   }
   int? _status;
   String? _message;
-  // List<dynamic>? _account;
+  List<dynamic>? _account;
 
   int get status => _status ?? 0;
   String get message => _message ?? '';
-  // List<dynamic> get account => _account ?? [];
+  List<dynamic> get account => _account ?? [];
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['status'] = _status;
     map['message'] = _message;
-    // if (_account != null) {
-    //   map['Account'] = _account?.map((v) => v.toJson()).toList();
-    // }
+    if (_account != null) {
+      map['Account'] = _account?.map((v) => v.toJson()).toList();
+    }
     return map;
   }
 

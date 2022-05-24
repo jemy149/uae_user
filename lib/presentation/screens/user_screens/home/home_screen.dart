@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:uae_user/business_logic/user/ads/ads_cubit.dart';
 import 'package:uae_user/business_logic/user/category/category_cubit.dart';
-import 'package:uae_user/presentation/screens/user_screens/categories/categories_screen.dart';
+import 'package:uae_user/presentation/screens/user_screens/search/search_screen.dart';
 import 'package:uae_user/presentation/styles/colors.dart';
 import 'package:uae_user/presentation/views/custome_carousel_slider.dart';
 import 'package:uae_user/presentation/views/home_grid_view_item.dart';
@@ -13,6 +13,7 @@ import 'package:uae_user/presentation/widgets/custome_search_field.dart';
 import 'package:uae_user/presentation/widgets/default_error_widget.dart';
 import 'package:uae_user/presentation/widgets/default_text.dart';
 
+import '../../../../constants/constant_methods.dart';
 import '../../../../constants/screens.dart';
 import '../../../widgets/default_loading_indicator.dart';
 
@@ -24,7 +25,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  TextEditingController searchController = TextEditingController();
+  TextEditingController _searchController = TextEditingController();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  GlobalKey<FormState> searchFormKey = GlobalKey<FormState>();
   ScrollController scrollController = ScrollController();
 
   @override
@@ -37,9 +40,11 @@ class _HomeScreenState extends State<HomeScreen> {
         BlocProvider(
           create: (context) => CategoryCubit()..userCategories(),
         ),
+
       ],
       child: SafeArea(
         child: Scaffold(
+          key: _scaffoldKey,
           appBar: AppBar(
             elevation: 0,
             backgroundColor: AppColors.lightBlue,
@@ -107,8 +112,31 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: SizedBox(
                                 height: 35,
                                 width: 300,
-                                child: CustomeSearchField(
-                                  controller: searchController,
+                                child: Form(
+                                  key: searchFormKey,
+                                  child: CustomeSearchField(
+                                    keyboardType:TextInputType.text,
+                                    prefixIcon: IconButton(
+                                      icon: Image.asset('assets/images/search.png'),
+                                      onPressed: () {Navigator.pushNamed(context, SEARCH_SCREEN_R);},
+                                    ),
+                                    suffixIcon: IconButton(
+                                      icon: Image.asset('assets/images/barcode.png'),
+                                      onPressed: () {Navigator.pushNamed(context, BAR_CODE_SCREEN_R);},
+                                    ),
+                                    controller: _searchController,
+                                    validator: (text) {
+                                      if (text!.isEmpty) {
+                                        return 'البحث فارغ';
+                                      }
+                                    },
+                                    onFieldSubmitted: (text) {
+                                      if (searchFormKey.currentState!.validate()) {
+                                        navigateTo(context,
+                                            SearchScreen(searchText:text));
+                                      }
+                                    },
+                                  ),
                                 )),
                           ),
                         ],
@@ -229,21 +257,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                       homeGridViewItemImgageUrl:
                                           state.userCategories[index].image,
                                       onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  CategoriesScreen(
-                                                    subCategoryId: state
-                                                        .userCategories[index]
-                                                        .id,
-                                                    subCategoryName: state
-                                                        .userCategories[index]
-                                                        .name,
-                                                  )),
-                                        );
-                                        // Navigator.pushNamed(
-                                        //     context, CATEGORIES_SCREEN_R);
+                                        Navigator.pushNamed(
+                                            context, CATEGORIES_SCREEN_R,arguments:  state
+                                          .userCategories[index]
+                                          .id, );
                                       },
                                     );
                                   });

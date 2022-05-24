@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uae_user/constants/screens.dart';
+import 'package:uae_user/presentation/router/arguments/user_arguments/store_sub_category_args.dart';
 import 'package:uae_user/presentation/screens/user_screens/about/about_screen.dart';
 import 'package:uae_user/presentation/screens/user_screens/adding_additional_location/adding_additional_location_screen.dart';
 import 'package:uae_user/presentation/screens/user_screens/adding_product_to_cart/adding_product_to_cart_screen.dart';
@@ -16,14 +17,13 @@ import 'package:uae_user/presentation/screens/user_screens/offers/offers_screen.
 import 'package:uae_user/presentation/screens/user_screens/orders/orders_screen.dart';
 import 'package:uae_user/presentation/screens/user_screens/payment_method/payment_method_screen.dart';
 import 'package:uae_user/presentation/screens/user_screens/policy_and_terms/policy_and_terms_screen.dart';
-import 'package:uae_user/presentation/screens/user_screens/qr_code/qr_code_screen.dart';
 import 'package:uae_user/presentation/screens/user_screens/search/search_screen.dart';
 import 'package:uae_user/presentation/screens/user_screens/splash/splash_screen.dart';
 import 'package:uae_user/presentation/screens/user_screens/tracking_order/tracking_order_screen.dart';
 import 'package:uae_user/presentation/screens/user_screens/user_addresses/user_addresses_screen.dart';
 import 'package:uae_user/presentation/screens/user_screens/verification/verification_screen.dart';
 import 'package:uae_user/presentation/screens/user_screens/wallet/wallet_screen.dart';
-
+import '../screens/user_screens/bar_Code/bar_code_screen.dart';
 import '../../business_logic/user/my_addresses/my_addresses_cubit.dart';
 import '../screens/user_screens/delivery_information/delivery_information_screen.dart';
 import '../screens/user_screens/frequently_asked_questions/frequently_asked_questions_screen.dart';
@@ -106,17 +106,19 @@ class AppRouter {
       case WALLET_SCREEN_R:
         return MaterialPageRoute(builder: (_) => WalletScreen());
       case CATEGORIES_SCREEN_R:
-        return MaterialPageRoute(builder: (_) => CategoriesScreen(subCategoryId: 0,subCategoryName: '',));
+        final int subCategoryId = settings.arguments as int;
+        return MaterialPageRoute(builder: (_) => CategoriesScreen(mainCategoryId: subCategoryId,));
       case PRODUCTS_IN_STOCK_SCREEN_R:
         return MaterialPageRoute(builder: (_) => ProdrctsInStockScreen());
       case ADDING_PRODUCT_TO_CART_SCREEN_R:
-        return MaterialPageRoute(builder: (_) => const AddingProductToCartScreen());
+        final int productId = settings.arguments as int;
+        return MaterialPageRoute(builder: (_) =>  AddingProductToCartScreen(productId: productId,));
       case DELIVERY_LOCATION_SCREEN_R:
         return MaterialPageRoute(builder: (_) => const DeliveryLocationScreen());
       case PAYMENT_METHOD_SCREEN_R:
         return MaterialPageRoute(builder: (_) => const PaymentMethodScreen());
-      case QR_CODE_SCREEN_R:
-        return MaterialPageRoute(builder: (_) => const QrCodeScreen());
+      case BAR_CODE_SCREEN_R:
+        return MaterialPageRoute(builder: (_) => const BarCodeScreen());
       case DELIVERY_DETAILS_SCREEN_R:
         return MaterialPageRoute(builder: (_) => DeliveryDetailsScreen());
       case USER_ADDRESSES_SCREEN_R:

@@ -7,8 +7,8 @@ import '../../data_provider/remote/dio_helper.dart';
 import '../../models/user_models/search/search_model.dart';
 
 class SearchRequest {
-  static Future searchRequest({
-    required String page,
+   Future searchRequest({
+    required int page,
     String? keyword,
     int? barcode,
     int? categoryId,
@@ -23,12 +23,12 @@ class SearchRequest {
         'barcode': barcode,
         'categoryId': categoryId,
         'brandId': brandId,
-        'rangPrice': rangPrice!.toJson(),
+        'rangPrice': rangPrice,
       });
       printResponse(response.data.toString());
       return SearchModel.fromJson(response.data);
     } catch (error) {
-      printError(error.toString());
+      printError('searchRequest '+error.toString());
       return null;
     }
   }

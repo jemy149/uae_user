@@ -5,7 +5,7 @@ class SubCategoryModel {
   SubCategoryModel({
       int? status, 
       int? totalPages, 
-      List<Categories>? categories,}){
+      List<SubCategories>? categories,}){
     _status = status;
     _totalPages = totalPages;
     _categories = categories;
@@ -17,17 +17,17 @@ class SubCategoryModel {
     if (json['categories'] != null) {
       _categories = [];
       json['categories'].forEach((v) {
-        _categories?.add(Categories.fromJson(v));
+        _categories?.add(SubCategories.fromJson(v));
       });
     }
   }
   int? _status;
   int? _totalPages;
-  List<Categories>? _categories;
+  List<SubCategories>? _categories;
 
   int get status => _status ?? 0;
   int get totalPages => _totalPages ?? 0;
-  List<Categories> get categories => _categories ?? [];
+  List<SubCategories> get categories => _categories ?? [];
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -41,10 +41,10 @@ class SubCategoryModel {
 
 }
 
-Categories categoriesFromJson(String str) => Categories.fromJson(json.decode(str));
-String categoriesToJson(Categories data) => json.encode(data.toJson());
-class Categories {
-  Categories({
+SubCategories categoriesFromJson(String str) => SubCategories.fromJson(json.decode(str));
+String categoriesToJson(SubCategories data) => json.encode(data.toJson());
+class SubCategories {
+  SubCategories({
     int? id,
     String? type,
     String? name,
@@ -57,7 +57,7 @@ class Categories {
     _image = image;
   }
 
-  Categories.fromJson(dynamic json) {
+  SubCategories.fromJson(dynamic json) {
     _id = json['id'];
     _type = json['type'];
     _name = json['name'];

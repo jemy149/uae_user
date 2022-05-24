@@ -1,17 +1,30 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:uae_user/data/models/user_models/search/search_model.dart';
 
+import '../../constants/screens.dart';
 import '../styles/colors.dart';
+import '../widgets/default_cached_network_image.dart';
 import '../widgets/default_text.dart';
 
-class ProductsInStockItem extends StatelessWidget {
-  const ProductsInStockItem({Key? key,required this.onTap}) : super(key: key);
-  final Function() onTap;
+class ProductsInStockItem extends StatefulWidget {
+  final Products productModel;
 
+  const ProductsInStockItem({
+    Key? key,
+    required this.productModel,
+  }) : super(key: key);
+
+  @override
+  State<ProductsInStockItem> createState() => _ProductsInStockItemState();
+}
+
+class _ProductsInStockItemState extends State<ProductsInStockItem> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
+      onTap: () {
+        Navigator.pushNamed(context, ADDING_PRODUCT_TO_CART_SCREEN_R,arguments: widget.productModel.id);
+      },
       child: Card(
         elevation: 5,
         clipBehavior: Clip.antiAlias,
@@ -26,20 +39,21 @@ class ProductsInStockItem extends StatelessWidget {
                     SizedBox(
                       width: 150,
                       height: 150,
-                      child: Image.asset(
-                        'assets/images/fruits.png',
+                      child: DefaultCachedNetworkImage(
+                        imageUrl:widget.productModel.images.isEmpty? '' :  widget.productModel.images[0],
                         fit: BoxFit.contain,
                       ),
-                    ),
+                    )
                   ],
                 ),
                 Align(
                   alignment: Alignment.topCenter,
                   child: Padding(
-                    padding: const EdgeInsetsDirectional.only(top: 8.0,start: 5.0,end: 5.0),
+                    padding: const EdgeInsetsDirectional.only(
+                        top: 8.0, start: 5.0, end: 5.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
-                      children:const [
+                      children: const [
                         Icon(
                           Icons.favorite_outline,
                           color: AppColors.grey,
@@ -54,8 +68,14 @@ class ProductsInStockItem extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 5.0),
               child: Row(
                 children: [
-                  Flexible(child: Icon(Icons.add_shopping_cart_outlined,color: AppColors.lightBlue,)),
-                  Spacer(
+                  Flexible(
+                      child: InkWell(
+                          onTap: () {},
+                          child: const Icon(
+                            Icons.add_shopping_cart_outlined,
+                            color: AppColors.lightBlue,
+                          ))),
+                  const Spacer(
                     flex: 1,
                   ),
                   Expanded(
@@ -63,23 +83,26 @@ class ProductsInStockItem extends StatelessWidget {
                     child: Column(
                       children: [
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: DefaultText(
-                                text: 'ietm nameee',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .button
-                                    ?.copyWith(fontFamily: 'Bukra-Regular',fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ],
-                        ),
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: DefaultText(
+                                  maxLines: 2,
+                                  text: widget.productModel.name,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .button
+                                      ?.copyWith(
+                                          fontFamily: 'Bukra-Regular',
+                                          fontWeight: FontWeight.bold),
+                                ),
+                              )
+                            ]),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
-                          children:const [
-                            DefaultText(text: '${80.00} RS'),
+                          children: [
+                            DefaultText(
+                                text: '${widget.productModel.price} RS'),
                           ],
                         ),
                       ],

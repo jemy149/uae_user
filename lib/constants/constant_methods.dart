@@ -36,7 +36,7 @@ void printTest(String text) {
   print('\x1B[32m$text\x1B[0m');
 }
 
-void navigateTo(BuildContext context, Widget widget) {
+ navigateTo(BuildContext context, Widget widget) {
   Navigator.push(
       context,
       MaterialPageRoute(
