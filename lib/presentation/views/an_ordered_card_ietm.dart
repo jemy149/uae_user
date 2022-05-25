@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:uae_user/data/models/user_models/get_orders/get_orders_model.dart';
 import 'package:uae_user/presentation/styles/colors.dart';
 import 'package:uae_user/presentation/widgets/default_text.dart';
 
 class AnOrderedCardItem extends StatelessWidget {
-  const AnOrderedCardItem({Key? key}) : super(key: key);
+ final Orders order;
 
+   AnOrderedCardItem( {Key? key, required this.order}) : super(key: key);
+late GetOrdersModel _getOrdersModel;
   @override
   Widget build(BuildContext context) {
     return Card(

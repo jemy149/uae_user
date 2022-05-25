@@ -84,7 +84,7 @@ class AppRouter {
       case FAVOURITES_SCREEN_R:
         return MaterialPageRoute(builder: (_) => const FavouritesScreen());
       case TRACKING_ORDER_SCREEN_R:
-        return MaterialPageRoute(builder: (_) => const TrackingOrderScreen());
+        return MaterialPageRoute(builder: (_) =>  TrackingOrderScreen());
       case ABOUT_SCREEN_R:
         return MaterialPageRoute(builder: (_) => const AboutScreen());
       case FREQUENTLY_ASKED_QUESTIONS_SCREEN_R:

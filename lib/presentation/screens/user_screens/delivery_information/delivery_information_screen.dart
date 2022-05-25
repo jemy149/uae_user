@@ -1,12 +1,8 @@
 import 'dart:async';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:uae_user/data/models/user_models/get_orders/get_orders_model.dart';
-import 'package:uae_user/presentation/views/delivery_information_card_item.dart';
-
 import '../../../../constants/constants.dart';
 import '../../../styles/colors.dart';
 import '../../../widgets/default_map.dart';
