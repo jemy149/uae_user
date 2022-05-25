@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:uae_user/constants/constant_methods.dart';
 import 'package:uae_user/constants/enums.dart';
+import 'package:uae_user/presentation/views/adding_product_to_cart_counter_item.dart';
 import 'package:uae_user/presentation/widgets/default_cached_network_image.dart';
-
 import '../../../../business_logic/user/add_to_cart/add_to_cart_cubit.dart';
 import '../../../../business_logic/user/get_products/get_products_cubit.dart';
 import '../../../styles/colors.dart';
@@ -25,20 +25,22 @@ class AddingProductToCartScreen extends StatefulWidget {
       _AddingProductToCartScreenState();
 }
 
+late GetProductsCubit _getProductsCubit;
+
 class _AddingProductToCartScreenState extends State<AddingProductToCartScreen> {
   @override
   Widget build(BuildContext context) {
+    printTest(widget.productId.toString());
     return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => AddToCartCubit(),
-        ),
-        BlocProvider(
-          create: (context) => GetProductsCubit()..userGetProduct(productId: widget.productId),
-        ),
-      ],
-      child: BlocProvider(
-        create: (context) => GetProductsCubit(),
+        providers: [
+          BlocProvider(
+            create: (context) => AddToCartCubit()
+          ),
+          BlocProvider(
+            create: (context) => GetProductsCubit()
+              ..userGetProducts(productId: widget.productId),
+          ),
+        ],
         child: SafeArea(
             child: Scaffold(
           appBar: AppBar(
@@ -54,6 +56,8 @@ class _AddingProductToCartScreenState extends State<AddingProductToCartScreen> {
           backgroundColor: AppColors.lightBlue,
           body: BlocBuilder<GetProductsCubit, GetProductsState>(
             builder: (context, state) {
+              _getProductsCubit = GetProductsCubit.get(context);
+
               if (state is UserGetProductsSuccessState) {
                 return ListView(
                   children: [
@@ -70,7 +74,9 @@ class _AddingProductToCartScreenState extends State<AddingProductToCartScreen> {
                               )),
                           child: Center(
                               child: DefaultCachedNetworkImage(
-                                  imageUrl: state.products.images[0], fit: BoxFit.contain)),
+                                  imageUrl: _getProductsCubit
+                                      .getProductsModel.product.images[0],
+                                  fit: BoxFit.contain)),
                         ),
                         Positioned(
                           top: 20.0,
@@ -107,7 +113,9 @@ class _AddingProductToCartScreenState extends State<AddingProductToCartScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     DefaultText(
-                                      text: state.products.name,
+                                      maxLines: 4,
+                                      text: _getProductsCubit
+                                          .getProductsModel.product.name,
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyText1
@@ -120,8 +128,8 @@ class _AddingProductToCartScreenState extends State<AddingProductToCartScreen> {
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 8.0),
                                       child: DefaultText(
-                                        text:
-                                            state.products.description,
+                                        text: _getProductsCubit.getProductsModel
+                                            .product.description,
                                         maxLines: 4,
                                         style: Theme.of(context)
                                             .textTheme
@@ -132,7 +140,8 @@ class _AddingProductToCartScreenState extends State<AddingProductToCartScreen> {
                                       ),
                                     ),
                                     DefaultText(
-                                      text: '${state.products.price} AED',
+                                      text:
+                                          '${_getProductsCubit.getProductsModel.product.price} AED',
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyText1
@@ -149,266 +158,13 @@ class _AddingProductToCartScreenState extends State<AddingProductToCartScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        SizedBox(
-                                          child: CheckboxListTile(
-                                            value: true,
-                                            onChanged: (p) {},
-                                            title: DefaultText(
-                                              text: 'item',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .subtitle1
-                                                  ?.copyWith(color: Colors.white),
-                                            ),
-                                            contentPadding: EdgeInsets.zero,
-                                            controlAffinity:
-                                                ListTileControlAffinity.leading,
-                                          ),
-                                          width: 100,
-                                        ),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                              color: AppColors.lightBlue,
-                                              borderRadius:
-                                                  BorderRadius.circular(15)),
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 2),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              const CircleAvatar(
-                                                backgroundColor: AppColors.black,
-                                                radius: 15.2,
-                                                child: CircleAvatar(
-                                                  child: Icon(
-                                                    Icons.remove,
-                                                    color: Colors.white,
-                                                  ),
-                                                  backgroundColor:
-                                                      AppColors.lightBlue,
-                                                  radius: 15,
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 8.0),
-                                                child: DefaultText(
-                                                  text: '${1}',
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1
-                                                      ?.copyWith(
-                                                        color: Colors.white,
-                                                      ),
-                                                ),
-                                              ),
-                                              const CircleAvatar(
-                                                backgroundColor: AppColors.black,
-                                                radius: 15.2,
-                                                child: CircleAvatar(
-                                                  child: Icon(
-                                                    Icons.add,
-                                                    color: Colors.white,
-                                                  ),
-                                                  backgroundColor:
-                                                      AppColors.lightBlue,
-                                                  radius: 15,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        DefaultText(
-                                          text: '${1200} AED',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .subtitle1
-                                              ?.copyWith(color: Colors.white),
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        SizedBox(
-                                          child: CheckboxListTile(
-                                            value: true,
-                                            onChanged: (p) {},
-                                            title: DefaultText(
-                                              text: 'item',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .subtitle1
-                                                  ?.copyWith(color: Colors.white),
-                                            ),
-                                            contentPadding: EdgeInsets.zero,
-                                            controlAffinity:
-                                                ListTileControlAffinity.leading,
-                                          ),
-                                          width: 100,
-                                        ),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                              color: AppColors.lightBlue,
-                                              borderRadius:
-                                                  BorderRadius.circular(15)),
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 2),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              const CircleAvatar(
-                                                backgroundColor: AppColors.black,
-                                                radius: 15.2,
-                                                child: CircleAvatar(
-                                                  child: Icon(
-                                                    Icons.remove,
-                                                    color: Colors.white,
-                                                  ),
-                                                  backgroundColor:
-                                                      AppColors.lightBlue,
-                                                  radius: 15,
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 8.0),
-                                                child: DefaultText(
-                                                  text: '${1}',
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1
-                                                      ?.copyWith(
-                                                        color: Colors.white,
-                                                      ),
-                                                ),
-                                              ),
-                                              const CircleAvatar(
-                                                backgroundColor: AppColors.black,
-                                                radius: 15.2,
-                                                child: CircleAvatar(
-                                                  child: Icon(
-                                                    Icons.add,
-                                                    color: Colors.white,
-                                                  ),
-                                                  backgroundColor:
-                                                      AppColors.lightBlue,
-                                                  radius: 15,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        DefaultText(
-                                          text: '${1200} AED',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .subtitle1
-                                              ?.copyWith(color: Colors.white),
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        SizedBox(
-                                          child: CheckboxListTile(
-                                            value: true,
-                                            onChanged: (p) {},
-                                            title: DefaultText(
-                                              text: 'item',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .subtitle1
-                                                  ?.copyWith(color: Colors.white),
-                                            ),
-                                            contentPadding: EdgeInsets.zero,
-                                            controlAffinity:
-                                                ListTileControlAffinity.leading,
-                                          ),
-                                          width: 100,
-                                        ),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                              color: AppColors.lightBlue,
-                                              borderRadius:
-                                                  BorderRadius.circular(15)),
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 2),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              const CircleAvatar(
-                                                backgroundColor: AppColors.black,
-                                                radius: 15.2,
-                                                child: CircleAvatar(
-                                                  child: Icon(
-                                                    Icons.remove,
-                                                    color: Colors.white,
-                                                  ),
-                                                  backgroundColor:
-                                                      AppColors.lightBlue,
-                                                  radius: 15,
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 8.0),
-                                                child: DefaultText(
-                                                  text: '${1}',
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1
-                                                      ?.copyWith(
-                                                        color: Colors.white,
-                                                      ),
-                                                ),
-                                              ),
-                                              const CircleAvatar(
-                                                backgroundColor: AppColors.black,
-                                                radius: 15.2,
-                                                child: CircleAvatar(
-                                                  child: Icon(
-                                                    Icons.add,
-                                                    color: Colors.white,
-                                                  ),
-                                                  backgroundColor:
-                                                      AppColors.lightBlue,
-                                                  radius: 15,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        DefaultText(
-                                          text: '${1200} AED',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .subtitle1
-                                              ?.copyWith(color: Colors.white),
-                                        )
-                                      ],
-                                    ),
+                                   AddingProductToCartCounterItem(getProductsModel: _getProductsCubit.getProductsModel.product),
                                   ],
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 20),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 20),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -418,10 +174,12 @@ class _AddingProductToCartScreenState extends State<AddingProductToCartScreen> {
                                       return BlocListener<AddToCartCubit,
                                           CartState>(
                                         listener: (context, state) {
-                                          if (state is UserAddCartSuccessStates) {
+                                          if (state
+                                              is UserAddCartSuccessStates) {
                                             showToastMsg(
                                                 msg: 'Added Successfully',
-                                                toastState: ToastStates.SUCCESS);
+                                                toastState:
+                                                    ToastStates.SUCCESS);
                                           }
                                         },
                                         child: DefaultMaterialButton(
@@ -456,14 +214,12 @@ class _AddingProductToCartScreenState extends State<AddingProductToCartScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       const DefaultSvg(
-                        imagePath:
-                        'assets/icons/no_search_data.svg',
+                        imagePath: 'assets/icons/no_search_data.svg',
                         color: AppColors.lightBlue2,
                       ),
                       DefaultText(
                         text: 'لم يتم العثور على نتائج',
-                        textStyle:
-                        Theme.of(context).textTheme.headline6,
+                        textStyle: Theme.of(context).textTheme.headline6,
                       )
                     ],
                   ),
@@ -473,8 +229,6 @@ class _AddingProductToCartScreenState extends State<AddingProductToCartScreen> {
               }
             },
           ),
-        )),
-      ),
-    );
+        )));
   }
 }

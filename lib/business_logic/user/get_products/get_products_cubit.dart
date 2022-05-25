@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:uae_user/data/models/user_models/get_products/get_products_model.dart';
 import 'package:uae_user/data/requests/get_products/get_products_request.dart';
@@ -10,9 +11,11 @@ part 'get_products_state.dart';
 class GetProductsCubit extends Cubit<GetProductsState> {
   GetProductsCubit() : super(GetProductsInitial());
 
+  static GetProductsCubit get(context) => BlocProvider.of(context);
+
   GetProductsModel getProductsModel = GetProductsModel();
 
-  void userGetProduct ({required int productId}){
+  void userGetProducts ({required int productId}){
     emit(UserGetProductsLoadingState());
     GetProductRequest()
         .getProductRequest(productId: productId)
@@ -26,7 +29,7 @@ class GetProductsCubit extends Cubit<GetProductsState> {
       }
     }).catchError((error){
       emit(UserGetProductsErrorState());
-      printResponse('userGetProduct' + error.toString());
+      printResponse('userGetProducts' + error.toString());
     });
   }
 

@@ -99,7 +99,7 @@ class AppRouter {
         return MaterialPageRoute(
             builder: (_) => const DeliveryInformationScreen());
       case CART_SCREEN_R:
-        return MaterialPageRoute(builder: (_) => const CartScreen());
+        return MaterialPageRoute(builder: (_) =>  CartScreen());
       case OFFERS_SCREEN_R:
         return MaterialPageRoute(builder: (_) => OffersScreen());
       case FILTER_SCREEN_R:
@@ -114,7 +114,7 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => ProdrctsInStockScreen());
       case ADDING_PRODUCT_TO_CART_SCREEN_R:
         final int productId = settings.arguments as int;
-        return MaterialPageRoute(builder: (_) =>  AddingProductToCartScreen(productId: productId,));
+        return MaterialPageRoute(builder: (_) =>  AddingProductToCartScreen(productId: 10123,));
       case DELIVERY_LOCATION_SCREEN_R:
         return MaterialPageRoute(builder: (_) => const DeliveryLocationScreen());
       case PAYMENT_METHOD_SCREEN_R:

@@ -37,13 +37,15 @@ class Product {
       int? id, 
       String? barcode, 
       String? name, 
-      String? description, 
-      num? price,
+      String? description,
+    num? price,
       bool? isFreeDelivered, 
       List<String>? images, 
       dynamic store, 
       int? quantity, 
+      dynamic brand, 
       List<Prices>? prices, 
+      bool? isFav, 
       bool? hasOffer, 
       int? point, 
       List<dynamic>? features, 
@@ -57,7 +59,9 @@ class Product {
     _images = images;
     _store = store;
     _quantity = quantity;
+    _brand = brand;
     _prices = prices;
+    _isFav = isFav;
     _hasOffer = hasOffer;
     _point = point;
     _features = features;
@@ -74,12 +78,14 @@ class Product {
     _images = json['images'] != null ? json['images'].cast<String>() : [];
     _store = json['store'];
     _quantity = json['quantity'];
+    _brand = json['brand'];
     if (json['prices'] != null) {
       _prices = [];
       json['prices'].forEach((v) {
         _prices?.add(Prices.fromJson(v));
       });
     }
+    _isFav = json['isFav'];
     _hasOffer = json['hasOffer'];
     _point = json['point'];
     // if (json['features'] != null) {
@@ -99,7 +105,9 @@ class Product {
   List<String>? _images;
   dynamic _store;
   int? _quantity;
+  dynamic _brand;
   List<Prices>? _prices;
+  bool? _isFav;
   bool? _hasOffer;
   int? _point;
   List<dynamic>? _features;
@@ -109,12 +117,14 @@ class Product {
   String get barcode => _barcode ?? '';
   String get name => _name ?? '';
   String get description => _description ?? '';
-  num get price => _price ?? 0.0;
+  num get price => _price ?? 0;
   bool get isFreeDelivered => _isFreeDelivered ?? false;
   List<String> get images => _images ?? [];
-  dynamic get store => _store ?? [];
+  dynamic get store => _store;
   int get quantity => _quantity ?? 0;
+  dynamic get brand => _brand;
   List<Prices> get prices => _prices ?? [];
+  bool get isFav => _isFav ?? false;
   bool get hasOffer => _hasOffer ?? false;
   int get point => _point ?? 0;
   List<dynamic> get features => _features ?? [];
@@ -131,9 +141,11 @@ class Product {
     map['images'] = _images;
     map['store'] = _store;
     map['quantity'] = _quantity;
+    map['brand'] = _brand;
     if (_prices != null) {
       map['prices'] = _prices?.map((v) => v.toJson()).toList();
     }
+    map['isFav'] = _isFav;
     map['hasOffer'] = _hasOffer;
     map['point'] = _point;
     if (_features != null) {
@@ -149,12 +161,14 @@ Prices pricesFromJson(String str) => Prices.fromJson(json.decode(str));
 String pricesToJson(Prices data) => json.encode(data.toJson());
 class Prices {
   Prices({
-      int? id, 
-      num? price,
+      int? id,
+    num? price,
+      dynamic name, 
       int? quantity, 
       String? image,}){
     _id = id;
     _price = price;
+    _name = name;
     _quantity = quantity;
     _image = image;
 }
@@ -162,16 +176,19 @@ class Prices {
   Prices.fromJson(dynamic json) {
     _id = json['id'];
     _price = json['price'];
+    _name = json['name'];
     _quantity = json['quantity'];
     _image = json['image'];
   }
   int? _id;
   num? _price;
+  dynamic _name;
   int? _quantity;
   String? _image;
 
   int get id => _id ?? 0;
   num get price => _price ?? 0;
+  dynamic get name => _name ?? [];
   int get quantity => _quantity ?? 0;
   String get image => _image ?? '';
 
@@ -179,6 +196,7 @@ class Prices {
     final map = <String, dynamic>{};
     map['id'] = _id;
     map['price'] = _price;
+    map['name'] = _name;
     map['quantity'] = _quantity;
     map['image'] = _image;
     return map;
