@@ -143,5 +143,6 @@
       "deleteCompleted":"تم الحذف",
       "pickLocation":"اختر عنوان",
       "addedSuccessfully":"اضيف بنجاح",
-      "addDescription":"اضف وصف"
+      "addDescription":"اضف وصف",
+      "appCurrency":"درهم"
 }

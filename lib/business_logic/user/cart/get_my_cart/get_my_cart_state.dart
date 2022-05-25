@@ -5,8 +5,8 @@ abstract class GetMyCartState {}
 
 class GetMyCartInitial extends GetMyCartState {}
 class UserGetCartSuccessState extends GetMyCartState {
-  List<Carts> cart;
-  UserGetCartSuccessState({required this.cart});
+  List<Carts> carts;
+  UserGetCartSuccessState({required this.carts});
 }
 class UserGetCartLoadingState extends GetMyCartState {}
 class UserGetCartEmptyState extends GetMyCartState {}

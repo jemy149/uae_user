@@ -11,6 +11,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 import 'business_logic/user/ads/ads_cubit.dart';
+import 'business_logic/user/cart/edit_cart/edit_cart_cubit.dart';
 import 'business_logic/user/change_favorite/favorite_change_cubit.dart';
 import 'data/data_provider/local/cache_helper.dart';
 import 'data/data_provider/remote/dio_helper.dart';
@@ -37,6 +38,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => LanguageCubit(),),
         BlocProvider(create: (context) => ChangeFavoriteCubit(),),
+        BlocProvider(
+          create: (context) => EditCartCubit(),
+        ),
 
       ],
       child: Builder(
