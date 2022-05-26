@@ -116,7 +116,7 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => ProductsInStockScreen());
       case ADDING_PRODUCT_TO_CART_SCREEN_R:
         final int productId = settings.arguments as int;
-        return MaterialPageRoute(builder: (_) =>  AddingProductToCartScreen(productId: 10123,));
+        return MaterialPageRoute(builder: (_) =>  AddingProductToCartScreen(productId: productId,));
       case DELIVERY_LOCATION_SCREEN_R:
         return MaterialPageRoute(builder: (_) => const DeliveryLocationScreen());
       case PAYMENT_METHOD_SCREEN_R:

@@ -50,6 +50,7 @@ class NotificationsScreen extends StatelessWidget {
 
               return BlocBuilder<NotificationsCubit, NotificationsState>(
                 builder: (context, state) {
+
                   if (state is UserNotificationsSuccessState) {
                     return ListView.builder(
                       itemBuilder: (context, index) => NotificationsListViewItem(notification:state.notifications[index]),
@@ -79,6 +80,7 @@ class NotificationsScreen extends StatelessWidget {
                   } else {
                     return const DefaultErrorWidget();
                   }
+
                 },
               );
             })),

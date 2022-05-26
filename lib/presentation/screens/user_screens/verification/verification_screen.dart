@@ -121,7 +121,7 @@ class VerificationScreen extends StatelessWidget {
                                             showToastMsg(msg:  AppLocalizations.of(context)!
                                                 .pleaseEnterVerificationCode, toastState: ToastStates.ERROR);
                                            } else if (value.length == 4){
-                                             cubit?.userValidateCode(phone: phone.toString(), code: verificationCodeController.text);
+                                             cubit.userValidateCode(phone: phone.toString(), code: verificationCodeController.text);
                                            }
                                           },
                                           height: 50,

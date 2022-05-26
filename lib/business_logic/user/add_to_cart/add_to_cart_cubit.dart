@@ -24,7 +24,6 @@ class AddToCartCubit extends Cubit<CartState> {
     AddToCartRequest()
         .addToCartRequest(productId:productId )
         .then((value) {
-      printTest(addToCartModel.account.toString());
       if(value.status == 200){
         addToCartModel = value;
         emit(UserAddCartSuccessStates());
