@@ -144,7 +144,8 @@
   "pickLocation":"Pick a location",
   "addedSuccessfully":"added successfully",
   "addDescription":"add Description",
-  "appCurrency":"AED"
+  "appCurrency":"AED",
+  "noResultsFound":"No Results Found"
 
 
 

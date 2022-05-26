@@ -13,7 +13,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
 
   static NotificationsCubit get(context) => BlocProvider.of(context);
 
-  NotificationsModel? notificationsModel =NotificationsModel();
+  NotificationsModel notificationsModel =NotificationsModel();
 
   void userNotifications (){
     emit(UserNotificationsLoadingState());
@@ -22,12 +22,12 @@ class NotificationsCubit extends Cubit<NotificationsState> {
       printTest(notificationsModel.toString());
       if(value.status == 200){
         notificationsModel = value;
-        emit(UserNotificationsSuccessState());
-      }else{
-        emit(UserNotificationsErrorState());
+        emit(UserNotificationsSuccessState(notifications: notificationsModel.notifications));
+      }else if(value.status == 204){
+        emit(UserNotificationsEmptyState());
       }
     }).catchError((error){
-
+      emit(UserNotificationsErrorState());
       printResponse('userNotifications' + error.toString());
     });
   }

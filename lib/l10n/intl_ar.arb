@@ -144,5 +144,6 @@
       "pickLocation":"اختر عنوان",
       "addedSuccessfully":"اضيف بنجاح",
       "addDescription":"اضف وصف",
-      "appCurrency":"درهم"
+      "appCurrency":"درهم",
+      "noResultsFound":"لم يتم العثور على نتائج"
 }

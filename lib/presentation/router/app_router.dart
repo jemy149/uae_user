@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uae_user/constants/screens.dart';
+import 'package:uae_user/data/models/user_models/get_orders/get_orders_model.dart';
 import 'package:uae_user/presentation/router/arguments/user_arguments/store_sub_category_args.dart';
 import 'package:uae_user/presentation/screens/user_screens/about/about_screen.dart';
 import 'package:uae_user/presentation/screens/user_screens/adding_additional_location/adding_additional_location_screen.dart';
@@ -83,7 +84,7 @@ class AppRouter {
       case FAVOURITES_SCREEN_R:
         return MaterialPageRoute(builder: (_) => const FavouritesScreen());
       case TRACKING_ORDER_SCREEN_R:
-        return MaterialPageRoute(builder: (_) => const TrackingOrderScreen());
+        return MaterialPageRoute(builder: (_) =>  TrackingOrderScreen());
       case ABOUT_SCREEN_R:
         return MaterialPageRoute(builder: (_) => const AboutScreen());
       case FREQUENTLY_ASKED_QUESTIONS_SCREEN_R:
@@ -96,8 +97,9 @@ class AppRouter {
       case NOTIFICATIONS_SCREEN_R:
         return MaterialPageRoute(builder: (_) =>  NotificationsScreen());
       case DELIVERY_INFORMATION_SCREEN_R:
+        final GetOrdersModel getOrdersModel = settings.arguments as GetOrdersModel;
         return MaterialPageRoute(
-            builder: (_) => const DeliveryInformationScreen());
+            builder: (_) =>  DeliveryInformationScreen(getOrdersModel:getOrdersModel));
       case CART_SCREEN_R:
         return MaterialPageRoute(builder: (_) =>  CartScreen());
       case OFFERS_SCREEN_R:
@@ -111,7 +113,7 @@ class AppRouter {
         final int subCategoryId = settings.arguments as int;
         return MaterialPageRoute(builder: (_) => CategoriesScreen(mainCategoryId: subCategoryId,));
       case PRODUCTS_IN_STOCK_SCREEN_R:
-        return MaterialPageRoute(builder: (_) => ProdrctsInStockScreen());
+        return MaterialPageRoute(builder: (_) => ProductsInStockScreen());
       case ADDING_PRODUCT_TO_CART_SCREEN_R:
         final int productId = settings.arguments as int;
         return MaterialPageRoute(builder: (_) =>  AddingProductToCartScreen(productId: productId,));

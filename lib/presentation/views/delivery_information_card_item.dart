@@ -4,7 +4,7 @@ import 'package:uae_user/presentation/widgets/default_text.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DeliveryInformationCardItem extends StatelessWidget {
-  const DeliveryInformationCardItem({Key? key}) : super(key: key);
+  DeliveryInformationCardItem({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
