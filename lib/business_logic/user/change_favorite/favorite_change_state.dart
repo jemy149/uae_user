@@ -6,10 +6,9 @@ abstract class ChangeFavoriteStates {}
 class FavoriteChangeInitial extends ChangeFavoriteStates {}
 
 class FavoriteChangeSuccessState extends ChangeFavoriteStates {
-  final int index;
   final int productId;
 
-  FavoriteChangeSuccessState( {required this.index,required this.productId});
+  FavoriteChangeSuccessState( {required this.productId});
 
 }
 

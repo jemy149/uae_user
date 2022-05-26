@@ -249,7 +249,7 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
         // Get profile data from facebook for use in the app
         final profile = await fb.getUserProfile();
 
-        print('Hello, ${profile!.name}! You ID: ${profile!.userId}');
+        print('Hello, ${profile!.name}! You ID: ${profile.userId}');
         // Get user profile image url
         final imageUrl = await fb.getProfileImageUrl(width: 100);
         print('Your profile image: $imageUrl');

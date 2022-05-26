@@ -68,6 +68,10 @@ class Product {
     _viewers = viewers;
 }
 
+  set setIsFav(bool value) {
+    _isFav = value;
+  }
+
   Product.fromJson(dynamic json) {
     _id = json['id'];
     _barcode = json['barcode'];
@@ -163,7 +167,7 @@ class Prices {
   Prices({
       int? id,
     num? price,
-      dynamic name, 
+      String? name,
       int? quantity, 
       String? image,}){
     _id = id;
@@ -182,13 +186,13 @@ class Prices {
   }
   int? _id;
   num? _price;
-  dynamic _name;
+  String? _name;
   int? _quantity;
   String? _image;
 
   int get id => _id ?? 0;
   num get price => _price ?? 0;
-  dynamic get name => _name ?? [];
+  String get name => _name ?? '';
   int get quantity => _quantity ?? 0;
   String get image => _image ?? '';
 

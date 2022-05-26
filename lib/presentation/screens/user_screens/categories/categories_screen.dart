@@ -30,7 +30,7 @@ class _CategoriesScreenState extends State<CategoriesScreen>
 
   late List<Tab> tabBarItemList;
 
-  late final TabController controller;
+  late final TabController tabController;
   late CategoryCubit _categoryCubit;
 
   @override
@@ -80,7 +80,7 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                   ),
                 ),
               );
-              controller =
+              tabController =
                   TabController(length: tabBarItemList.length, vsync: this)
                     ..addListener(() {});
 
@@ -90,12 +90,12 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                   child: TabBar(
                       onTap: (index) {},
                       isScrollable: true,
-                      controller: controller,
+                      controller: tabController,
                       tabs: tabBarItemList),
                 ),
                 Expanded(
                   child: TabBarView(
-                      controller: controller,
+                      controller: tabController,
                       children: List.generate(
                         state.userSubCategories.length,
                         (index) {

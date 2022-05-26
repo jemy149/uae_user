@@ -50,16 +50,16 @@ class NotificationsScreen extends StatelessWidget {
                   return ListView.builder(
                     itemBuilder: (context, index) => NotificationsListViewItem(
                       notificationBody: _notificationsCubit!
-                          .notificationsModel!.notifications![index].content!,
+                          .notificationsModel!.notifications[index].content,
                       notificationHeadLine: _notificationsCubit!
-                          .notificationsModel?.notifications?[index].title,
+                          .notificationsModel?.notifications[index].title,
                       notificationDate: _notificationsCubit!
-                          .notificationsModel!.notifications![index].createdAt!,
+                          .notificationsModel!.notifications[index].createdAt,
                       // notificationPlace: _notificationsCubit!.notificationsModel?.notifications?[index].order!.orderLocation!.address,
                       // notificationTime: _notificationsCubit!.notificationsModel!.notifications![index].order!.deliveryTime.toString(),
                     ),
                     itemCount: _notificationsCubit!
-                        .notificationsModel!.notifications!.length,
+                        .notificationsModel!.notifications.length,
                   );
                 },
               );

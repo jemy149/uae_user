@@ -20,215 +20,240 @@ class AddingProductToCartCounterItem extends StatefulWidget {
 class _AddingProductToCartCounterItemState
     extends State<AddingProductToCartCounterItem> {
   late int productQuantity;
-   List<int> listOfQuantities = [];
-  late List<bool> listOfCheckBoxesValue;
+  List<int> listOfQuantities = [];
+  List<bool> listOfCheckBoxesValue = [];
 
   @override
   void initState() {
+    super.initState();
+    productQuantity = 0;
+
     if (widget.getProductsModel.prices.isEmpty) {
       productQuantity = widget.getProductsModel.quantity;
     } else {
-      listOfQuantities = List.generate(
-        widget.getProductsModel.prices.length,
-        (index) => listOfQuantities[index] =
-            widget.getProductsModel.prices[index].quantity,
-      );
-    }
+      listOfCheckBoxesValue=List.generate(widget.getProductsModel.prices.length, (index) => false);
 
-    super.initState();
+      for (var element in widget.getProductsModel.prices) {
+        listOfQuantities.add(element.quantity);
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Visibility(
-      visible: widget.getProductsModel.prices.isEmpty,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Flexible(
-            flex: 30,
-            child: SizedBox(
-              child: CheckboxListTile(
-                value: true,
-                onChanged: (p) {},
-                title: DefaultText(
-                  text: widget.getProductsModel.name,
+    return widget.getProductsModel.prices.isEmpty
+        ? Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                flex: 30,
+                child: SizedBox(
+                  child: CheckboxListTile(
+                    value: true,
+                    onChanged: (p) {},
+                    title: DefaultText(
+                      text: widget.getProductsModel.name,
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle1
+                          ?.copyWith(color: Colors.white),
+                    ),
+                    contentPadding: EdgeInsets.zero,
+                    controlAffinity: ListTileControlAffinity.leading,
+                  ),
+                  width: 100,
+                ),
+              ),
+              Expanded(
+                flex: 40,
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: AppColors.lightBlue,
+                      borderRadius: BorderRadius.circular(15)),
+                  padding: const EdgeInsets.symmetric(horizontal: 2),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          decrementProductQuantity();
+                        },
+                        child: const CircleAvatar(
+                          backgroundColor: AppColors.black,
+                          radius: 15.2,
+                          child: CircleAvatar(
+                            child: Icon(
+                              Icons.remove,
+                              color: Colors.white,
+                            ),
+                            backgroundColor: AppColors.lightBlue,
+                            radius: 15,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: DefaultText(
+                          text: productQuantity.toString(),
+                          style:
+                              Theme.of(context).textTheme.bodyText1?.copyWith(
+                                    color: Colors.white,
+                                  ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          incrementProductQuantity();
+                        },
+                        child: const CircleAvatar(
+                          backgroundColor: AppColors.black,
+                          radius: 15.2,
+                          child: CircleAvatar(
+                            child: Icon(
+                              Icons.add,
+                              color: Colors.white,
+                            ),
+                            backgroundColor: AppColors.lightBlue,
+                            radius: 15,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Flexible(
+                flex: 30,
+                child: DefaultText(
+                  text:
+                      '${widget.getProductsModel.price*productQuantity} ${AppLocalizations.of(context)!.appCurrency}',
                   style: Theme.of(context)
                       .textTheme
                       .subtitle1
                       ?.copyWith(color: Colors.white),
                 ),
-                contentPadding: EdgeInsets.zero,
-                controlAffinity: ListTileControlAffinity.leading,
-              ),
-              width: 100,
-            ),
-          ),
-          Expanded(
-            flex: 40,
-            child: Container(
-              decoration: BoxDecoration(
-                  color: AppColors.lightBlue,
-                  borderRadius: BorderRadius.circular(15)),
-              padding: const EdgeInsets.symmetric(horizontal: 2),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InkWell(
-                    onTap: () {},
-                    child: const CircleAvatar(
-                      backgroundColor: AppColors.black,
-                      radius: 15.2,
-                      child: CircleAvatar(
-                        child: Icon(
-                          Icons.remove,
-                          color: Colors.white,
-                        ),
-                        backgroundColor: AppColors.lightBlue,
-                        radius: 15,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: DefaultText(
-                      text: productQuantity.toString(),
-                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                            color: Colors.white,
-                          ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {},
-                    child: const CircleAvatar(
-                      backgroundColor: AppColors.black,
-                      radius: 15.2,
-                      child: CircleAvatar(
-                        child: Icon(
-                          Icons.add,
-                          color: Colors.white,
-                        ),
-                        backgroundColor: AppColors.lightBlue,
-                        radius: 15,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Flexible(
-            flex: 30,
-            child: DefaultText(
-              text:
-                  '${widget.getProductsModel.price} ${AppLocalizations.of(context)!.appCurrency}',
-              style: Theme.of(context)
-                  .textTheme
-                  .subtitle1
-                  ?.copyWith(color: Colors.white),
-            ),
+              )
+            ],
           )
-        ],
-      ),
-      replacement: Column(
-        children: List.generate(
-            widget.getProductsModel.prices.length,
-            (index) => Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      flex: 30,
-                      child: SizedBox(
-                        child: CheckboxListTile(
-                          value: true,
-                          onChanged: (p) {},
-                          title: DefaultText(
-                            text: widget.getProductsModel.prices[index].name,
+        : Column(
+            children: List.generate(
+                listOfQuantities.length,
+                (index) => Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          flex: 30,
+                          child: SizedBox(
+                            child: CheckboxListTile(
+                              value: listOfCheckBoxesValue[index],
+                              onChanged: (value) {
+                                setState(() {
+                                  listOfCheckBoxesValue[index]=value!;
+                                });
+                              },
+                              title: DefaultText(
+                                text:
+                                    widget.getProductsModel.prices[index].name,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1
+                                    ?.copyWith(color: Colors.white),
+                              ),
+                              contentPadding: EdgeInsets.zero,
+                              controlAffinity: ListTileControlAffinity.leading,
+                            ),
+                            width: 100,
+                          ),
+                        ),
+                        Expanded(
+                          flex: 40,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: AppColors.lightBlue,
+                                borderRadius: BorderRadius.circular(15)),
+                            padding: const EdgeInsets.symmetric(horizontal: 2),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    if (listOfCheckBoxesValue[index]) {
+                                      setState(() {
+                                        if (listOfQuantities[index] > 1) {
+                                          listOfQuantities[index]--;
+                                        }
+                                      });
+                                    }
+                                  },
+                                  child: const CircleAvatar(
+                                    backgroundColor: AppColors.black,
+                                    radius: 15.2,
+                                    child: CircleAvatar(
+                                      child: Icon(
+                                        Icons.remove,
+                                        color: Colors.white,
+                                      ),
+                                      backgroundColor: AppColors.lightBlue,
+                                      radius: 15,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: DefaultText(
+                                    text: listOfQuantities[index].toString(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        ?.copyWith(
+                                          color: Colors.white,
+                                        ),
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    if (listOfCheckBoxesValue[index]) {
+                                      setState(() {
+                                        if (listOfQuantities[index] < 99) {
+                                          listOfQuantities[index]++;
+                                        }
+                                      });
+                                    }
+                                  },
+                                  child: const CircleAvatar(
+                                    backgroundColor: AppColors.black,
+                                    radius: 15.2,
+                                    child: CircleAvatar(
+                                      child: Icon(
+                                        Icons.add,
+                                        color: Colors.white,
+                                      ),
+                                      backgroundColor: AppColors.lightBlue,
+                                      radius: 15,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Flexible(
+                          flex: 30,
+                          child: DefaultText(
+                            text:
+                                '${widget.getProductsModel.prices[index].price* listOfQuantities[index]} ${AppLocalizations.of(context)!.appCurrency}',
                             style: Theme.of(context)
                                 .textTheme
                                 .subtitle1
                                 ?.copyWith(color: Colors.white),
                           ),
-                          contentPadding: EdgeInsets.zero,
-                          controlAffinity: ListTileControlAffinity.leading,
-                        ),
-                        width: 100,
-                      ),
-                    ),
-                    Expanded(
-                      flex: 40,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: AppColors.lightBlue,
-                            borderRadius: BorderRadius.circular(15)),
-                        padding: const EdgeInsets.symmetric(horizontal: 2),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            InkWell(
-                              onTap: () {},
-                              child: const CircleAvatar(
-                                backgroundColor: AppColors.black,
-                                radius: 15.2,
-                                child: CircleAvatar(
-                                  child: Icon(
-                                    Icons.remove,
-                                    color: Colors.white,
-                                  ),
-                                  backgroundColor: AppColors.lightBlue,
-                                  radius: 15,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: DefaultText(
-                                text: '${listOfQuantities[index]}',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1
-                                    ?.copyWith(
-                                      color: Colors.white,
-                                    ),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {},
-                              child: const CircleAvatar(
-                                backgroundColor: AppColors.black,
-                                radius: 15.2,
-                                child: CircleAvatar(
-                                  child: Icon(
-                                    Icons.add,
-                                    color: Colors.white,
-                                  ),
-                                  backgroundColor: AppColors.lightBlue,
-                                  radius: 15,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Flexible(
-                      flex: 30,
-                      child: DefaultText(
-                        text:
-                            '${widget.getProductsModel.prices[index].price} ${AppLocalizations.of(context)!.appCurrency}',
-                        style: Theme.of(context)
-                            .textTheme
-                            .subtitle1
-                            ?.copyWith(color: Colors.white),
-                      ),
-                    )
-                  ],
-                )),
-      ),
-    );
+                        )
+                      ],
+                    )),
+          );
   }
 
   incrementProductQuantity() {

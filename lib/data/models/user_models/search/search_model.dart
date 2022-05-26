@@ -3,8 +3,8 @@ SearchModel searchModelFromJson(String str) => SearchModel.fromJson(json.decode(
 String searchModelToJson(SearchModel data) => json.encode(data.toJson());
 class SearchModel {
   SearchModel({
-      int? status, 
-      int? totalPages, 
+      int? status,
+      int? totalPages,
       List<Products>? products,}){
     _status = status;
     _totalPages = totalPages;
@@ -45,20 +45,20 @@ Products productsFromJson(String str) => Products.fromJson(json.decode(str));
 String productsToJson(Products data) => json.encode(data.toJson());
 class Products {
   Products({
-      int? id, 
-      String? barcode, 
-      String? name, 
-      String? description, 
+      int? id,
+      String? barcode,
+      String? name,
+      String? description,
       num? price,
-      bool? isFreeDelivered, 
-      List<String>? images, 
-      dynamic store, 
-      int? quantity, 
+      bool? isFreeDelivered,
+      List<String>? images,
+      dynamic store,
+      int? quantity,
       // List<dynamic>? prices,
-      bool? hasOffer, 
-      int? point, 
+      bool? hasOffer,
+      int? point,
       // List<dynamic>? features,
-      int? viewers,}){
+      int? viewers,bool? isFav}){
     _id = id;
     _barcode = barcode;
     _name = name;
@@ -73,6 +73,7 @@ class Products {
     _point = point;
     // _features = features;
     _viewers = viewers;
+    _isFav = isFav;
 }
 
   Products.fromJson(dynamic json) {
@@ -100,6 +101,7 @@ class Products {
     //   });
     // }
     _viewers = json['viewers'];
+    _isFav = json['isFav'];
   }
   int? _id;
   String? _barcode;
@@ -115,6 +117,7 @@ class Products {
   int? _point;
   // List<dynamic>? _features;
   int? _viewers;
+  bool? _isFav;
 
   int get id => _id ?? 0;
   String get barcode => _barcode ?? '';
@@ -130,6 +133,11 @@ class Products {
   int get point => _point ?? 0;
   // List<dynamic>? get features => _features;
   int get viewers => _viewers ?? 0;
+  bool get isFav => _isFav ?? false;
+
+  set setIsFav(bool value) {
+    _isFav = value;
+  }
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -151,6 +159,7 @@ class Products {
     //   map['features'] = _features?.map((v) => v.toJson()).toList();
     // }
     map['viewers'] = _viewers;
+    map['isFav'] = _isFav;
     return map;
   }
 

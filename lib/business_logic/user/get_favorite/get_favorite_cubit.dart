@@ -33,10 +33,9 @@ class GetFavoriteCubit extends Cubit<GetFavoriteState> {
     });
   }
 
-  void removeItem(final index){
-
+  void removeItem(final productId){
      favoriteModel.products
-          .removeAt(index);
+          .removeWhere((element) => element.id==productId);
      if (favoriteModel.products.isNotEmpty) {
        emit(RemoveItemState());
      }

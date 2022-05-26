@@ -76,7 +76,7 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
             body: BlocListener<ChangeFavoriteCubit, ChangeFavoriteStates>(
               listener: (context, state) {
                 if (state is FavoriteChangeSuccessState) {
-                  _getFavoriteCubit.removeItem(state.index);
+                  _getFavoriteCubit.removeItem(state.productId);
                 }
               },
               child: BlocBuilder<GetFavoriteCubit, GetFavoriteState>(
@@ -121,7 +121,6 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                           delegate: SliverChildBuilderDelegate(
                               (context, index) {
                             return UserFavouritesItem(
-                                index: index,
                                 productModel: _getFavoriteCubit
                                     .favoriteModel.products[index]);
                           },
