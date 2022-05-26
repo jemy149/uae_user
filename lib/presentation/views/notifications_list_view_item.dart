@@ -1,25 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:uae_user/business_logic/user/notifications/notifications_cubit.dart';
+import 'package:uae_user/data/models/user_models/notifications/notifications_model.dart';
 import 'package:uae_user/presentation/styles/colors.dart';
+import 'package:uae_user/presentation/widgets/default_cached_network_image.dart';
 import 'package:uae_user/presentation/widgets/default_text.dart';
 
 class NotificationsListViewItem extends StatelessWidget {
-  const NotificationsListViewItem(
-      {Key? key,
-       this.imagePath,
-      required this.notificationHeadLine,
-       this.notificationTime,
-       this.notificationPlace,
-      required this.notificationDate,
-      required this.notificationBody})
+final  Notifications notification;
+   NotificationsListViewItem( 
+      {Key? key,required this.notification,})
       : super(key: key);
 
-  final String? imagePath;
-  final String notificationHeadLine;
-  final String? notificationTime;
-  final String? notificationPlace;
-  final int notificationDate;
-  final String notificationBody;
+   
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +36,7 @@ class NotificationsListViewItem extends StatelessWidget {
                       backgroundColor: AppColors.lightBlue,
                       child: CircleAvatar(
                         radius: 35,
-                        child: Image.network(imagePath!),
+                        child: DefaultCachedNetworkImage(imageUrl: notification.content, fit: BoxFit.contain,),
                         backgroundColor: Colors.white,
                       ),
                     ),
@@ -58,7 +51,7 @@ class NotificationsListViewItem extends StatelessWidget {
                         children: [
                           Expanded(
                               child: DefaultText(
-                                  text: notificationHeadLine,
+                                  text: notification.content,
                                   style: Theme.of(context)
                                       .textTheme
                                       .subtitle1
@@ -66,7 +59,7 @@ class NotificationsListViewItem extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsetsDirectional.only(start: 5),
                             child: DefaultText(
-                                text: notificationTime!,
+                                text: notification.createdAt.toString(),
                                 style: Theme.of(context)
                                     .textTheme
                                     .caption
@@ -78,13 +71,13 @@ class NotificationsListViewItem extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           DefaultText(
-                              text: notificationPlace!,
+                              text: notification.id.toString(),
                               style: Theme.of(context)
                                   .textTheme
                                   .caption
                                   ?.copyWith(fontSize: 10)),
                           DefaultText(
-                              text: '${notificationDate}',
+                              text: notification.createdAt.toString(),
                               style: Theme.of(context)
                                   .textTheme
                                   .caption
@@ -98,7 +91,7 @@ class NotificationsListViewItem extends StatelessWidget {
                           children: [
                             Expanded(
                               child: DefaultText(
-                                text: notificationBody,
+                                text: notification.content,
                                 style: Theme.of(context).textTheme.subtitle2,
                                 maxLines: 50,
                               ),

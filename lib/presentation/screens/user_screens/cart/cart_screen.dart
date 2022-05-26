@@ -193,7 +193,7 @@ class _CartScreenState extends State<CartScreen> {
                           color: AppColors.lightBlue2,
                         ),
                         DefaultText(
-                          text: 'لم يتم العثور على نتائج',
+                          text: AppLocalizations.of(context)!.noResultsFound,
                           textStyle: Theme.of(context).textTheme.headline6,
                         )
                       ],

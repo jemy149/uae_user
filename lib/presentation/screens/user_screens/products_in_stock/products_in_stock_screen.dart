@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:uae_user/presentation/views/products_in_stock_item.dart';
-
 import '../../../../constants/screens.dart';
 import '../../../styles/colors.dart';
-import '../../../widgets/custome_search_field.dart';
 import '../../../widgets/default_text.dart';
 
-class ProdrctsInStockScreen extends StatelessWidget {
-  ProdrctsInStockScreen({Key? key}) : super(key: key);
+class ProductsInStockScreen extends StatelessWidget {
+  ProductsInStockScreen({Key? key}) : super(key: key);
   TextEditingController offersSearchController = TextEditingController();
 
   @override

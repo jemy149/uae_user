@@ -144,7 +144,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
                                   ),
                                   DefaultText(
-                                    text: 'لم يتم العثور على نتائج',
+                                    text: AppLocalizations.of(context)!.noResultsFound,
 
                                     textStyle:
                                     Theme.of(context).textTheme.headline6,

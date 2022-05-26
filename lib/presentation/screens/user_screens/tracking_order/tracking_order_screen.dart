@@ -139,7 +139,7 @@ class TrackingOrderScreen extends StatelessWidget {
 
             ),
             DefaultText(
-              text: 'لم يتم العثور على نتائج',
+              text: AppLocalizations.of(context)!.noResultsFound,
 
               textStyle:
               Theme.of(context).textTheme.headline6,

@@ -10,7 +10,7 @@ import '../../../widgets/default_text.dart';
 
 class DeliveryInformationScreen extends StatefulWidget {
   final GetOrdersModel getOrdersModel;
-  DeliveryInformationScreen({Key? key, required this.getOrdersModel}) : super(key: key);
+  const DeliveryInformationScreen({Key? key, required this.getOrdersModel}) : super(key: key);
 
   @override
   State<DeliveryInformationScreen> createState() => _DeliveryInformationScreenState();

@@ -5,12 +5,15 @@ import 'package:uae_user/business_logic/user/notifications/notifications_cubit.d
 import 'package:uae_user/presentation/views/notifications_list_view_item.dart';
 
 import '../../../styles/colors.dart';
+import '../../../widgets/DefaultSvg.dart';
+import '../../../widgets/default_error_widget.dart';
+import '../../../widgets/default_loading_indicator.dart';
 import '../../../widgets/default_text.dart';
 
 class NotificationsScreen extends StatelessWidget {
   NotificationsScreen({Key? key}) : super(key: key);
 
-  NotificationsCubit? _notificationsCubit;
+  late NotificationsCubit _notificationsCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -44,23 +47,38 @@ class NotificationsScreen extends StatelessWidget {
               ),
             ),
             body: Builder(builder: (context) {
-              _notificationsCubit = NotificationsCubit.get(context);
+
               return BlocBuilder<NotificationsCubit, NotificationsState>(
                 builder: (context, state) {
-                  return ListView.builder(
-                    itemBuilder: (context, index) => NotificationsListViewItem(
-                      notificationBody: _notificationsCubit!
-                          .notificationsModel!.notifications![index].content!,
-                      notificationHeadLine: _notificationsCubit!
-                          .notificationsModel?.notifications?[index].title,
-                      notificationDate: _notificationsCubit!
-                          .notificationsModel!.notifications![index].createdAt!,
-                      // notificationPlace: _notificationsCubit!.notificationsModel?.notifications?[index].order!.orderLocation!.address,
-                      // notificationTime: _notificationsCubit!.notificationsModel!.notifications![index].order!.deliveryTime.toString(),
-                    ),
-                    itemCount: _notificationsCubit!
-                        .notificationsModel!.notifications!.length,
-                  );
+                  if (state is UserNotificationsSuccessState) {
+                    return ListView.builder(
+                      itemBuilder: (context, index) => NotificationsListViewItem(notification:state.notifications[index]),
+                      itemCount: state.notifications.length,
+                    );
+                  }else if (state is UserNotificationsLoadingState) {
+                    return const DefaultLoadingIndicator();
+                  } else if (state is UserNotificationsEmptyState) {
+                    return Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const DefaultSvg(
+                            imagePath:
+                            'assets/icons/no_search_data.svg',
+
+                          ),
+                          DefaultText(
+                            text: AppLocalizations.of(context)!.noResultsFound,
+
+                            textStyle:
+                            Theme.of(context).textTheme.headline6,
+                          )
+                        ],
+                      ),
+                    );
+                  } else {
+                    return const DefaultErrorWidget();
+                  }
                 },
               );
             })),
