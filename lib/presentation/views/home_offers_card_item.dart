@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:uae_user/data/models/user_models/get_offers/get_offers_model.dart';
 import 'package:uae_user/presentation/styles/colors.dart';
 import 'package:uae_user/presentation/widgets/default_cached_network_image.dart';
 import 'package:uae_user/presentation/widgets/default_material_button.dart';
 import 'package:uae_user/presentation/widgets/default_text.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../business_logic/user/add_to_cart/add_to_cart_cubit.dart';
+import '../../constants/constant_methods.dart';
+import '../../constants/enums.dart';
 
 class HomeOffersCardItem extends StatelessWidget {
-
   final Offers offer;
-  const HomeOffersCardItem( {Key? key,required this.offer}) : super(key: key);
+  final int productId;
 
+
+   HomeOffersCardItem({Key? key, required this.offer, required this.productId}) : super(key: key);
+
+  late AddToCartCubit _cartCubit;
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -29,7 +37,9 @@ class HomeOffersCardItem extends StatelessWidget {
                     child: SizedBox(
                       width: 100,
                       height: 100,
-                      child: DefaultCachedNetworkImage(imageUrl: offer.product.images[0], fit: BoxFit.contain),
+                      child: DefaultCachedNetworkImage(
+                          imageUrl: offer.product.images[0],
+                          fit: BoxFit.contain),
                     ),
                   ),
                 ],
@@ -37,27 +47,43 @@ class HomeOffersCardItem extends StatelessWidget {
               Align(
                 alignment: Alignment.topCenter,
                 child: Padding(
-                  padding: const EdgeInsetsDirectional.only(top: 8.0,start: 5.0,end: 5.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsetsDirectional.only(end: 55.0),
-                        child: DefaultMaterialButton(
-                          text: AppLocalizations.of(context)!.offersAddButton,
-                          onTap: () {},
-                          height: 25,
-                          width: 60,
-                          color: AppColors.lightBlue,
-                          textColor: Colors.white,
-                          fontSize: 15,
+                  padding: const EdgeInsetsDirectional.only(
+                      top: 8.0, start: 5.0, end: 5.0),
+                  child: BlocListener<AddToCartCubit, AddToCartState>(
+                    listener: (context, state) {
+
+                      if (state is UserAddCartSuccessStates) {
+                        showToastMsg(
+                            msg: AppLocalizations.of(context)!.addedSuccessfully,
+                            toastState: ToastStates.SUCCESS);
+                      }
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsetsDirectional.only(end: 55.0),
+                          child: DefaultMaterialButton(
+                            text: AppLocalizations.of(context)!.offersAddButton,
+                            onTap: () {
+                              _cartCubit =
+                            AddToCartCubit.get(context);
+                            _cartCubit.userAddToCart(
+                                productId: productId);
+                            },
+                            height: 25,
+                            width: 60,
+                            color: AppColors.lightBlue,
+                            textColor: Colors.white,
+                            fontSize: 15,
+                          ),
                         ),
-                      ),
-                      const Icon(
-                        Icons.favorite_outline,
-                        color: AppColors.grey,
-                      ),
-                    ],
+                        const Icon(
+                          Icons.favorite_outline,
+                          color: AppColors.grey,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -71,19 +97,19 @@ class HomeOffersCardItem extends StatelessWidget {
                 child: DefaultText(
                   maxLines: 2,
                   text: offer.product.name,
-                  style: Theme.of(context)
-                      .textTheme
-                      .button
-                      ?.copyWith(fontFamily: 'Bukra-Regular',fontWeight: FontWeight.bold),
+                  style: Theme.of(context).textTheme.button?.copyWith(
+                      fontFamily: 'Bukra-Regular', fontWeight: FontWeight.bold),
                 ),
               ),
             ],
           ),
-           Text(
+          Text(
             '${offer.discount} ${AppLocalizations.of(context)!.appCurrency}',
             style: const TextStyle(decoration: TextDecoration.lineThrough),
           ),
-           DefaultText(text: offer.discountStr,)
+          DefaultText(
+            text: offer.discountStr,
+          )
         ],
       ),
     );

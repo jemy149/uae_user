@@ -145,5 +145,7 @@
       "addedSuccessfully":"اضيف بنجاح",
       "addDescription":"اضف وصف",
       "appCurrency":"درهم",
-      "noResultsFound":"لم يتم العثور على نتائج"
+      "noResultsFound":"لم يتم العثور على نتائج",
+      "addedSuccessfully":"أضيف بنجاح",
+      "thisFieldIsRequired":"هذه الخانة مطلوبه"
 }

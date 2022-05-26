@@ -63,7 +63,7 @@ class OffersScreen extends StatelessWidget {
                           mainAxisExtent: 190),
                       itemCount: state.offers.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return HomeOffersCardItem(offer: state.offers[index],);
+                        return HomeOffersCardItem(offer: state.offers[index],productId: state.offers[index].product.id,);
                       }),
                 ],
               ),

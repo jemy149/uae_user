@@ -12,6 +12,8 @@ import '../../../../business_logic/user/my_addresses/my_addresses_cubit.dart';
 import '../../../../constants/constant_methods.dart';
 import '../../../../constants/enums.dart';
 import '../../../../constants/screens.dart';
+import '../../../../constants/shared_preferences_keys.dart';
+import '../../../../data/data_provider/local/cache_helper.dart';
 import '../../../styles/colors.dart';
 import '../../../widgets/custome_drop_down_list_inner_text_widget.dart';
 import '../../../widgets/default_error_widget.dart';
@@ -37,6 +39,21 @@ class _DeliveryDetailsScreenState extends State<DeliveryDetailsScreen> {
   bool isTrue = false;
   String? addressValue;
   late MyAddressesCubit _myAddressesCubit;
+
+  @override
+  void initState() {
+    nameController.text = CacheHelper.getDataFromSP(
+            key: SharedPreferencesKeys.SP_ACCOUNT_NAME_KEY)
+        .toString();
+    emailController.text =
+        CacheHelper.getDataFromSP(key: SharedPreferencesKeys.SP_ACCOUNT_E_MAIL)
+            .toString();
+    phoneNumberController.text = CacheHelper.getDataFromSP(
+            key: SharedPreferencesKeys.SP_ACCOUNT_PHONE_KEY)
+        .toString();
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -147,11 +164,10 @@ class _DeliveryDetailsScreenState extends State<DeliveryDetailsScreen> {
                           ),
                           Visibility(
                             visible: isTrue,
-                            child: BlocBuilder<MyAddressesCubit,
-                                MyAddressesState>(
+                            child:
+                                BlocBuilder<MyAddressesCubit, MyAddressesState>(
                               builder: (context, state) {
-                                if (state is UserGetMyAddressesSuccessState
-                                    ) {
+                                if (state is UserGetMyAddressesSuccessState) {
                                   return Visibility(
                                     child: Card(
                                       shape: RoundedRectangleBorder(
@@ -192,12 +208,11 @@ class _DeliveryDetailsScreenState extends State<DeliveryDetailsScreen> {
                                               child: ListView.builder(
                                                 itemBuilder: (context, index) =>
                                                     CustomeDropDownListInnerTextWidget(
-                                                        myAddressModel:
-                                                            _myAddressesCubit
-                                                                    .myAddressesModel
-                                                                    .myAddress[
-                                                                index],
-                                                      ),
+                                                  myAddressModel:
+                                                      _myAddressesCubit
+                                                          .myAddressesModel
+                                                          .myAddress[index],
+                                                ),
                                                 itemCount: _myAddressesCubit
                                                     .myAddressesModel
                                                     .myAddress
@@ -233,7 +248,12 @@ class _DeliveryDetailsScreenState extends State<DeliveryDetailsScreen> {
                           radius: 25,
                           height: 100,
                           controller: phoneNumberController,
-                          validator: (p) {},
+                          validator: (text) {
+                            if (text!.isEmpty) {
+                              return AppLocalizations.of(context)!.email;
+                            }
+                            return '';
+                          },
                           keyboardType: TextInputType.number,
                           hintText: AppLocalizations.of(context)!.phoneNumber,
                         ),

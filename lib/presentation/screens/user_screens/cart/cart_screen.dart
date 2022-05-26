@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:uae_user/business_logic/user/cart/delete_cart/delete_cart_cubit.dart';
+import 'package:uae_user/presentation/screens/user_screens/app_layout/home_layout.dart';
 import 'package:uae_user/presentation/views/cart_item.dart';
 
 import '../../../../business_logic/user/cart/get_my_cart/get_my_cart_cubit.dart';
@@ -42,7 +43,12 @@ class _CartScreenState extends State<CartScreen> {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                HOME_LAYOUT_R,
+                    (route) => false,
+              );
+              // Navigator.pop(context);
             },
           ),
           title: Row(
@@ -109,7 +115,7 @@ class _CartScreenState extends State<CartScreen> {
                                     padding: const EdgeInsets.all(20.0),
                                     child: DefaultText(
                                       text:
-                                          '${_getMyCartCubit.getMyCartModel.totalPrice} ${AppLocalizations.of(context)!.appCurrency}',
+                                          '${_getMyCartCubit.getMyCartModel.totalPrice.toStringAsFixed(2)} ${AppLocalizations.of(context)!.appCurrency}',
                                       style:
                                           Theme.of(context).textTheme.bodyText1,
                                     ),

@@ -12,6 +12,7 @@ import 'package:uae_user/presentation/views/home_offers_card_item.dart';
 import 'package:uae_user/presentation/widgets/custome_search_field.dart';
 import 'package:uae_user/presentation/widgets/default_error_widget.dart';
 import 'package:uae_user/presentation/widgets/default_text.dart';
+import '../../../../business_logic/user/cart/get_my_cart/get_my_cart_cubit.dart';
 import '../../../../constants/constant_methods.dart';
 import '../../../../constants/screens.dart';
 import '../../../widgets/DefaultSvg.dart';
@@ -39,6 +40,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         BlocProvider(
           create: (context) => CategoryCubit()..userCategories(),
+
+        ),
+        BlocProvider(
+          create: (context) => GetMyCartCubit()..userGetCart(),
         ),
 
       ],
@@ -64,8 +69,8 @@ class _HomeScreenState extends State<HomeScreen> {
               IconButton(
                 icon: Stack(
                   alignment: Alignment.topRight,
-                  children: const [
-                    Icon(
+                  children:  [
+                    const Icon(
                       Icons.add_shopping_cart,
                       color: Colors.white,
                     ),
@@ -73,9 +78,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       backgroundColor: Colors.lightGreenAccent,
                       radius: 5.0,
                       child: Center(
-                        child: Text(
-                          '0',
-                          style: TextStyle(fontSize: 8),
+                        child: BlocBuilder<GetMyCartCubit, GetMyCartState>(
+                          builder: (context, state) {
+                            GetMyCartCubit getMyCartCubit = GetMyCartCubit.get(context);
+                          return Text(
+                            '${getMyCartCubit.getMyCartModel.carts.length}',
+                            style: const TextStyle(fontSize: 8),
+                          );
+                          },
                         ),
                       ),
                     ),
@@ -137,6 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       if (text!.isEmpty) {
                                         return 'البحث فارغ';
                                       }
+                                      return '';
                                     },
                                     onFieldSubmitted: (text) {
                                       if (searchFormKey.currentState!
@@ -225,7 +236,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: Row(
                                     children: List.generate(
                                       state.offers.length,
-                                      (index) => HomeOffersCardItem(offer:state.offers[index]),
+                                      (index) => HomeOffersCardItem(offer:state.offers[index],productId:state.offers[index].product.id),
                                     ),
                                   ),
                                 ),
