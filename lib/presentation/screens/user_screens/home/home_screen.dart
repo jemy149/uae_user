@@ -155,6 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   interactive: true,
                   controller: scrollController,
                   child: SingleChildScrollView(
+                    controller: scrollController,
                     child: Column(
                       children: [
                         BlocBuilder<AdsCubit, AdsStates>(

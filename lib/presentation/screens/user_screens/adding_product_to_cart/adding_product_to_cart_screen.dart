@@ -5,7 +5,9 @@ import 'package:uae_user/constants/constant_methods.dart';
 import 'package:uae_user/constants/enums.dart';
 import 'package:uae_user/presentation/views/adding_product_to_cart_counter_item.dart';
 import 'package:uae_user/presentation/widgets/default_cached_network_image.dart';
+
 import '../../../../business_logic/user/add_to_cart/add_to_cart_cubit.dart';
+import '../../../../business_logic/user/change_favorite/favorite_change_cubit.dart';
 import '../../../../business_logic/user/get_products/get_products_cubit.dart';
 import '../../../styles/colors.dart';
 import '../../../widgets/DefaultSvg.dart';
@@ -28,14 +30,13 @@ class AddingProductToCartScreen extends StatefulWidget {
 late GetProductsCubit _getProductsCubit;
 
 class _AddingProductToCartScreenState extends State<AddingProductToCartScreen> {
+  bool favClicked = false;
+
   @override
   Widget build(BuildContext context) {
-    printTest(widget.productId.toString());
     return MultiBlocProvider(
         providers: [
-          BlocProvider(
-            create: (context) => AddToCartCubit()
-          ),
+          BlocProvider(create: (context) => AddToCartCubit()),
           BlocProvider(
             create: (context) => GetProductsCubit()
               ..userGetProducts(productId: widget.productId),
@@ -74,133 +75,169 @@ class _AddingProductToCartScreenState extends State<AddingProductToCartScreen> {
                               )),
                           child: Center(
                               child: DefaultCachedNetworkImage(
-                                  imageUrl: _getProductsCubit
-                                      .getProductsModel.product.images[0],
+                                  imageUrl: _getProductsCubit.getProductsModel
+                                          .product.images.isEmpty
+                                      ? ''
+                                      : _getProductsCubit
+                                          .getProductsModel.product.images[0],
                                   fit: BoxFit.contain)),
                         ),
                         Positioned(
                           top: 20.0,
                           right: 20.0,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: AppColors.lightBlue),
-                            child: const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Icon(
-                                Icons.favorite_outline,
-                                color: Colors.white,
+                          child: BlocListener<ChangeFavoriteCubit,
+                              ChangeFavoriteStates>(
+                            listener: (context, state) {
+                              if (state is FavoriteChangeSuccessState) {
+                                favClicked = false;
+                                if (_getProductsCubit
+                                        .getProductsModel.product.id ==
+                                    state.productId) {
+                                  setState(() {
+                                    printTest(  _getProductsCubit
+                                        .getProductsModel.product.isFav.toString());
+                                    _getProductsCubit
+                                            .getProductsModel.product.setIsFav =
+                                        !_getProductsCubit
+                                            .getProductsModel.product.isFav;
+                                  });
+                                }
+                              } else if (state is FavoriteChangeErrorState) {
+                                favClicked = false;
+                              }
+                            },
+                            child: InkWell(
+                              onTap: () {
+                                if (!favClicked) {
+                                  favClicked = true;
+                                  ChangeFavoriteCubit.get(context)
+                                      .changeFavorite(
+                                    productId: _getProductsCubit
+                                        .getProductsModel.product.id,
+                                  );
+                                }
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: AppColors.lightBlue),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: _getProductsCubit
+                                              .getProductsModel.product.isFav ==
+                                          false
+                                      ? const Icon(
+                                          Icons.favorite_outline,
+                                          color: AppColors.grey,
+                                        )
+                                      : const Icon(
+                                          Icons.favorite,
+                                          color: AppColors.red,
+                                        ),
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ],
                     ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(30.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.white30,
-                              borderRadius: BorderRadius.circular(25)),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsetsDirectional.only(
-                                    start: 12.0, top: 10.0, end: 12.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    DefaultText(
-                                      maxLines: 4,
-                                      text: _getProductsCubit
-                                          .getProductsModel.product.name,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1
-                                          ?.copyWith(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              fontFamily: 'Bukra-Regular'),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 8.0),
-                                      child: DefaultText(
-                                        text: _getProductsCubit.getProductsModel
-                                            .product.description,
-                                        maxLines: 4,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .caption
-                                            ?.copyWith(
-                                              color: Colors.white70,
-                                            ),
-                                      ),
-                                    ),
-                                    DefaultText(
-                                      text:
-                                          '${_getProductsCubit.getProductsModel.product.price} AED',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1
-                                          ?.copyWith(
+                    Padding(
+                      padding: const EdgeInsets.all(30.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white30,
+                            borderRadius: BorderRadius.circular(25.0)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsetsDirectional.only(
+                                  start: 12.0, top: 10.0, end: 12.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  DefaultText(
+                                    maxLines: 4,
+                                    text: _getProductsCubit
+                                        .getProductsModel.product.name,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        ?.copyWith(
                                             color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'Bukra-Regular'),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
+                                    child: DefaultText(
+                                      text: _getProductsCubit
+                                          .getProductsModel.product.description,
+                                      maxLines: 4,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .caption
+                                          ?.copyWith(
+                                            color: Colors.white70,
                                           ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsetsDirectional.only(end: 12.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                   AddingProductToCartCounterItem(getProductsModel: _getProductsCubit.getProductsModel.product),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 20),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Builder(builder: (context) {
-                                      AddToCartCubit _cartCubit =
-                                          AddToCartCubit.get(context);
-                                      return BlocListener<AddToCartCubit,
-                                          CartState>(
-                                        listener: (context, state) {
-                                          if (state
-                                              is UserAddCartSuccessStates) {
-                                            showToastMsg(
-                                                msg: 'Added Successfully',
-                                                toastState:
-                                                    ToastStates.SUCCESS);
-                                          }
-                                        },
-                                        child: DefaultMaterialButton(
-                                          text: AppLocalizations.of(context)!
-                                              .addToCart,
-                                          onTap: () {
-                                            _cartCubit.userAddToCart(
-                                                productId: widget.productId);
-                                          },
-                                          height: 50,
-                                          width: 260,
+                                  ),
+                                  DefaultText(
+                                    text:
+                                        '${_getProductsCubit.getProductsModel.product.price} AED',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        ?.copyWith(
                                           color: Colors.white,
-                                          textColor: AppColors.lightBlue,
                                         ),
-                                      );
-                                    })
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsetsDirectional.only(end: 12.0),
+                              child: AddingProductToCartCounterItem(
+                                  getProductsModel: _getProductsCubit
+                                      .getProductsModel.product),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 20),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Builder(builder: (context) {
+                                    AddToCartCubit _cartCubit =
+                                        AddToCartCubit.get(context);
+                                    return BlocListener<AddToCartCubit,
+                                        CartState>(
+                                      listener: (context, state) {
+                                        if (state is UserAddCartSuccessStates) {
+                                          showToastMsg(
+                                              msg: 'Added Successfully',
+                                              toastState: ToastStates.SUCCESS);
+                                        }
+                                      },
+                                      child: DefaultMaterialButton(
+                                        text: AppLocalizations.of(context)!
+                                            .addToCart,
+                                        onTap: () {
+                                          _cartCubit.userAddToCart(
+                                              productId: widget.productId);
+                                        },
+                                        height: 50,
+                                        width: 260,
+                                        color: Colors.white,
+                                        textColor: AppColors.lightBlue,
+                                      ),
+                                    );
+                                  })
+                                ],
+                              ),
+                            )
+                          ],
                         ),
                       ),
                     )

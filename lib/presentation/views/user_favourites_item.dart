@@ -7,11 +7,10 @@ import 'package:uae_user/presentation/widgets/default_text.dart';
 
 class UserFavouritesItem extends StatefulWidget {
   final Products productModel;
-  final int index;
 
   const UserFavouritesItem({
     Key? key,
-    required this.productModel, required this.index,
+    required this.productModel,
   }) : super(key: key);
 
   @override
@@ -57,7 +56,7 @@ class _UserFavouritesItemState extends State<UserFavouritesItem> {
                         const EdgeInsetsDirectional.only(start: 10, top: 15),
                     child: InkWell(
                       onTap: () {
-                        _changeFavoriteCubit.changeFavorite(productId: widget.productModel.id,index: widget.index);
+                        _changeFavoriteCubit.changeFavorite(productId: widget.productModel.id,);
                       },
                       child: Container(
                         decoration: BoxDecoration(

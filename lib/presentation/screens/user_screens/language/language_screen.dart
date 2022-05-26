@@ -9,6 +9,8 @@ import 'package:uae_user/constants/shared_preferences_keys.dart';
 import 'package:uae_user/data/data_provider/local/cache_helper.dart';
 import 'package:uae_user/presentation/widgets/default_material_button.dart';
 
+import '../../../../constants/constant_methods.dart';
+import '../../../../constants/constants.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../styles/colors.dart';
 import '../../../widgets/default_text.dart';
@@ -25,7 +27,6 @@ late bool isArabic ;
 
 @override
   void initState() {
-    CacheHelper.getDataFromSP(key: SharedPreferencesKeys.SP_APP_LANGUAGE);
     super.initState();
   }
 
@@ -80,11 +81,19 @@ late bool isArabic ;
                                   return DefaultMaterialButton(
                                       text: AppLocalizations.of(context)!.detectLanguage,
                                       onTap: () {
-                                        String currentDeviceLanguage= Platform.localeName.substring(0,2);
-                                        print(currentDeviceLanguage);
-                                        // _langCubit..setLocale(Locale('${defaultLocale}'));
+                                        if( CacheHelper.getDataFromSP(key: SharedPreferencesKeys.SP_APP_LANGUAGE)=='ar')
+                                          {
+                                            AppLang="En";
+                                            _langCubit.setLocale(const Locale('en'));
+                                          }
+                                        else if( CacheHelper.getDataFromSP(key: SharedPreferencesKeys.SP_APP_LANGUAGE)=='en')
+                                        {
+                                          AppLang="Ar";
+                                          _langCubit.setLocale(const Locale('ar'));
+                                        }
 
-                                        // print(locale);
+
+
                                       },
                                       height: 50,
                                       width: 220,

@@ -39,7 +39,7 @@ class CacheHelper {
   }
   static String getCurrentLanguage() {
     String currentDeviceLanguage= Platform.localeName.substring(0,2);
-    return sharedPreferences.getString(SharedPreferencesKeys.SP_APP_LANGUAGE.name) ?? "${currentDeviceLanguage}";
+    return sharedPreferences.getString(SharedPreferencesKeys.SP_APP_LANGUAGE.name) ?? currentDeviceLanguage;
 
   }
 

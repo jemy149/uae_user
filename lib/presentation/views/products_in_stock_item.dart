@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uae_user/business_logic/user/change_favorite/favorite_change_cubit.dart';
+import 'package:uae_user/constants/constant_methods.dart';
 import 'package:uae_user/data/models/user_models/search/search_model.dart';
 
 import '../../constants/screens.dart';
@@ -21,11 +22,12 @@ class ProductsInStockItem extends StatefulWidget {
 }
 
 class _ProductsInStockItemState extends State<ProductsInStockItem> {
+  bool favClicked=false;
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, ADDING_PRODUCT_TO_CART_SCREEN_R,
+        Navigator.pushReplacementNamed(context, ADDING_PRODUCT_TO_CART_SCREEN_R,
             arguments: widget.productModel.id);
       },
       child: Card(
@@ -58,10 +60,39 @@ class _ProductsInStockItemState extends State<ProductsInStockItem> {
                         top: 8.0, start: 5.0, end: 5.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
-                      children: const [
-                        Icon(
-                          Icons.favorite_outline,
-                          color: AppColors.grey,
+                      children: [
+                        BlocListener<ChangeFavoriteCubit, ChangeFavoriteStates>(
+                          listener: (context, state) {
+                            if(state is FavoriteChangeSuccessState){
+                              favClicked=false;
+
+                              if(widget.productModel.id==state.productId){
+                                setState(() {
+                                  widget.productModel.setIsFav= !widget.productModel.isFav;
+                                });
+                              }
+                            }
+                            else if (state is FavoriteChangeErrorState){
+                              favClicked=false;
+                            }
+                          },
+                          child: InkWell(onTap: () {
+
+                            if (!favClicked) {
+                              favClicked=true;
+                              ChangeFavoriteCubit.get(context).changeFavorite(
+                                productId: widget.productModel.id,
+                              );
+                            }
+                          },
+                            child: widget.productModel.isFav==false?const Icon(
+                               Icons.favorite_outline,
+                              color: AppColors.grey,
+                            ):const Icon(
+                              Icons.favorite,
+                              color: AppColors.red,
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -74,26 +105,14 @@ class _ProductsInStockItemState extends State<ProductsInStockItem> {
               child: Row(
                 children: [
                   Flexible(
-                      child: BlocListener<ChangeFavoriteCubit,
-                          ChangeFavoriteStates>(
-                    listener: (context, state) {
-                      if(state is FavoriteChangeSuccessState){
-                        if(widget.productModel.id==state.productId){
-                          // widget.productModel.favorite=!  widget.productModel.favorite;
-                        }
-                      }
-                    },
-                    child: InkWell(
-                        onTap: () {
-                          ChangeFavoriteCubit.get(context).changeFavorite(
-                            productId: widget.productModel.id,
-                          );
-                        },
-                        child: const Icon(
-                          Icons.add_shopping_cart_outlined,
-                          color: AppColors.lightBlue,
-                        )),
-                  )),
+                      child: InkWell(
+                          onTap: () {
+
+                          },
+                          child: const Icon(
+                            Icons.add_shopping_cart_outlined,
+                            color: AppColors.lightBlue,
+                          ))),
                   const Spacer(
                     flex: 1,
                   ),
@@ -108,12 +127,13 @@ class _ProductsInStockItemState extends State<ProductsInStockItem> {
                                 child: DefaultText(
                                   maxLines: 2,
                                   text: widget.productModel.name,
-                                  style: Theme.of(context)
+                                  style: Theme
+                                      .of(context)
                                       .textTheme
                                       .button
                                       ?.copyWith(
-                                          fontFamily: 'Bukra-Regular',
-                                          fontWeight: FontWeight.bold),
+                                      fontFamily: 'Bukra-Regular',
+                                      fontWeight: FontWeight.bold),
                                 ),
                               )
                             ]),
