@@ -9,6 +9,7 @@ import 'package:uae_user/presentation/styles/themes.dart';
 
 import 'business_logic/user/cart/edit_cart/edit_cart_cubit.dart';
 import 'business_logic/user/change_favorite/favorite_change_cubit.dart';
+import 'business_logic/user/get_offers/get_offers_cubit.dart';
 import 'data/data_provider/local/cache_helper.dart';
 import 'data/data_provider/remote/dio_helper.dart';
 import 'l10n/l10n.dart';
@@ -44,6 +45,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => EditCartCubit(),
+        ),
+        BlocProvider(
+          create: (context) => GetOffersCubit()..userGetOffers(),
         ),
       ],
       child: BlocBuilder<LanguageCubit,LanguageState>(builder: (context,state) {

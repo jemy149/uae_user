@@ -1,12 +1,15 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:uae_user/data/models/user_models/get_offers/get_offers_model.dart';
 import 'package:uae_user/presentation/styles/colors.dart';
+import 'package:uae_user/presentation/widgets/default_cached_network_image.dart';
 import 'package:uae_user/presentation/widgets/default_material_button.dart';
 import 'package:uae_user/presentation/widgets/default_text.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeOffersCardItem extends StatelessWidget {
-  const HomeOffersCardItem({Key? key}) : super(key: key);
+
+  final Offers offer;
+  const HomeOffersCardItem( {Key? key,required this.offer}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +24,12 @@ class HomeOffersCardItem extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    width: 150,
-                    height: 150,
-                    child: Image.asset(
-                      'assets/images/fruits.png',
-                      fit: BoxFit.contain,
+                  Padding(
+                    padding: const EdgeInsetsDirectional.only(start: 25.0),
+                    child: SizedBox(
+                      width: 100,
+                      height: 100,
+                      child: DefaultCachedNetworkImage(imageUrl: offer.product.images[0], fit: BoxFit.contain),
                     ),
                   ),
                 ],
@@ -60,18 +63,27 @@ class HomeOffersCardItem extends StatelessWidget {
               ),
             ],
           ),
-          DefaultText(
-            text: 'ietm name',
-            style: Theme.of(context)
-                .textTheme
-                .button
-                ?.copyWith(fontFamily: 'Bukra-Regular',fontWeight: FontWeight.bold),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 100,
+                child: DefaultText(
+                  maxLines: 2,
+                  text: offer.product.name,
+                  style: Theme.of(context)
+                      .textTheme
+                      .button
+                      ?.copyWith(fontFamily: 'Bukra-Regular',fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
           ),
-          const Text(
-            '${0.0}',
-            style: TextStyle(decoration: TextDecoration.lineThrough),
+           Text(
+            '${offer.discount} ${AppLocalizations.of(context)!.appCurrency}',
+            style: const TextStyle(decoration: TextDecoration.lineThrough),
           ),
-          const DefaultText(text: '${80.00} RS')
+           DefaultText(text: offer.discountStr,)
         ],
       ),
     );

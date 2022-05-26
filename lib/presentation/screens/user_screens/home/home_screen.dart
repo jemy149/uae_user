@@ -1,9 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:uae_user/business_logic/user/ads/ads_cubit.dart';
 import 'package:uae_user/business_logic/user/category/category_cubit.dart';
+import 'package:uae_user/business_logic/user/get_offers/get_offers_cubit.dart';
 import 'package:uae_user/presentation/screens/user_screens/search/search_screen.dart';
 import 'package:uae_user/presentation/styles/colors.dart';
 import 'package:uae_user/presentation/views/custome_carousel_slider.dart';
@@ -12,20 +12,20 @@ import 'package:uae_user/presentation/views/home_offers_card_item.dart';
 import 'package:uae_user/presentation/widgets/custome_search_field.dart';
 import 'package:uae_user/presentation/widgets/default_error_widget.dart';
 import 'package:uae_user/presentation/widgets/default_text.dart';
-
 import '../../../../constants/constant_methods.dart';
 import '../../../../constants/screens.dart';
+import '../../../widgets/DefaultSvg.dart';
 import '../../../widgets/default_loading_indicator.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   GlobalKey<FormState> searchFormKey = GlobalKey<FormState>();
   ScrollController scrollController = ScrollController();
@@ -115,14 +115,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: Form(
                                   key: searchFormKey,
                                   child: CustomeSearchField(
-                                    keyboardType:TextInputType.text,
+                                    keyboardType: TextInputType.text,
                                     prefixIcon: IconButton(
-                                      icon: Image.asset('assets/images/search.png'),
-                                      onPressed: () {Navigator.pushNamed(context, SEARCH_SCREEN_R);},
+                                      icon: Image.asset(
+                                          'assets/images/search.png'),
+                                      onPressed: () {
+                                        Navigator.pushNamed(
+                                            context, SEARCH_SCREEN_R);
+                                      },
                                     ),
                                     suffixIcon: IconButton(
-                                      icon: Image.asset('assets/images/barcode.png'),
-                                      onPressed: () {Navigator.pushNamed(context, BAR_CODE_SCREEN_R);},
+                                      icon: Image.asset(
+                                          'assets/images/barcode.png'),
+                                      onPressed: () {
+                                        Navigator.pushNamed(
+                                            context, BAR_CODE_SCREEN_R);
+                                      },
                                     ),
                                     controller: _searchController,
                                     validator: (text) {
@@ -131,9 +139,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                       }
                                     },
                                     onFieldSubmitted: (text) {
-                                      if (searchFormKey.currentState!.validate()) {
+                                      if (searchFormKey.currentState!
+                                          .validate()) {
                                         navigateTo(context,
-                                            SearchScreen(searchText:text));
+                                            SearchScreen(searchText: text));
                                       }
                                     },
                                   ),
@@ -205,20 +214,47 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: const [
-                                HomeOffersCardItem(),
-                                HomeOffersCardItem(),
-                                HomeOffersCardItem(),
-                                HomeOffersCardItem(),
-                                HomeOffersCardItem(),
-                              ],
-                            ),
-                          ),
+                        BlocBuilder<GetOffersCubit, GetOffersState>(
+                          builder: (context, state) {
+                            if (state is UserGetOffersSuccessState) {
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5.0),
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: List.generate(
+                                      state.offers.length,
+                                      (index) => HomeOffersCardItem(offer:state.offers[index]),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            } else if (state is UserGetOffersLoadingState) {
+                              return const DefaultLoadingIndicator();
+                            } else if (state is UserGetOffersEmptyState) {
+                              return Center(
+                                child: Expanded(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const DefaultSvg(
+                                        imagePath: 'assets/icons/no_search_data.svg',
+                                        color: AppColors.lightBlue2,
+                                      ),
+                                      DefaultText(
+                                        text: AppLocalizations.of(context)!.noResultsFound,
+                                        style: const TextStyle(color: Colors.white),
+                                        textStyle: Theme.of(context).textTheme.headline6,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            } else {
+                              return const DefaultErrorWidget();
+                            }
+                          },
                         ),
                         Row(
                           children: [
@@ -259,9 +295,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                           state.userCategories[index].image,
                                       onTap: () {
                                         Navigator.pushNamed(
-                                            context, CATEGORIES_SCREEN_R,arguments:  state
-                                          .userCategories[index]
-                                          .id, );
+                                          context,
+                                          CATEGORIES_SCREEN_R,
+                                          arguments:
+                                              state.userCategories[index].id,
+                                        );
                                       },
                                     );
                                   });

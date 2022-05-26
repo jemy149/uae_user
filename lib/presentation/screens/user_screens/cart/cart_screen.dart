@@ -194,6 +194,7 @@ class _CartScreenState extends State<CartScreen> {
                         ),
                         DefaultText(
                           text: AppLocalizations.of(context)!.noResultsFound,
+                          style: const TextStyle(color: Colors.white),
                           textStyle: Theme.of(context).textTheme.headline6,
                         )
                       ],
