@@ -223,6 +223,10 @@ class _AddingProductToCartScreenState extends State<AddingProductToCartScreen> {
                                           showToastMsg(
                                               msg: AppLocalizations.of(context)!.addedSuccessfully,
                                               toastState: ToastStates.SUCCESS);
+                                        }else{
+                                          showToastMsg(
+                                              msg: AppLocalizations.of(context)!.notAvailable,
+                                              toastState: ToastStates.WARNING);
                                         }
                                       },
                                       child: DefaultMaterialButton(

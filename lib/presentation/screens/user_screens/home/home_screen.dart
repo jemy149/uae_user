@@ -35,13 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => AdsCubit()..userAds(type: 'welcome'),
-        ),
-        BlocProvider(
-          create: (context) => CategoryCubit()..userCategories(),
 
-        ),
         BlocProvider(
           create: (context) => GetMyCartCubit()..userGetCart(),
         ),

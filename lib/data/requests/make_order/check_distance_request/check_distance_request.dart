@@ -9,7 +9,7 @@ import '../make_order_request/order_location_model.dart';
 
 class CheckDistanceRequest {
    Future checkDistanceRequest({
-    required OrderLocation orderLocation,
+    required MakeOrderLocation orderLocation,
   }) async {
     try {
       Response response = await DioHelper.postData(url: EP_CHECK_DISTANCE, data: {

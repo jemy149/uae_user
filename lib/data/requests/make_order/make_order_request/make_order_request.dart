@@ -10,8 +10,7 @@ import 'cart_item_model/cart_item_model.dart';
 
 class MakeOrderRequest {
   static Future makeOrderRequest({
-    OrderLocation? orderLocation,
-    List<CartItem>? carts,
+     MakeOrderLocation? makeOrderLocation ,
     String? discountCode,
     String? extraDescription,
     String? paymentMethod,
@@ -26,8 +25,7 @@ class MakeOrderRequest {
         }
       }
       addIfNotNull('apiToken', apiToken);
-      addIfNotNull('orderLocation', orderLocation!.toJson());
-      addIfNotNull('carts', List<dynamic>.from(carts!.map((x) => x.toJson())));
+      addIfNotNull('orderLocation', makeOrderLocation!.toJson());
       addIfNotNull('discountCode', discountCode);
       addIfNotNull('extraDescription', extraDescription);
       addIfNotNull('paymentMethod', paymentMethod);

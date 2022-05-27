@@ -4,6 +4,7 @@ import 'package:uae_user/business_logic/user/change_favorite/favorite_change_cub
 import 'package:uae_user/constants/constant_methods.dart';
 import 'package:uae_user/data/models/user_models/search/search_model.dart';
 
+import '../../business_logic/user/add_to_cart/add_to_cart_cubit.dart';
 import '../../constants/screens.dart';
 import '../styles/colors.dart';
 import '../widgets/default_cached_network_image.dart';
@@ -107,7 +108,8 @@ class _ProductsInStockItemState extends State<ProductsInStockItem> {
                   Flexible(
                       child: InkWell(
                           onTap: () {
-
+                            AddToCartCubit.get(context).userAddToCart(
+                                productId: widget.productModel.id);
                           },
                           child: const Icon(
                             Icons.add_shopping_cart_outlined,

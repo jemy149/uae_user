@@ -8,8 +8,6 @@ import 'package:uae_user/presentation/views/user_favourites_item.dart';
 import 'package:uae_user/presentation/widgets/DefaultSvg.dart';
 import 'package:uae_user/presentation/widgets/default_error_widget.dart';
 import 'package:uae_user/presentation/widgets/default_loading_indicator.dart';
-
-import '../../../../constants/screens.dart';
 import '../../../styles/colors.dart';
 import '../../../widgets/default_text.dart';
 
@@ -36,42 +34,14 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
         child: Scaffold(
             appBar: AppBar(
               backgroundColor: AppColors.lightBlue,
-              leading: IconButton(
-                icon: Image.asset('assets/images/bell1.png'),
-                onPressed: () {
-                  Navigator.pushNamed(context, NOTIFICATIONS_SCREEN_R);
-                },
-              ),
+
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   DefaultText(text: AppLocalizations.of(context)!.fav),
                 ],
               ),
-              actions: [
-                IconButton(
-                  icon: Stack(
-                    alignment: Alignment.topRight,
-                    children: const [
-                      Icon(
-                        Icons.add_shopping_cart,
-                        color: Colors.white,
-                      ),
-                      CircleAvatar(
-                        backgroundColor: Colors.lightGreenAccent,
-                        radius: 5.0,
-                        child: Center(
-                          child: Text(
-                            '0',
-                            style: TextStyle(fontSize: 8),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  onPressed: () {},
-                ),
-              ],
+
             ),
             body: BlocListener<ChangeFavoriteCubit, ChangeFavoriteStates>(
               listener: (context, state) {

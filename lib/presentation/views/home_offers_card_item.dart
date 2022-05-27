@@ -10,6 +10,7 @@ import 'package:uae_user/presentation/widgets/default_text.dart';
 import '../../business_logic/user/add_to_cart/add_to_cart_cubit.dart';
 import '../../constants/constant_methods.dart';
 import '../../constants/enums.dart';
+import '../../constants/screens.dart';
 
 class HomeOffersCardItem extends StatelessWidget {
   final Offers offer;
@@ -21,43 +22,39 @@ class HomeOffersCardItem extends StatelessWidget {
   late AddToCartCubit _cartCubit;
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      child: Column(
-        children: [
-          Stack(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsetsDirectional.only(start: 25.0),
-                    child: SizedBox(
-                      width: 100,
-                      height: 100,
-                      child: DefaultCachedNetworkImage(
-                          imageUrl: offer.product.images[0],
-                          fit: BoxFit.contain),
+    return InkWell(
+      onTap: (){
+        Navigator.pushReplacementNamed(context, ADDING_PRODUCT_TO_CART_SCREEN_R,
+            arguments:productId);
+      },
+      child: Card(
+        elevation: 5,
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsetsDirectional.only(start: 15.0),
+                      child: SizedBox(
+                        width: 100,
+                        height: 100,
+                        child: DefaultCachedNetworkImage(
+                            imageUrl: offer.product.images[0],
+                            fit: BoxFit.contain),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              Align(
-                alignment: Alignment.topCenter,
-                child: Padding(
-                  padding: const EdgeInsetsDirectional.only(
-                      top: 8.0, start: 5.0, end: 5.0),
-                  child: BlocListener<AddToCartCubit, AddToCartState>(
-                    listener: (context, state) {
-
-                      if (state is UserAddCartSuccessStates) {
-                        showToastMsg(
-                            msg: AppLocalizations.of(context)!.addedSuccessfully,
-                            toastState: ToastStates.SUCCESS);
-                      }
-                    },
+                  ],
+                ),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.only(
+                        top: 8.0, start: 5.0, end: 5.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -78,39 +75,39 @@ class HomeOffersCardItem extends StatelessWidget {
                             fontSize: 15,
                           ),
                         ),
-                        const Icon(
-                          Icons.favorite_outline,
-                          color: AppColors.grey,
-                        ),
+                        // const Icon(
+                        //   Icons.favorite_outline,
+                        //   color: AppColors.grey,
+                        // ),
                       ],
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: 100,
-                child: DefaultText(
-                  maxLines: 2,
-                  text: offer.product.name,
-                  style: Theme.of(context).textTheme.button?.copyWith(
-                      fontFamily: 'Bukra-Regular', fontWeight: FontWeight.bold),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 100,
+                  child: DefaultText(
+                    maxLines: 2,
+                    text: offer.product.name,
+                    style: Theme.of(context).textTheme.button?.copyWith(
+                        fontFamily: 'Bukra-Regular', fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-            ],
-          ),
-          Text(
-            '${offer.discount} ${AppLocalizations.of(context)!.appCurrency}',
-            style: const TextStyle(decoration: TextDecoration.lineThrough),
-          ),
-          DefaultText(
-            text: offer.discountStr,
-          )
-        ],
+              ],
+            ),
+            Text(
+              '${offer.discount} ${AppLocalizations.of(context)!.appCurrency}',
+              style: const TextStyle(decoration: TextDecoration.lineThrough),
+            ),
+            DefaultText(
+              text: offer.discountStr,
+            )
+          ],
+        ),
       ),
     );
   }

@@ -147,7 +147,10 @@
   "appCurrency":"AED",
   "noResultsFound":"No Results Found",
   "addedSuccessfully":"Added Successfully",
-  "thisFieldIsRequired":"This Field Is Required"
+  "thisFieldIsRequired":"This Field Is Required",
+  "notAvailable":"Not Available",
+  "required":"Required",
+  "orderLocation":"Order Location"
 
 
 

@@ -186,8 +186,8 @@ class Bill {
 
   int get deliveryPrice => _deliveryPrice ?? 0;
   double get productsPrice => _productsPrice ?? 0;
-  dynamic get fees => _fees ?? [];
-  dynamic get discounted => _discounted ?? [];
+  dynamic get fees => _fees ?? 0.0;
+  dynamic get discounted => _discounted ?? 0.0;
   double get totalPrice => _totalPrice ?? 0;
 
   Map<String, dynamic> toJson() {

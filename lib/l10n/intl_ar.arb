@@ -147,5 +147,8 @@
       "appCurrency":"درهم",
       "noResultsFound":"لم يتم العثور على نتائج",
       "addedSuccessfully":"أضيف بنجاح",
-      "thisFieldIsRequired":"هذه الخانة مطلوبه"
+      "thisFieldIsRequired":"هذه الخانة مطلوبه",
+      "notAvailable":"غير متوفر",
+      "required":"مطلوب",
+      "orderLocation":"موقع الطلب"
 }

@@ -23,42 +23,14 @@ class ProfileScreen extends StatelessWidget {
       backgroundColor: AppColors.lightGrey,
       appBar: AppBar(
         backgroundColor: AppColors.lightBlue,
-        leading: IconButton(
-          icon: Image.asset('assets/images/bell1.png'),
-          onPressed: () {
-            Navigator.pushNamed(context, NOTIFICATIONS_SCREEN_R);
-          },
-        ),
+
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: const [
             Text('profile'),
           ],
         ),
-        actions: [
-          IconButton(
-            icon: Stack(
-              alignment: Alignment.topRight,
-              children: const [
-                Icon(
-                  Icons.add_shopping_cart,
-                  color: Colors.white,
-                ),
-                CircleAvatar(
-                  backgroundColor: Colors.lightGreenAccent,
-                  radius: 5.0,
-                  child: Center(
-                    child: Text(
-                      '0',
-                      style: TextStyle(fontSize: 8),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            onPressed: () {},
-          ),
-        ],
+
       ),
       body: SingleChildScrollView(
         child: Column(

@@ -8,8 +8,10 @@ import 'package:uae_user/presentation/router/app_router.dart';
 import 'package:uae_user/presentation/styles/themes.dart';
 
 import 'business_logic/user/add_to_cart/add_to_cart_cubit.dart';
+import 'business_logic/user/ads/ads_cubit.dart';
 import 'business_logic/user/cart/edit_cart/edit_cart_cubit.dart';
 import 'business_logic/user/cart/get_my_cart/get_my_cart_cubit.dart';
+import 'business_logic/user/category/category_cubit.dart';
 import 'business_logic/user/change_favorite/favorite_change_cubit.dart';
 import 'business_logic/user/get_offers/get_offers_cubit.dart';
 import 'data/data_provider/local/cache_helper.dart';
@@ -52,6 +54,12 @@ class MyApp extends StatelessWidget {
           create: (context) => GetOffersCubit()..userGetOffers(),
         ),
         BlocProvider(create: (context) => AddToCartCubit()),
+        BlocProvider(
+          create: (context) => AdsCubit()..userAds(type: 'welcome'),
+        ),
+        BlocProvider(
+          create: (context) => CategoryCubit()..userCategories(),
+        ),
 
       ],
       child: BlocBuilder<LanguageCubit,LanguageState>(builder: (context,state) {

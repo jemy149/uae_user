@@ -22,10 +22,11 @@ class AddToCartCubit extends Cubit<AddToCartState> {
       if(value.status == 200){
         addToCartModel = value;
         emit(UserAddCartSuccessStates());
-      }else {
-        emit(UserAddCartErrorStates());
+      }else  if(value.status == 430){
+        emit(UserAddCartNotAvailableStates());
       }
     }).catchError((error){
+      emit(UserAddCartErrorStates());
       printResponse('userAddToCart' + error.toString());
     });
   }

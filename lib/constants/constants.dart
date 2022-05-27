@@ -22,5 +22,5 @@ String? tmpToken;
 
 CameraPosition initialCameraPosition = const CameraPosition(
   target: LatLng(24.466667, 54.366669),
-  zoom: 7,
+  zoom: 10,
 );

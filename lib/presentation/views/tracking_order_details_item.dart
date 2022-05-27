@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:uae_user/presentation/styles/colors.dart';
-
 import '../widgets/default_text.dart';
 
 class TrackingOrderDetailsItem extends StatelessWidget {
