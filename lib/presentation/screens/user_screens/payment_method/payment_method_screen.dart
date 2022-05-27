@@ -5,8 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:uae_user/business_logic/user/make_order/make_order_cubit.dart';
 import 'package:uae_user/presentation/screens/user_screens/app_layout/home_layout.dart';
 import 'package:uae_user/presentation/views/payment_method_item.dart';
-
 import '../../../../constants/enums.dart';
+import '../../../../constants/screens.dart';
 import '../../../../data/requests/make_order/make_order_request/order_location_model.dart';
 import '../../../router/arguments/user_arguments/payment_method_screen_args.dart';
 import '../../../styles/colors.dart';
@@ -23,13 +23,17 @@ class PaymentMethodScreen extends StatefulWidget {
 }
 
 class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
+
   PaymentMethodScreenRadioValues? _character =
       PaymentMethodScreenRadioValues.Cash;
   DateFormat dateFormat = DateFormat("yyyy-MM-dd");
   late MakeOrderCubit _makeOrderCubit;
+  String paymentMethod = 'Cash';
 
   @override
   Widget build(BuildContext context) {
+
+
     return BlocProvider(
       create: (context) => MakeOrderCubit(),
       child: SafeArea(
@@ -124,6 +128,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                                       (PaymentMethodScreenRadioValues? value) {
                                     setState(() {
                                       _character = value;
+                                      paymentMethod = 'Cash';
                                     });
                                   },
                                 ),
@@ -141,6 +146,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                                       (PaymentMethodScreenRadioValues? value) {
                                     setState(() {
                                       _character = value;
+                                      paymentMethod = 'Visa';
                                     });
                                   },
                                 ),
@@ -314,10 +320,11 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                         builder: (context, state) {
                           _makeOrderCubit = MakeOrderCubit.get(context);
                           return InkWell(
-                            onTap: () {
-                              _makeOrderCubit.userMakeOrder(
+                            onTap: () async{
+                            if (paymentMethod  == 'Cash') {
+                              await  _makeOrderCubit.userMakeOrder(
                                 paymentMethod:
-                                    PaymentMethodScreenRadioValues.Cash.name,
+                                PaymentMethodScreenRadioValues.Cash.name,
                                 makeOrderLocation: MakeOrderLocation(
                                     address: widget.paymentMethodScreenArgs
                                         .apiAddress?.address,
@@ -327,8 +334,8 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                                     latitude: widget.paymentMethodScreenArgs
                                         .apiAddress?.latitude
                                         .toDouble()),
-                                extraDescription: widget.paymentMethodScreenArgs
-                                    .additionalInstructions,
+                                // extraDescription: widget.paymentMethodScreenArgs
+                                //     .additionalInstructions,
                                 deliveryTime: dateFormat
                                     .format(DateTime.now())
                                     .toString(),
@@ -338,10 +345,15 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                                 MaterialPageRoute(
                                   builder: (context) => const HomeLayout(),
                                 ),
-                                (route) {
+                                    (route) {
                                   return false;
                                 },
                               );
+                            }else {
+
+                              Navigator.pushNamed(context, ONLINE_PAYMENT_SCREEN_R);
+                            }
+
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(vertical: 2),
@@ -397,4 +409,5 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
       ),
     );
   }
+
 }

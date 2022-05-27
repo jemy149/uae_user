@@ -24,7 +24,7 @@ class PaymentMethodItem extends StatelessWidget {
         child: Row(
           children: [
             Flexible(
-              child: DefaultCachedNetworkImage(imageUrl: getMyCartModel.carts[index].product.images[index], fit: BoxFit.contain),
+              child: DefaultCachedNetworkImage(imageUrl: getMyCartModel.carts[index].product.images[0], fit: BoxFit.contain),
             ),
             Expanded(
               flex: 3,

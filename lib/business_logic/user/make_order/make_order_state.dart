@@ -12,4 +12,8 @@ class UserMakeOrderSuccessState extends MakeOrderState {
   UserMakeOrderSuccessState({required this.makeOrder});
 }
 class UserMakeOrderEmptyState extends MakeOrderState {}
+class UserMakeOrderIssueState extends MakeOrderState {
+  String msg;
+  UserMakeOrderIssueState({required this.msg});
+}
 class UserMakeOrderErrorState extends MakeOrderState {}

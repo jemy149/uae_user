@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uae_user/business_logic/user/change_favorite/favorite_change_cubit.dart';
-import 'package:uae_user/constants/constant_methods.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:uae_user/data/models/user_models/search/search_model.dart';
-
 import '../../business_logic/user/add_to_cart/add_to_cart_cubit.dart';
 import '../../constants/screens.dart';
 import '../styles/colors.dart';
@@ -143,7 +142,7 @@ class _ProductsInStockItemState extends State<ProductsInStockItem> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             DefaultText(
-                                text: '${widget.productModel.price} RS'),
+                                text: '${widget.productModel.price} ${AppLocalizations.of(context)!.appCurrency}'),
                           ],
                         ),
                       ],

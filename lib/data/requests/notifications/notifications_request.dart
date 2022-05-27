@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:uae_user/constants/constants.dart';
-
 import '../../../../constants/constant_methods.dart';
 import '../../../../constants/end_points.dart';
 import '../../data_provider/remote/dio_helper.dart';
@@ -11,7 +10,7 @@ class NotificationsRequest {
     try {
       Response response = await DioHelper.postData(url: EP_NOTIFICATIONS, data: {
         'apiToken': apiToken,
-        'page': 1,
+        'page': 0,
       });
       printResponse(response.data.toString());
       return NotificationsModel.fromJson(response.data);

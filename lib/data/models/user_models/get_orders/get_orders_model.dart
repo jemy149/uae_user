@@ -159,11 +159,11 @@ Bill billFromJson(String str) => Bill.fromJson(json.decode(str));
 String billToJson(Bill data) => json.encode(data.toJson());
 class Bill {
   Bill({
-      int? deliveryPrice, 
-      double? productsPrice, 
+      num? deliveryPrice,
+    num? productsPrice,
       dynamic fees, 
-      dynamic discounted, 
-      double? totalPrice,}){
+      dynamic discounted,
+    num? totalPrice,}){
     _deliveryPrice = deliveryPrice;
     _productsPrice = productsPrice;
     _fees = fees;
@@ -178,17 +178,17 @@ class Bill {
     _discounted = json['discounted'];
     _totalPrice = json['totalPrice'];
   }
-  int? _deliveryPrice;
-  double? _productsPrice;
+  num? _deliveryPrice;
+  num? _productsPrice;
   dynamic _fees;
   dynamic _discounted;
-  double? _totalPrice;
+  num? _totalPrice;
 
-  int get deliveryPrice => _deliveryPrice ?? 0;
-  double get productsPrice => _productsPrice ?? 0;
+  num get deliveryPrice => _deliveryPrice ?? 0;
+  num get productsPrice => _productsPrice ?? 0;
   dynamic get fees => _fees ?? 0.0;
   dynamic get discounted => _discounted ?? 0.0;
-  double get totalPrice => _totalPrice ?? 0;
+  num get totalPrice => _totalPrice ?? 0;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -211,8 +211,8 @@ class Carts {
       int? productId, 
       int? quantity, 
       int? totalQuantity, 
-      dynamic description, 
-      double? price, 
+      dynamic description,
+    num? price,
       List<dynamic>? features,}){
     _id = id;
     _product = product;
@@ -245,7 +245,7 @@ class Carts {
   int? _quantity;
   int? _totalQuantity;
   dynamic _description;
-  double? _price;
+  num? _price;
   List<dynamic>? _features;
 
   int get id => _id ?? 0;
@@ -254,7 +254,7 @@ class Carts {
   int get quantity => _quantity ?? 0;
   int get totalQuantity => _totalQuantity ?? 0;
   dynamic get description => _description ?? [];
-  double get price => _price ?? 0;
+  num get price => _price ?? 0;
   List<dynamic> get features => _features ?? [];
 
   Map<String, dynamic> toJson() {
@@ -283,8 +283,8 @@ class Product {
       int? id, 
       String? barcode, 
       String? name, 
-      String? description, 
-      double? price, 
+      String? description,
+    num? price,
       bool? isFreeDelivered, 
       List<String>? images, 
       dynamic store, 
@@ -346,7 +346,7 @@ class Product {
   String? _barcode;
   String? _name;
   String? _description;
-  double? _price;
+  num? _price;
   bool? _isFreeDelivered;
   List<String>? _images;
   dynamic _store;
@@ -363,7 +363,7 @@ class Product {
   String get barcode => _barcode ?? '';
   String get name => _name ?? '';
   String get description => _description ?? '';
-  double get price => _price ?? 0;
+  num get price => _price ?? 0;
   bool get isFreeDelivered => _isFreeDelivered ?? false;
   List<String> get images => _images ?? [];
   dynamic get store => _store ?? [];
@@ -441,8 +441,8 @@ class User {
       int? id, 
       String? name, 
       String? phone, 
-      String? image, 
-      int? rate,}){
+      String? image,
+    num? rate,}){
     _id = id;
     _name = name;
     _phone = phone;
@@ -461,13 +461,13 @@ class User {
   String? _name;
   String? _phone;
   String? _image;
-  int? _rate;
+  num? _rate;
 
   int get id => _id ?? 0;
   String get name => _name ?? '';
   String get phone => _phone ?? '';
   String get image => _image ?? '';
-  int get rate => _rate ?? 0;
+  num get rate => _rate ?? 0;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

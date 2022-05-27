@@ -47,6 +47,7 @@ class _DeliveryDetailsScreenState extends State<DeliveryDetailsScreen> {
 
   bool isTrue = false;
   String? addressValue;
+  ApiAddress? addressInfo;
   late MyAddressesCubit _myAddressesCubit;
    late CheckDistanceCubit _checkDistanceCubit ;
 
@@ -85,7 +86,7 @@ class _DeliveryDetailsScreenState extends State<DeliveryDetailsScreen> {
               setState(() {
 
                 addressValue = state.apiAddress.address;
-                ApiAddress address = state.apiAddress ;
+                 addressInfo = state.apiAddress ;
                 isTrue = !isTrue;
               });
             } else if (state is CheckDistanceErrorState) {
@@ -286,11 +287,7 @@ class _DeliveryDetailsScreenState extends State<DeliveryDetailsScreen> {
                             radius: 25,
                             height: 100,
                             controller: emailController,
-                            validator: (text) {
-                              if (text!.isEmpty) {
-                                return AppLocalizations.of(context)!.required;
-                              }
-                            },
+                            validator: ((_){}),
                             keyboardType: TextInputType.emailAddress,
                             hintText: AppLocalizations.of(context)!.email,
                           ),
@@ -331,16 +328,21 @@ class _DeliveryDetailsScreenState extends State<DeliveryDetailsScreen> {
                             children: [
                               DefaultMaterialButton(
                                 text: AppLocalizations.of(context)!.confirm,
-                                onTap: () {
+                                onTap: () async{
+                                  if(addressValue == null){
+                                    showToastMsg(msg: AppLocalizations.of(context)!.chooseYourLocation, toastState: ToastStates.ERROR);
+                                  }
                                   if (deliveryDetailsFormKey.currentState!
                                       .validate() && addressValue != null) {
-                                    Navigator.pushNamed(
+
+                                    await Navigator.pushNamed(
                                         context, PAYMENT_METHOD_SCREEN_R,
                                         arguments: PaymentMethodScreenArgs(
+                                          apiAddress: addressInfo,
                                           myAddressesModel: _myAddressesCubit.myAddressesModel,
                                           checkDistanceModel: _checkDistanceCubit.checkDistanceModel,
                                             getMyCartModel:widget.deliveryDetailsScreenArgs.getMyCartModel,
-                                            address: addressValue.toString(),
+                                            address: addressValue!,
                                             phone: phoneNumberController.text,
                                             email: emailController.text,
                                             name: nameController.text,

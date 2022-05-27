@@ -60,6 +60,8 @@ dependencies:
   google_maps_flutter: ^2.1.2
   sizer: ^2.0.15
   geocoding: ^2.0.4
+  flutter_stripe_payment: ^0.0.17
+
 
 
 

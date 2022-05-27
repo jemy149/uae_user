@@ -150,5 +150,9 @@
       "thisFieldIsRequired":"هذه الخانة مطلوبه",
       "notAvailable":"غير متوفر",
       "required":"مطلوب",
-      "orderLocation":"موقع الطلب"
+      "orderLocation":"موقع الطلب",
+      "chooseYourLocation":"إختر موقعك",
+      "paymentAmount":"قيمة الدفع",
+      "selectPaymentMethod":"إختر طريقة الدفع",
+      "pay":"إدفع"
 }

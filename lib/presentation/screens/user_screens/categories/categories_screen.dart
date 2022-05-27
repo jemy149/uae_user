@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:uae_user/business_logic/user/category/category_cubit.dart';
 import 'package:uae_user/business_logic/user/search/search_cubit.dart';
-
 import '../../../../constants/screens.dart';
 import '../../../styles/colors.dart';
 import '../../../views/products_in_stock_item.dart';
@@ -49,7 +48,11 @@ class _CategoriesScreenState extends State<CategoriesScreen>
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                HOME_LAYOUT_R,
+                    (route) => false,
+              );
             },
           ),
           title: Row(

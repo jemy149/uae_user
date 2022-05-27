@@ -16,7 +16,7 @@ class MakeOrderCubit extends Cubit<MakeOrderState> {
 
   MakeOrderModel makeOrderModel = MakeOrderModel();
 
-  void userMakeOrder(
+   userMakeOrder(
       {String? deliveryTime,
       MakeOrderLocation? makeOrderLocation,
       String? extraDescription,
@@ -34,6 +34,8 @@ class MakeOrderCubit extends Cubit<MakeOrderState> {
       if (value.status == 200) {
         makeOrderModel = value;
         emit(UserMakeOrderSuccessState(makeOrder: makeOrderModel.order));
+      } else if (value.status == 430) {
+        emit(UserMakeOrderIssueState(msg: makeOrderModel.message));
       } else if (value.status == 204) {
         emit(UserMakeOrderEmptyState());
       }

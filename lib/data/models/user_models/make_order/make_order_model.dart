@@ -158,7 +158,7 @@ class Bill {
       double? productsPrice, 
       dynamic fees, 
       dynamic discounted, 
-      double? totalPrice,}){
+      num? totalPrice,}){
     _deliveryPrice = deliveryPrice;
     _productsPrice = productsPrice;
     _fees = fees;
@@ -177,13 +177,13 @@ class Bill {
   double? _productsPrice;
   dynamic _fees;
   dynamic _discounted;
-  double? _totalPrice;
+  num? _totalPrice;
 
   int get deliveryPrice => _deliveryPrice ?? 0;
   double get productsPrice => _productsPrice ?? 0.0;
   dynamic get fees => _fees ?? '';
   dynamic get discounted => _discounted ?? '';
-  double get totalPrice => _totalPrice ?? 0;
+  num get totalPrice => _totalPrice ?? 0;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -206,8 +206,8 @@ class Carts {
       int? productId, 
       int? quantity, 
       int? totalQuantity, 
-      dynamic description, 
-      double? price, 
+      dynamic description,
+    num? price,
       List<dynamic>? features,}){
     _id = id;
     _product = product;
@@ -240,7 +240,7 @@ class Carts {
   int? _quantity;
   int? _totalQuantity;
   dynamic _description;
-  double? _price;
+  num? _price;
   List<dynamic>? _features;
 
   int get id => _id ?? 0;
@@ -249,7 +249,7 @@ class Carts {
   int get quantity => _quantity ?? 0;
   int get totalQuantity => _totalQuantity ?? 0;
   dynamic get description => _description ?? '';
-  double get price => _price ?? 0.0;
+  num get price => _price ?? 0.0;
   List<dynamic> get features => _features ?? [];
 
   Map<String, dynamic> toJson() {
@@ -278,8 +278,8 @@ class Product {
       int? id, 
       String? barcode, 
       String? name, 
-      String? description, 
-      double? price, 
+      String? description,
+    num? price,
       bool? isFreeDelivered, 
       List<String>? images, 
       dynamic store, 
@@ -341,7 +341,7 @@ class Product {
   String? _barcode;
   String? _name;
   String? _description;
-  double? _price;
+  num? _price;
   bool? _isFreeDelivered;
   List<String>? _images;
   dynamic _store;
@@ -358,7 +358,7 @@ class Product {
   String get barcode => _barcode ?? '';
   String get name => _name ?? '';
   String get description => _description ?? '';
-  double get price => _price ?? 0.0;
+  num get price => _price ?? 0.0;
   bool get isFreeDelivered => _isFreeDelivered ?? false;
   List<String> get images => _images ?? [];
   dynamic get store => _store ?? '';
