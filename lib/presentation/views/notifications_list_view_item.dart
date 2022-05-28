@@ -1,14 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:uae_user/business_logic/user/notifications/notifications_cubit.dart';
 import 'package:uae_user/data/models/user_models/notifications/notifications_model.dart';
-import 'package:uae_user/presentation/styles/colors.dart';
-import 'package:uae_user/presentation/widgets/default_cached_network_image.dart';
 import 'package:uae_user/presentation/widgets/default_text.dart';
 
 class NotificationsListViewItem extends StatelessWidget {
 final  Notifications notification;
-   NotificationsListViewItem( 
+   const NotificationsListViewItem(
       {Key? key,required this.notification,})
       : super(key: key);
 
@@ -26,23 +22,9 @@ final  Notifications notification;
           ),
           child: Row(
             children: [
-              Flexible(
-                  flex: 3,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 5.0, vertical: 5.0),
-                    child: CircleAvatar(
-                      radius: 35.5,
-                      backgroundColor: AppColors.lightBlue,
-                      child: CircleAvatar(
-                        radius: 35,
-                        child: DefaultCachedNetworkImage(imageUrl: notification.content, fit: BoxFit.contain,),
-                        backgroundColor: Colors.white,
-                      ),
-                    ),
-                  )),
+              const Spacer(flex: 1,),
               Expanded(
-                  flex: 9,
+                  flex: 25,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -100,7 +82,8 @@ final  Notifications notification;
                         ),
                       ),
                     ],
-                  ))
+                  )),
+              const Spacer(flex: 1,),
             ],
           ),
         ),

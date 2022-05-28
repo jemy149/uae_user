@@ -91,6 +91,7 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                           delegate: SliverChildBuilderDelegate(
                               (context, index) {
                             return UserFavouritesItem(
+                              productId: _getFavoriteCubit.favoriteModel.products[index].id,
                                 productModel: _getFavoriteCubit
                                     .favoriteModel.products[index]);
                           },
