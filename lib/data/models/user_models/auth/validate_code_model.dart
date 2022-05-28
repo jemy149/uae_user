@@ -6,96 +6,138 @@ String validateCodeModelToJson(ValidateCodeModel data) => json.encode(data.toJso
 
 class ValidateCodeModel {
   ValidateCodeModel({
-    this.status,
-    this.apiToken,
-    this.message,
-    this.account,
-  });
+    int? status,
+    String? apiToken,
+    Account? account,
+    String? message,
+  }){
+    _status = status;
+    _apiToken=apiToken;
+    _account = account;
+    _message = message;
+  }
 
-  int? status;
-  dynamic apiToken;
-  String? message;
-  Account? account;
+  int? _status;
+  String? _apiToken;
+  String? _message;
+  Account? _account;
 
-  factory ValidateCodeModel.fromJson(Map<String, dynamic> json) => ValidateCodeModel(
-    status: json["status"],
-    apiToken: json["apiToken"],
-    message: json["message"],
-    account: json["Account"] == null ? null : Account.fromJson(json["Account"]),
-  );
+  ValidateCodeModel.fromJson(dynamic json) {
+    _status = json['status'];
+    _apiToken = json['apiToken'];
+    _account = json['Account'] != null ? Account.fromJson(json['Account']) : null;
+    _message = json['message'];
+  }
+
+  int get status => _status??0;
+  String get apiToken => _apiToken??"";
+  Account get account => _account??Account();
+  String get message => _message??"";
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "apiToken": apiToken,
-    "message": message,
-    "Account": account?.toJson(),
+    "status": _status,
+    "apiToken": _apiToken,
+    "message": _message,
+    "Account": _account?.toJson(),
   };
 }
 
 class Account {
   Account({
-    this.apiToken,
-    this.name,
-    this.phone,
-    this.email,
-    this.type,
-    this.user,
-  });
+    String? apiToken,
+    String? name,
+    String? phone,
+    String? email,
+    String? type,
+    User? user,}){
+    _apiToken = apiToken;
+    _name = name;
+    _phone = phone;
+    _email = email;
+    _type = type;
+    _user = user;
+  }
 
-  String? apiToken;
-  String? name;
-  String? phone;
-  dynamic email;
-  String? type;
-  User? user;
+  Account.fromJson(dynamic json) {
+    _apiToken = json['apiToken'];
+    _name = json['name'];
+    _phone = json['phone'];
+    _email = json['email'];
+    _type = json['type'];
+    _user = json['user'] != null ? User.fromJson(json['user']) : null;
+  }
+  String? _apiToken;
+  String? _name;
+  String? _phone;
+  String? _email;
+  String? _type;
+  User? _user;
 
-  factory Account.fromJson(Map<String, dynamic> json) => Account(
-    apiToken: json["apiToken"],
-    name: json["name"],
-    phone: json["phone"],
-    email: json["email"],
-    type: json["type"],
-    user: User.fromJson(json["user"]),
-  );
+  String? get apiToken => _apiToken??"";
+  String? get name => _name??"";
+  String? get phone => _phone??"";
+  String? get email => _email??"";
+  String? get type => _type??"";
+  User? get user => _user??User();
 
-  Map<String, dynamic> toJson() => {
-    "apiToken": apiToken,
-    "name": name,
-    "phone": phone,
-    "email": email,
-    "type": type,
-    "user": user?.toJson(),
-  };
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['apiToken'] = _apiToken;
+    map['name'] = _name;
+    map['phone'] = _phone;
+    map['email'] = _email;
+    map['type'] = _type;
+    if (_user != null) {
+      map['user'] = _user?.toJson();
+    }
+    return map;
+  }
+
 }
 
+User userFromJson(String str) => User.fromJson(json.decode(str));
+String userToJson(User data) => json.encode(data.toJson());
 class User {
   User({
-    this.id,
-    this.name,
-    this.phone,
-    this.image,
-    this.rate,
-  });
+    int? id,
+    String? name,
+    String? phone,
+    String? image,
+    int? rate,}){
+    _id = id;
+    _name = name;
+    _phone = phone;
+    _image = image;
+    _rate = rate;
+  }
 
-  int? id;
-  String? name;
-  String? phone;
-  String? image;
-  int? rate;
+  User.fromJson(dynamic json) {
+    _id = json['id'];
+    _name = json['name'];
+    _phone = json['phone'];
+    _image = json['image'];
+    _rate = json['rate'];
+  }
+  int? _id;
+  String? _name;
+  String? _phone;
+  String? _image;
+  int? _rate;
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
-    id: json["id"],
-    name: json["name"],
-    phone: json["phone"],
-    image: json["image"],
-    rate: json["rate"],
-  );
+  int? get id => _id??0;
+  String? get name => _name??"";
+  String? get phone => _phone??"";
+  String? get image => _image??"";
+  int? get rate => _rate??0;
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "phone": phone,
-    "image": image,
-    "rate": rate,
-  };
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['id'] = _id;
+    map['name'] = _name;
+    map['phone'] = _phone;
+    map['image'] = _image;
+    map['rate'] = _rate;
+    return map;
+  }
+
 }

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uae_user/constants/constant_methods.dart';
 import 'package:uae_user/constants/shared_preferences_keys.dart';
 
 class CacheHelper {
@@ -38,8 +39,15 @@ class CacheHelper {
     return await sharedPreferences.remove(key);
   }
   static String getCurrentLanguage() {
-    String currentDeviceLanguage= Platform.localeName.substring(0,2);
-    return sharedPreferences.getString(SharedPreferencesKeys.SP_APP_LANGUAGE.name) ?? currentDeviceLanguage;
+    if (sharedPreferences.getString(SharedPreferencesKeys.SP_APP_LANGUAGE.name)==null) {
+      String currentDeviceLanguage= Platform.localeName.substring(0,2);
+      CacheHelper.saveDataToSP(key: SharedPreferencesKeys.SP_APP_LANGUAGE, value:currentDeviceLanguage);
+      return currentDeviceLanguage;
+    }
+    else{
+      return sharedPreferences.getString(SharedPreferencesKeys.SP_APP_LANGUAGE.name)!;
+    }
+
 
   }
 

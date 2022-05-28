@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "104285375023-36httlmpa3eu2q0jcivpe3dg3s2o1af3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.magdsoft.uae_user",
+            "certificate_hash": "40caaab779e64b8dd6fa3f7b77dd6bb64309ba64"
+          }
+        },
+        {
           "client_id": "104285375023-b1eb7vgfc8b9mvsk71u4kblai8hanj2f.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

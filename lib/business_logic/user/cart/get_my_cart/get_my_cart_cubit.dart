@@ -28,7 +28,6 @@ class GetMyCartCubit extends Cubit<GetMyCartState> {
         emit(UserGetCartEmptyState());
       }
     }).catchError((error){
-      emit(UserGetCartErrorState());
       printResponse('userAddToCart' + error.toString());
     });
   }

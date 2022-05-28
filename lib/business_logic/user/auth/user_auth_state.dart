@@ -11,13 +11,19 @@ class UserLoginSuccessState extends UserAuthStates {}
 
 class UserLoginErrorState extends UserAuthStates {
   final String? message;
+
   UserLoginErrorState(this.message);
 }
 
+class UserSocialLoginLoadingState extends UserAuthStates {}
 
+class UserSocialLoginSuccessState extends UserAuthStates {}
 
+class UserSocialLoginErrorState extends UserAuthStates {
+  final String? message;
 
-
+  UserSocialLoginErrorState(this.message);
+}
 
 class UserRegisterLoadingState extends UserAuthStates {}
 
@@ -39,15 +45,12 @@ class UserRegisterBySocialTokenErrorState extends UserAuthStates {
   UserRegisterBySocialTokenErrorState(this.message);
 }
 
-
-
 class UserValidateCodeLoadingState extends UserAuthStates {}
 
 class UserValidateCodeSuccessState extends UserAuthStates {
   final String? message;
 
   UserValidateCodeSuccessState(this.message);
-
 }
 
 class UserValidateCodeErrorState extends UserAuthStates {
@@ -55,7 +58,6 @@ class UserValidateCodeErrorState extends UserAuthStates {
 
   UserValidateCodeErrorState(this.message);
 }
-
 
 class UserRegisterResendConfirmationCodeLoadingState extends UserAuthStates {}
 
@@ -67,53 +69,42 @@ class UserRegisterResendConfirmationCodeErrorState extends UserAuthStates {
   UserRegisterResendConfirmationCodeErrorState(this.message);
 }
 
-
-
 class UserLogoutLoadingState extends UserAuthStates {}
 
 class UserLogoutSuccessState extends UserAuthStates {}
 
 class UserLogoutErrorState extends UserAuthStates {
-
   UserLogoutErrorState();
 }
 
-class UserResetPasswordLoadingState extends UserAuthStates{}
+class UserResetPasswordLoadingState extends UserAuthStates {}
 
-class UserResetPasswordSuccessState extends UserAuthStates{}
+class UserResetPasswordSuccessState extends UserAuthStates {}
 
-class UserResetPasswordErrorState extends UserAuthStates{
+class UserResetPasswordErrorState extends UserAuthStates {}
 
+class UserResendCodeLoadingState extends UserAuthStates {}
+
+class UserResendCodeSuccessState extends UserAuthStates {}
+
+class UserResendCodeErrorState extends UserAuthStates {}
+
+class UserSocialAuthLoadingState extends UserAuthStates {}
+
+class UserSocialAuthSuccessState extends UserAuthStates {
+  final String socialToken;
+  final String? name;
+  final String? email;
+  final String? urlImage;
+  final String phone;
+
+  UserSocialAuthSuccessState( {
+    required this.socialToken,
+    required this.name,
+    required this.email,
+    required this.urlImage,
+    required this.phone,
+  });
 }
 
-class UserResendCodeLoadingState extends UserAuthStates{}
-
-class UserResendCodeSuccessState extends UserAuthStates{}
-
-class UserResendCodeErrorState extends UserAuthStates{
-
-}
-
-class UserSocialAuthUserDetailsLoadingState extends UserAuthStates{}
-
-class UserSocialAuthUserDetailsSuccessState extends UserAuthStates{}
-
-class UserSocialAuthUserDetailsErrorState extends UserAuthStates{
-
-}
-
-
-class UserFacebookAuthLoadingState extends UserAuthStates{}
-
-class UserFacebookAuthSuccessState extends UserAuthStates{}
-
-class UserFacebookAuthErrorState extends UserAuthStates{}
-
-
-class UserGoogleAuthLoadingState extends UserAuthStates{}
-
-class UserGoogleAuthSuccessState extends UserAuthStates{}
-
-class UserGoogleAuthErrorState extends UserAuthStates{
-
-}
+class UserSocialAuthErrorState extends UserAuthStates {}
