@@ -1,11 +1,14 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:my_fatoorah/my_fatoorah.dart';
 import 'package:uae_user/business_logic/user/make_order/make_order_cubit.dart';
-import 'package:uae_user/constants/constant_methods.dart';
 import 'package:uae_user/presentation/screens/user_screens/app_layout/home_layout.dart';
 import 'package:uae_user/presentation/views/payment_method_item.dart';
+
 import '../../../../constants/enums.dart';
 import '../../../../data/requests/make_order/make_order_request/order_location_model.dart';
 import '../../../router/arguments/user_arguments/payment_method_screen_args.dart';
@@ -23,7 +26,6 @@ class PaymentMethodScreen extends StatefulWidget {
 }
 
 class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
-
   PaymentMethodScreenRadioValues? _character =
       PaymentMethodScreenRadioValues.Cash;
   DateFormat dateFormat = DateFormat("yyyy-MM-dd");
@@ -32,8 +34,6 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-
     return BlocProvider(
       create: (context) => MakeOrderCubit(),
       child: SafeArea(
@@ -151,6 +151,42 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                                   },
                                 ),
                               ),
+                              ListTile(
+                                title: DefaultText(
+                                  text: AppLocalizations.of(context)!
+                                      .walletBalance,
+                                ),
+                                leading: Radio<PaymentMethodScreenRadioValues>(
+                                  value: PaymentMethodScreenRadioValues
+                                      .walletBalance,
+                                  groupValue: _character,
+                                  onChanged:
+                                      (PaymentMethodScreenRadioValues? value) {
+                                    setState(() {
+                                      _character = value;
+                                      paymentMethod = 'walletBalance';
+                                    });
+                                  },
+                                ),
+                              ),
+                              ListTile(
+                                title: DefaultText(
+                                  text: AppLocalizations.of(context)!
+                                      .points,
+                                ),
+                                leading: Radio<PaymentMethodScreenRadioValues>(
+                                  value: PaymentMethodScreenRadioValues
+                                      .points,
+                                  groupValue: _character,
+                                  onChanged:
+                                      (PaymentMethodScreenRadioValues? value) {
+                                    setState(() {
+                                      _character = value;
+                                      paymentMethod = 'Visa';
+                                    });
+                                  },
+                                ),
+                              ),
                               /////////////////////////// location and delivery time part /////////////////////////
                               Padding(
                                 padding: const EdgeInsets.all(10.0),
@@ -245,7 +281,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                                         end: 20.0, bottom: 10.0, top: 10.0),
                                     child: DefaultText(
                                       text:
-                                          '${widget.paymentMethodScreenArgs.getMyCartModel.totalPrice} ${AppLocalizations.of(context)!.appCurrency}',
+                                          '${widget.paymentMethodScreenArgs.getMyCartModel.totalPrice.toStringAsFixed(2)} ${AppLocalizations.of(context)!.appCurrency}',
                                       style:
                                           Theme.of(context).textTheme.bodyText1,
                                     ),
@@ -271,7 +307,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                                         end: 20.0, bottom: 10.0),
                                     child: DefaultText(
                                       text:
-                                          '${widget.paymentMethodScreenArgs.checkDistanceModel.deliveryPrice} ${AppLocalizations.of(context)!.appCurrency}',
+                                          '${widget.paymentMethodScreenArgs.checkDistanceModel.deliveryPrice.toStringAsFixed(2)} ${AppLocalizations.of(context)!.appCurrency}',
                                       style:
                                           Theme.of(context).textTheme.bodyText1,
                                     ),
@@ -294,11 +330,16 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                                   Padding(
                                     padding: const EdgeInsetsDirectional.only(
                                         end: 20.0, bottom: 10.0),
-                                    child: DefaultText(
-                                      text:
-                                          '${widget.paymentMethodScreenArgs.checkDistanceModel.deliveryPrice + widget.paymentMethodScreenArgs.getMyCartModel.totalPrice} ${AppLocalizations.of(context)!.appCurrency}',
-                                      style:
-                                          Theme.of(context).textTheme.bodyText1,
+                                    child: Builder(
+                                      builder: (context) {
+                                        num total = widget.paymentMethodScreenArgs.checkDistanceModel.deliveryPrice  + widget.paymentMethodScreenArgs.getMyCartModel.totalPrice;
+                                        return DefaultText(
+                                          text:
+                                              '${total.toStringAsFixed(2) } ${AppLocalizations.of(context)!.appCurrency}',
+                                          style:
+                                              Theme.of(context).textTheme.bodyText1,
+                                        );
+                                      }
                                     ),
                                   ),
                                 ],
@@ -320,42 +361,59 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                         builder: (context, state) {
                           _makeOrderCubit = MakeOrderCubit.get(context);
                           return InkWell(
-                            onTap: () async{
-                            if (paymentMethod  == 'Cash') {
-                              await  _makeOrderCubit.userMakeOrder(
-                                paymentMethod:
-                                PaymentMethodScreenRadioValues.Cash.name,
-                                makeOrderLocation: MakeOrderLocation(
-                                    address: widget.paymentMethodScreenArgs
-                                        .apiAddress?.address,
-                                    longitude: widget.paymentMethodScreenArgs
-                                        .apiAddress?.longitude
-                                        .toDouble(),
-                                    latitude: widget.paymentMethodScreenArgs
-                                        .apiAddress?.latitude
-                                        .toDouble()),
-                                // extraDescription: widget.paymentMethodScreenArgs
-                                //     .additionalInstructions,
-                                deliveryTime: dateFormat
-                                    .format(DateTime.now())
-                                    .toString(),
-                              );
-                              Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const HomeLayout(),
-                                ),
-                                    (route) {
-                                  return false;
-                                },
-                              );
-                            }else {
+                            onTap: () async {
+                              if (paymentMethod == 'Cash') {
+                                await _makeOrderCubit.userMakeOrder(
+                                  paymentMethod:
+                                      PaymentMethodScreenRadioValues.Cash.name,
+                                  makeOrderLocation: MakeOrderLocation(
+                                      address: widget.paymentMethodScreenArgs
+                                          .apiAddress?.address,
+                                      longitude: widget.paymentMethodScreenArgs
+                                          .apiAddress?.longitude
+                                          .toDouble(),
+                                      latitude: widget.paymentMethodScreenArgs
+                                          .apiAddress?.latitude
+                                          .toDouble()),
+                                  // extraDescription: widget.paymentMethodScreenArgs
+                                  //     .additionalInstructions,
+                                  deliveryTime: dateFormat
+                                      .format(DateTime.now())
+                                      .toString(),
+                                );
+                                Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const HomeLayout(),
+                                  ),
+                                  (route) {
+                                    return false;
+                                  },
+                                );
+                              } else  if (paymentMethod == 'Visa') {
+                                var response = await MyFatoorah.startPayment(
+                                  context: context,
+                                  request: MyfatoorahRequest.test(
+                                    currencyIso: Country.UAE,
+                                    successUrl: 'https://www.beauty-addict.com/wp-content/uploads/2021/02/Payment-success.png',
+                                    errorUrl: 'https://kashmirreader.com/wp-content/uploads/2020/07/Payment-Failure-1.png',
+                                    invoiceAmount: 100,
+                                    language: ApiLanguage.English,
+                                    token:
+                                        'rLtt6JWvbUHDDhsZnfpAhpYk4dxYDQkbcPTyGaKp2TYqQgG7FGZ5Th_WD53Oq8Ebz6A53njUoo1w3pjU1D4vs_ZMqFiz_j0urb_BH9Oq9VZoKFoJEDAbRZepGcQanImyYrry7Kt6MnMdgfG5jn4HngWoRdKduNNyP4kzcp3mRv7x00ahkm9LAK7ZRieg7k1PDAnBIOG3EyVSJ5kK4WLMvYr7sCwHbHcu4A5WwelxYK0GMJy37bNAarSJDFQsJ2ZvJjvMDmfWwDVFEVe_5tOomfVNt6bOg9mexbGjMrnHBnKnZR1vQbBtQieDlQepzTZMuQrSuKn-t5XZM7V6fCW7oP-uXGX-sMOajeX65JOf6XVpk29DP6ro8WTAflCDANC193yof8-f5_EYY-3hXhJj7RBXmizDpneEQDSaSz5sFk0sV5qPcARJ9zGG73vuGFyenjPPmtDtXtpx35A-BVcOSBYVIWe9kndG3nclfefjKEuZ3m4jL9Gg1h2JBvmXSMYiZtp9MR5I6pvbvylU_PP5xJFSjVTIz7IQSjcVGO41npnwIxRXNRxFOdIUHn0tjQ-7LwvEcTXyPsHXcMD8WtgBh-wxR8aKX7WPSsT1O8d8reb2aR7K3rkV3K82K_0OgawImEpwSvp9MNKynEAJQS6ZHe_J_l77652xwPNxMRTMASk1ZsJL',
+                                  ),
+                                );
+                                log(response.paymentId.toString());
+                                log(response.status.toString());
 
+                                // Navigator.pushNamed(context, ONLINE_PAYMENT_SCREEN_R);
+                                // showToastMsg(msg: 'Coming Soon', toastState: ToastStates.SUCCESS);
 
-                              showToastMsg(msg: 'Coming Soon', toastState: ToastStates.SUCCESS);
+                              } else  if (paymentMethod == 'walletBalance'){
 
-                            }
+                              }else{
 
+                              }
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(vertical: 2),
@@ -411,5 +469,4 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
       ),
     );
   }
-
 }

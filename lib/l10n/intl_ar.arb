@@ -154,5 +154,7 @@
       "chooseYourLocation":"إختر موقعك",
       "paymentAmount":"قيمة الدفع",
       "selectPaymentMethod":"إختر طريقة الدفع",
-      "pay":"إدفع"
+      "pay":"إدفع",
+      "points":"النقاط",
+      "walletBalance":"رصيد المحفظه"
 }

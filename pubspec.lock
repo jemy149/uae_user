@@ -251,6 +251,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
+  flutter_inappwebview:
+    dependency: transitive
+    description:
+      name: flutter_inappwebview
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.4.3+7"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -462,6 +469,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
+  my_fatoorah:
+    dependency: "direct main"
+    description:
+      name: my_fatoorah
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.11"
   nested:
     dependency: transitive
     description:
