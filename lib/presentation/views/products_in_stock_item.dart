@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uae_user/business_logic/user/change_favorite/favorite_change_cubit.dart';
-import 'package:uae_user/constants/constant_methods.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:uae_user/constants/weights.dart';
 import 'package:uae_user/data/models/user_models/search/search_model.dart';
-
+import '../../business_logic/user/add_to_cart/add_to_cart_cubit.dart';
 import '../../constants/screens.dart';
 import '../styles/colors.dart';
 import '../widgets/default_cached_network_image.dart';
@@ -107,7 +108,8 @@ class _ProductsInStockItemState extends State<ProductsInStockItem> {
                   Flexible(
                       child: InkWell(
                           onTap: () {
-
+                            AddToCartCubit.get(context).userAddToCart(
+                                productId: widget.productModel.id);
                           },
                           child: const Icon(
                             Icons.add_shopping_cart_outlined,
@@ -133,7 +135,7 @@ class _ProductsInStockItemState extends State<ProductsInStockItem> {
                                       .button
                                       ?.copyWith(
                                       fontFamily: 'Bukra-Regular',
-                                      fontWeight: FontWeight.bold),
+                                      fontSize: 12,fontWeight: FontWeights.bold),
                                 ),
                               )
                             ]),
@@ -141,7 +143,7 @@ class _ProductsInStockItemState extends State<ProductsInStockItem> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             DefaultText(
-                                text: '${widget.productModel.price} RS'),
+                                text: '${widget.productModel.price.toStringAsFixed(2)} ${AppLocalizations.of(context)!.appCurrency}'),
                           ],
                         ),
                       ],

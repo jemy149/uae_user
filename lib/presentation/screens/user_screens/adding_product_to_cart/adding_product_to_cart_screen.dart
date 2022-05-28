@@ -9,6 +9,7 @@ import 'package:uae_user/presentation/widgets/default_cached_network_image.dart'
 import '../../../../business_logic/user/add_to_cart/add_to_cart_cubit.dart';
 import '../../../../business_logic/user/change_favorite/favorite_change_cubit.dart';
 import '../../../../business_logic/user/get_products/get_products_cubit.dart';
+import '../../../../constants/screens.dart';
 import '../../../styles/colors.dart';
 import '../../../widgets/DefaultSvg.dart';
 import '../../../widgets/default_error_widget.dart';
@@ -36,7 +37,7 @@ class _AddingProductToCartScreenState extends State<AddingProductToCartScreen> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-          BlocProvider(create: (context) => AddToCartCubit()),
+
           BlocProvider(
             create: (context) => GetProductsCubit()
               ..userGetProducts(productId: widget.productId),
@@ -50,7 +51,11 @@ class _AddingProductToCartScreenState extends State<AddingProductToCartScreen> {
             leading: IconButton(
               icon: const Icon(Icons.arrow_back_ios),
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  HOME_LAYOUT_R,
+                      (route) => false,
+                );
               },
             ),
           ),
@@ -185,7 +190,7 @@ class _AddingProductToCartScreenState extends State<AddingProductToCartScreen> {
                                   ),
                                   DefaultText(
                                     text:
-                                        '${_getProductsCubit.getProductsModel.product.price} AED',
+                                        '${_getProductsCubit.getProductsModel.product.price.toStringAsFixed(2)} ${AppLocalizations.of(context)!.appCurrency}',
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyText1
@@ -212,12 +217,16 @@ class _AddingProductToCartScreenState extends State<AddingProductToCartScreen> {
                                     AddToCartCubit _cartCubit =
                                         AddToCartCubit.get(context);
                                     return BlocListener<AddToCartCubit,
-                                        CartState>(
+                                        AddToCartState>(
                                       listener: (context, state) {
                                         if (state is UserAddCartSuccessStates) {
                                           showToastMsg(
-                                              msg: 'Added Successfully',
+                                              msg: AppLocalizations.of(context)!.addedSuccessfully,
                                               toastState: ToastStates.SUCCESS);
+                                        }else{
+                                          showToastMsg(
+                                              msg: AppLocalizations.of(context)!.notAvailable,
+                                              toastState: ToastStates.WARNING);
                                         }
                                       },
                                       child: DefaultMaterialButton(
@@ -244,7 +253,7 @@ class _AddingProductToCartScreenState extends State<AddingProductToCartScreen> {
                   ],
                 );
               } else if (state is UserGetProductsLoadingState) {
-                return const DefaultLoadingIndicator();
+                return const DefaultLoadingIndicator(color: Colors.white,);
               } else if (state is UserGetProductsEmptyState) {
                 return Center(
                   child: Column(
@@ -255,7 +264,7 @@ class _AddingProductToCartScreenState extends State<AddingProductToCartScreen> {
                         color: AppColors.lightBlue2,
                       ),
                       DefaultText(
-                        text: 'لم يتم العثور على نتائج',
+                        text: AppLocalizations.of(context)!.noResultsFound,
                         textStyle: Theme.of(context).textTheme.headline6,
                       )
                     ],

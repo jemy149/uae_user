@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:uae_user/constants/screens.dart';
+import 'package:uae_user/data/models/user_models/cart/get_my_cart_model.dart';
 import 'package:uae_user/data/models/user_models/get_orders/get_orders_model.dart';
-import 'package:uae_user/presentation/router/arguments/user_arguments/store_sub_category_args.dart';
+import 'package:uae_user/presentation/router/arguments/user_arguments/tracking_order_screen_args.dart';
 import 'package:uae_user/presentation/screens/user_screens/about/about_screen.dart';
 import 'package:uae_user/presentation/screens/user_screens/adding_additional_location/adding_additional_location_screen.dart';
 import 'package:uae_user/presentation/screens/user_screens/adding_product_to_cart/adding_product_to_cart_screen.dart';
@@ -30,9 +31,13 @@ import '../screens/user_screens/barcode/barcode_screen.dart';
 import '../screens/user_screens/delivery_information/delivery_information_screen.dart';
 import '../screens/user_screens/frequently_asked_questions/frequently_asked_questions_screen.dart';
 import '../screens/user_screens/login/login_screen.dart';
+import '../screens/user_screens/payment_method/online_payment_screen.dart';
 import '../screens/user_screens/products_in_stock/products_in_stock_screen.dart';
 import '../screens/user_screens/profile/profile_screen.dart';
 import '../screens/user_screens/register/register_screen.dart';
+import 'arguments/user_arguments/delivery_details_screen_args.dart';
+import 'arguments/user_arguments/delivery_information_screen_args.dart';
+import 'arguments/user_arguments/payment_method_screen_args.dart';
 
 class AppRouter {
   late Widget startWidget;
@@ -80,11 +85,16 @@ class AppRouter {
       case PROFILE_SCREEN_R:
         return MaterialPageRoute(builder: (_) => const ProfileScreen());
       case ORDERS_SCREEN_R:
-        return MaterialPageRoute(builder: (_) => const OrdersScreen());
+        return MaterialPageRoute(builder: (_) =>  OrdersScreen());
       case FAVOURITES_SCREEN_R:
         return MaterialPageRoute(builder: (_) => const FavouritesScreen());
       case TRACKING_ORDER_SCREEN_R:
-        return MaterialPageRoute(builder: (_) =>  TrackingOrderScreen());
+        final TrackingOrderScreenArgs args =
+        settings.arguments as TrackingOrderScreenArgs;
+        return MaterialPageRoute(
+            builder: (_) =>  TrackingOrderScreen(
+            trackingOrderScreenArgs : args,
+        ));
       case ABOUT_SCREEN_R:
         return MaterialPageRoute(builder: (_) => const AboutScreen());
       case FREQUENTLY_ASKED_QUESTIONS_SCREEN_R:
@@ -97,9 +107,10 @@ class AppRouter {
       case NOTIFICATIONS_SCREEN_R:
         return MaterialPageRoute(builder: (_) =>  NotificationsScreen());
       case DELIVERY_INFORMATION_SCREEN_R:
-        final GetOrdersModel getOrdersModel = settings.arguments as GetOrdersModel;
+        final DeliveryInformationScreenArgs args =
+        settings.arguments as DeliveryInformationScreenArgs;
         return MaterialPageRoute(
-            builder: (_) =>  DeliveryInformationScreen(getOrdersModel:getOrdersModel));
+            builder: (_) =>  DeliveryInformationScreen(deliveryInformationScreenArgs:args,));
       case CART_SCREEN_R:
         return MaterialPageRoute(builder: (_) =>  CartScreen());
       case OFFERS_SCREEN_R:
@@ -120,11 +131,14 @@ class AppRouter {
       case DELIVERY_LOCATION_SCREEN_R:
         return MaterialPageRoute(builder: (_) => const DeliveryLocationScreen());
       case PAYMENT_METHOD_SCREEN_R:
-        return MaterialPageRoute(builder: (_) => const PaymentMethodScreen());
+        final PaymentMethodScreenArgs args =
+        settings.arguments as PaymentMethodScreenArgs;
+        return MaterialPageRoute(builder: (_) =>  PaymentMethodScreen(paymentMethodScreenArgs:args));
       case BAR_CODE_SCREEN_R:
         return MaterialPageRoute(builder: (_) => const BarCodeScreen());
       case DELIVERY_DETAILS_SCREEN_R:
-        return MaterialPageRoute(builder: (_) => DeliveryDetailsScreen());
+        final DeliveryDetailsScreenArgs args = settings.arguments as DeliveryDetailsScreenArgs;
+        return MaterialPageRoute(builder: (_) => DeliveryDetailsScreen(deliveryDetailsScreenArgs:args));
       case USER_ADDRESSES_SCREEN_R:
         return MaterialPageRoute(builder: (_) => const UserAddressesScreen());
       case ADDING_ADDITIONAL_LOCATION_SCREEN_R:
@@ -133,6 +147,8 @@ class AppRouter {
             builder: (_) =>  AddingAdditionalLocationScreen(myAddressesCubit: _myAddressesCubit,));
       case SEARCH_SCREEN_R:
         return MaterialPageRoute(builder: (_) => SearchScreen());
+        case ONLINE_PAYMENT_SCREEN_R:
+        return MaterialPageRoute(builder: (_) => OnlinePaymentMethodScreen());
 
       default:
         return null;

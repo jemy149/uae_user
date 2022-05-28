@@ -22,7 +22,7 @@ class AddAndEditAddressesRequest {
         'apiToken': apiToken,
         'description': description,
         'isDefaultAddress': isDefaultAddress,
-        'location': OrderLocation(
+        'location': MakeOrderLocation(
             address: locationAddress,
             latitude: locationLatitude.toDouble(),
             longitude: locationLongitude.toDouble()).toJson(),

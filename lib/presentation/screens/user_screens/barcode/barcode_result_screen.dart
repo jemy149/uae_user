@@ -86,7 +86,7 @@ class _BarcodeResultScreenState extends State<BarcodeResultScreen> {
                                 crossAxisCount: 2,
                                 crossAxisSpacing: 6,
                                 mainAxisSpacing: 6,
-                                childAspectRatio: 1 / 1.3,
+                                childAspectRatio: 1 / 1.4,
                                 children:
                                 List.generate(
                                     searchCubit.userBarcodeSearchModel.products.length,

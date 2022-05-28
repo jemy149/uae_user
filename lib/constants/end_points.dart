@@ -43,6 +43,7 @@ const EP_GET_BRANDS  = 'getBrands';
 const EP_USER_GET_MY_ADDRESSES= 'getMyAddresses';
 const EP_USER_ADD_ADDRESSES= 'addAddresses';
 const EP_USER_DELETE_ADDRESSES= 'deleteAddress';
+const EP_GET_OFFERS= 'getOffers';
 
 
 

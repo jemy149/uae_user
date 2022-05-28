@@ -49,7 +49,7 @@ class DeliveryLocationScreen extends StatelessWidget {
                 children: [
                   DefaultMaterialButton(
                     text: AppLocalizations.of(context)!.setAddress,
-                    onTap: (){Navigator.pushNamed(context, PAYMENT_METHOD_SCREEN_R);},
+                    onTap: (){},
                     height: 60,
                     width: 200,
                     color: AppColors.lightBlue,

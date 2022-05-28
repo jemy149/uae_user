@@ -1,14 +1,17 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:uae_user/data/models/user_models/get_orders/get_orders_model.dart';
 import 'package:uae_user/presentation/styles/colors.dart';
+import 'package:uae_user/presentation/widgets/default_cached_network_image.dart';
 import 'package:uae_user/presentation/widgets/default_text.dart';
 
 class AnOrderedCardItem extends StatelessWidget {
- final Orders order;
+  final Orders order;
+  final int index;
 
-   AnOrderedCardItem( {Key? key, required this.order}) : super(key: key);
-late GetOrdersModel _getOrdersModel;
+  const AnOrderedCardItem({Key? key, required this.order, required this.index})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -21,33 +24,52 @@ late GetOrdersModel _getOrdersModel;
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Flexible(child: Image.asset('assets/images/chocolate.png',height: 60,width: 60,)),
-            const Expanded(
+            Flexible(
+                child: DefaultCachedNetworkImage(
+                    imageUrl: order.carts[index].product.images[0],
+                    fit: BoxFit.contain)),
+            Expanded(
                 flex: 2,
                 child: Padding(
-                  padding: EdgeInsetsDirectional.only(start: 5),
-                  child: DefaultText(text: 'item name item name item name',
-                  maxLines: 10,
+                  padding: const EdgeInsetsDirectional.only(start: 5),
+                  child: DefaultText(
+                    text: order.carts[index].product.name,
+                    maxLines: 2,
                   ),
                 )),
-            Flexible(child:  Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(
-                  width: 1,
-                  color: AppColors.grey,
+            Flexible(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(
+                    width: 1,
+                    color: AppColors.grey,
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(1.0),
+                  child: DefaultText(
+                    text: '${order.carts[index].product.quantity}',
+                    style: Theme.of(context)
+                        .textTheme
+                        .caption
+                        ?.copyWith(color: AppColors.grey),
+                  ),
                 ),
               ),
-              child:  Padding(
-                padding:const EdgeInsets.all(1.0),
-                child: DefaultText(text: '${500}',style: Theme.of(context).textTheme.caption?.copyWith(color: AppColors.grey),),
-              ),
-            ),),
+            ),
             Flexible(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Expanded(child: DefaultText(text: '${6.95} AED',style: Theme.of(context).textTheme.caption?.copyWith(color: AppColors.green,),)),
+                  Expanded(
+                      child: DefaultText(
+                    text:
+                        '${order.carts[index].product.price.toStringAsFixed(2)} ${AppLocalizations.of(context)!.appCurrency}',
+                    style: Theme.of(context).textTheme.caption?.copyWith(
+                          color: AppColors.green,
+                        ),
+                  )),
                 ],
               ),
             ),
