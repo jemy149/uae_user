@@ -18,7 +18,7 @@ class LanguageCubit extends Cubit<LanguageState> {
   static LanguageCubit get(context) => BlocProvider.of(context);
 
 
-  Locale? localeVar = Locale(CacheHelper.getCurrentLanguage());
+  Locale localeVar = Locale(CacheHelper.getCurrentLanguage());
   Locale get getLocale {
     if( CacheHelper.getDataFromSP(key: SharedPreferencesKeys.SP_APP_LANGUAGE)=='ar')
     {
@@ -28,7 +28,7 @@ class LanguageCubit extends Cubit<LanguageState> {
     {
       AppLang="En";
     }
-    return localeVar!;
+    return localeVar;
 
   }
 
@@ -39,8 +39,4 @@ class LanguageCubit extends Cubit<LanguageState> {
     emit(LanguageSetLocale());
   }
 
-  void clearLocale(){
-     localeVar = null;
-     emit(LanguageClearLocale());
-  }
 }

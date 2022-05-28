@@ -38,7 +38,7 @@ class DioHelper {
     String? token,
   }) {
     dio.options.headers = {
-      'Authorization': token ?? ''
+      'Authorization': token
     };
 
     data == null? data={'language':AppLang}:  data['language'] = AppLang;

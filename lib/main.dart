@@ -1,9 +1,11 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:sizer/sizer.dart';
 import 'package:uae_user/business_logic/shared/language/language_cubit.dart';
+import 'package:uae_user/business_logic/user/auth/user_auth_cubit.dart';
 import 'package:uae_user/presentation/router/app_router.dart';
 import 'package:uae_user/presentation/styles/themes.dart';
 import 'business_logic/user/add_to_cart/add_to_cart_cubit.dart';
@@ -16,10 +18,13 @@ import 'data/data_provider/local/cache_helper.dart';
 import 'data/data_provider/remote/dio_helper.dart';
 import 'l10n/l10n.dart';
 
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   DioHelper.init();
   await CacheHelper.init();
+
 
   runApp(MyApp());
 }
@@ -57,6 +62,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => CategoryCubit()..userCategories(),
+        ),
+        BlocProvider(
+          create: (context) => UserAuthCubit(),
         ),
 
       ],
