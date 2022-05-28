@@ -38,9 +38,11 @@ class MakeOrderCubit extends Cubit<MakeOrderState> {
         emit(UserMakeOrderIssueState(msg: makeOrderModel.message));
       } else if (value.status == 204) {
         emit(UserMakeOrderEmptyState());
+      }else{
+        emit(UserMakeOrderErrorState());
       }
     }).catchError((error) {
-      emit(UserMakeOrderErrorState());
+
       printResponse('userMakeOrder' + error.toString());
     });
   }

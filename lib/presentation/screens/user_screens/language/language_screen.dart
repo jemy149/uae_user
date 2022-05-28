@@ -1,15 +1,14 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:uae_user/business_logic/shared/language/language_cubit.dart';
+import 'package:uae_user/constants/screens.dart';
 import 'package:uae_user/constants/shared_preferences_keys.dart';
 import 'package:uae_user/data/data_provider/local/cache_helper.dart';
 import 'package:uae_user/presentation/widgets/default_material_button.dart';
 
-import '../../../../constants/constant_methods.dart';
 import '../../../../constants/constants.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../styles/colors.dart';
@@ -85,11 +84,13 @@ late bool isArabic ;
                                           {
                                             AppLang="En";
                                             _langCubit.setLocale(const Locale('en'));
+
                                           }
                                         else if( CacheHelper.getDataFromSP(key: SharedPreferencesKeys.SP_APP_LANGUAGE)=='en')
                                         {
                                           AppLang="Ar";
                                           _langCubit.setLocale(const Locale('ar'));
+
                                         }
 
 

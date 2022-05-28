@@ -156,7 +156,9 @@
   "selectPaymentMethod":"Select Payment Method",
   "pay":"Pay",
   "points":"Points",
-  "walletBalance":"Wallet Balance"
+  "walletBalance":"Wallet Balance",
+  "currentAddress":"Current Address",
+  "profile":"Profile"
 
 
 

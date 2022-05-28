@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -26,8 +25,8 @@ class ProfileScreen extends StatelessWidget {
 
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Text('profile'),
+          children:  [
+            Text(AppLocalizations.of(context)!.profile),
           ],
         ),
 
@@ -35,7 +34,7 @@ class ProfileScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
+            SizedBox(
               height: 170,
               width: double.maxFinite,
               child: Row(
@@ -60,7 +59,7 @@ class ProfileScreen extends StatelessWidget {
                 Navigator.pushNamed(context, USER_ADDRESSES_SCREEN_R);
               },
               image: 'assets/images/place2.png',
-              titleText: 'Current Address',
+              titleText: AppLocalizations.of(context)!.currentAddress,
               iconColor: AppColors.lightBlue,
             ),
             DefaultProfileListTile(
@@ -90,7 +89,7 @@ class ProfileScreen extends StatelessWidget {
                 Navigator.pushNamed(context, POLICY_AND_TERMS_SCREEN_R);
               },
               image: 'assets/images/terms-and-conditions.png',
-              titleText: '${AppLocalizations.of(context)!.policyAndTerms}',
+              titleText: AppLocalizations.of(context)!.policyAndTerms,
             ),
             DefaultProfileListTile(
               onTap: () {

@@ -156,5 +156,7 @@
       "selectPaymentMethod":"إختر طريقة الدفع",
       "pay":"إدفع",
       "points":"النقاط",
-      "walletBalance":"رصيد المحفظه"
+      "walletBalance":"رصيد المحفظه",
+      "currentAddress":"العنوان الحالى",
+      "profile":"الحساب الشخصى"
 }

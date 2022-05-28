@@ -154,8 +154,8 @@ Bill billFromJson(String str) => Bill.fromJson(json.decode(str));
 String billToJson(Bill data) => json.encode(data.toJson());
 class Bill {
   Bill({
-      int? deliveryPrice, 
-      double? productsPrice, 
+      num? deliveryPrice,
+    num? productsPrice,
       dynamic fees, 
       dynamic discounted, 
       num? totalPrice,}){
@@ -173,14 +173,14 @@ class Bill {
     _discounted = json['discounted'];
     _totalPrice = json['totalPrice'];
   }
-  int? _deliveryPrice;
-  double? _productsPrice;
+  num? _deliveryPrice;
+  num? _productsPrice;
   dynamic _fees;
   dynamic _discounted;
   num? _totalPrice;
 
-  int get deliveryPrice => _deliveryPrice ?? 0;
-  double get productsPrice => _productsPrice ?? 0.0;
+  num get deliveryPrice => _deliveryPrice ?? 0;
+  num get productsPrice => _productsPrice ?? 0.0;
   dynamic get fees => _fees ?? '';
   dynamic get discounted => _discounted ?? '';
   num get totalPrice => _totalPrice ?? 0;
