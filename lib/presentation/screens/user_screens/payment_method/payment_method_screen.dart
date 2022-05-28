@@ -395,7 +395,6 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                                 var response = await MyFatoorah.startPayment(
                                   context: context,
                                   request: MyfatoorahRequest.live(
-
                                     currencyIso: Country.UAE,
                                     successUrl: 'https://www.beauty-addict.com/wp-content/uploads/2021/02/Payment-success.png',
                                     errorUrl: 'https://kashmirreader.com/wp-content/uploads/2020/07/Payment-Failure-1.png',
