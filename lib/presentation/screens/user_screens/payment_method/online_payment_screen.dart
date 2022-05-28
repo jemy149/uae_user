@@ -7,6 +7,7 @@ import '../../../styles/colors.dart';
 class OnlinePaymentMethodScreen extends StatefulWidget {
   const OnlinePaymentMethodScreen({Key? key}) : super(key: key);
 
+
   @override
   State<OnlinePaymentMethodScreen> createState() =>
       _OnlinePaymentMethodScreenState();

@@ -75,10 +75,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: BlocBuilder<GetMyCartCubit, GetMyCartState>(
                           builder: (context, state) {
                             GetMyCartCubit getMyCartCubit = GetMyCartCubit.get(context);
-                          return Text(
-                            '${getMyCartCubit.getMyCartModel.carts.length}',
-                            style: const TextStyle(fontSize: 8),
-                          );
+                          if (state is UserGetCartSuccessState) {
+                            return Text(
+                              '${getMyCartCubit.getMyCartModel.carts.length}',
+                              style: const TextStyle(fontSize: 8),
+                            );
+                          }else{
+                            return Text(
+                              '${getMyCartCubit.getMyCartModel.carts.length}',
+                              style: const TextStyle(fontSize: 8),
+                            );
+                          }
                           },
                         ),
                       ),
@@ -105,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           DefaultText(
                             text:
-                                '${AppLocalizations.of(context)!.welcome} User Name',
+                                '${AppLocalizations.of(context)!.welcome}',
                             style:
                                 Theme.of(context).textTheme.bodyText1?.copyWith(
                                       color: AppColors.lightGrey,

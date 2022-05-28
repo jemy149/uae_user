@@ -93,7 +93,7 @@ class HomeOffersCardItem extends StatelessWidget {
                     maxLines: 2,
                     text: offer.product.name,
                     style: Theme.of(context).textTheme.button?.copyWith(
-                        fontFamily: 'Bukra-Regular', fontWeight: FontWeight.bold),
+                        fontFamily: 'Bukra-Regular', fontWeight: FontWeight.bold,fontSize: 14),
                   ),
                 ),
               ],

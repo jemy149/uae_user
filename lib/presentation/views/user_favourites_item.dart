@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:uae_user/business_logic/user/add_to_cart/add_to_cart_cubit.dart';
 import 'package:uae_user/business_logic/user/change_favorite/favorite_change_cubit.dart';
 import 'package:uae_user/data/models/user_models/favorites/favorites_model.dart';
 import 'package:uae_user/presentation/widgets/default_cached_network_image.dart';
@@ -7,10 +8,11 @@ import 'package:uae_user/presentation/widgets/default_text.dart';
 
 class UserFavouritesItem extends StatefulWidget {
   final Products productModel;
+  final int productId;
 
   const UserFavouritesItem({
     Key? key,
-    required this.productModel,
+    required this.productModel, required this.productId,
   }) : super(key: key);
 
   @override
@@ -77,7 +79,9 @@ class _UserFavouritesItemState extends State<UserFavouritesItem> {
                 child: Align(
                     alignment: Alignment.topRight,
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        AddToCartCubit.get(context).userAddToCart(productId: widget.productId);
+                      },
                       child: Container(
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),

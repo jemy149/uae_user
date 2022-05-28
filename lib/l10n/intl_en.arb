@@ -154,7 +154,9 @@
   "chooseYourLocation":"Choose Your Location",
   "paymentAmount":"Payment Amount",
   "selectPaymentMethod":"Select Payment Method",
-  "pay":"Pay"
+  "pay":"Pay",
+  "points":"Points",
+  "walletBalance":"Wallet Balance"
 
 
 
