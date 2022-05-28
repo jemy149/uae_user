@@ -122,7 +122,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               crossAxisCount: 2,
                               crossAxisSpacing: 6,
                               mainAxisSpacing: 6,
-                              childAspectRatio: 1 / 1.30,
+                              childAspectRatio: 1 / 1.4,
                               children: List.generate(
                                   searchCubit
                                       .userSearchModel.products.length,

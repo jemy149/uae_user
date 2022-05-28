@@ -21,7 +21,7 @@ class CheckDistanceCubit extends Cubit<CheckDistanceState> {
   void checkDistance({required ApiAddress myAddressModel}) {
     CheckDistanceRequest()
         .checkDistanceRequest(
-            orderLocation: OrderLocation(
+            orderLocation: MakeOrderLocation(
                 address: myAddressModel.address,
                 latitude: myAddressModel.latitude.toDouble(),
                 longitude: myAddressModel.longitude.toDouble()))

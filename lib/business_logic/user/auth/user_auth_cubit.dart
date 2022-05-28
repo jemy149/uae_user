@@ -121,12 +121,16 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
         CacheHelper.saveDataToSP(
             key: SharedPreferencesKeys.SP_ACCOUNT_TYPE_KEY,
             value: userLoginModel?.account?.type);
-        CacheHelper.saveDataToSP(
+          CacheHelper.saveDataToSP(
             key: SharedPreferencesKeys.SP_ACCOUNT_NAME_KEY,
-            value: userLoginModel?.account?.name);
+            value: userLoginModel?.account?.name?? '');
         CacheHelper.saveDataToSP(
             key: SharedPreferencesKeys.SP_ACCOUNT_PHONE_KEY,
-            value: userLoginModel?.account?.phone);
+            value: userLoginModel?.account?.phone ?? '');
+       CacheHelper.saveDataToSP(
+            key: SharedPreferencesKeys.SP_ACCOUNT_E_MAIL,
+            value: userLoginModel?.account?.email ?? '');
+
 
         emit(UserLoginSuccessState());
       } else {

@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:uae_user/constants/weights.dart';
+import 'package:uae_user/data/models/user_models/cart/get_my_cart_model.dart';
 import 'package:uae_user/presentation/styles/colors.dart';
+import 'package:uae_user/presentation/widgets/default_cached_network_image.dart';
 import 'package:uae_user/presentation/widgets/default_text.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class PaymentMethodItem extends StatelessWidget {
-  const PaymentMethodItem({Key? key}) : super(key: key);
+  final int index;
+  final GetMyCartModel getMyCartModel;
+  const PaymentMethodItem({Key? key, required this.getMyCartModel, required this.index}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +24,7 @@ class PaymentMethodItem extends StatelessWidget {
         child: Row(
           children: [
             Flexible(
-              child: Image.asset(
-                'assets/images/coffee.png',
-                height: 100,
-                width: 100,
-              ),
+              child: DefaultCachedNetworkImage(imageUrl: getMyCartModel.carts[index].product.images[0], fit: BoxFit.contain),
             ),
             Expanded(
               flex: 3,
@@ -32,7 +34,7 @@ class PaymentMethodItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                   DefaultText(
-                    text: 'item name',
+                    text: getMyCartModel.carts[index].product.name,
                     maxLines: 2,
                     style: Theme.of(context).textTheme.bodyText1?.copyWith(
                           fontWeight: FontWeights.bold,
@@ -41,7 +43,7 @@ class PaymentMethodItem extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 2.0),
                     child: DefaultText(
-                      text: '${16.95} AED',
+                      text: '${getMyCartModel.carts[index].product.price} ${AppLocalizations.of(context)!.appCurrency}',
                       style: Theme.of(context).textTheme.caption
                     ),
                   ),
@@ -53,7 +55,7 @@ class PaymentMethodItem extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 5.0,horizontal: 10),
                       child: DefaultText(
-                        text: '${1}',
+                        text: '${getMyCartModel.carts[index].product.quantity}',
                         style: Theme.of(context).textTheme.caption?.copyWith(color: Colors.white)
                       ),
                     ),

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:uae_user/business_logic/user/cart/delete_cart/delete_cart_cubit.dart';
+import 'package:uae_user/presentation/router/arguments/user_arguments/delivery_details_screen_args.dart';
 import 'package:uae_user/presentation/views/cart_item.dart';
-
 import '../../../../business_logic/user/cart/get_my_cart/get_my_cart_cubit.dart';
 import '../../../../constants/screens.dart';
 import '../../../styles/colors.dart';
@@ -42,7 +42,12 @@ class _CartScreenState extends State<CartScreen> {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                HOME_LAYOUT_R,
+                    (route) => false,
+              );
+              // Navigator.pop(context);
             },
           ),
           title: Row(
@@ -65,10 +70,6 @@ class _CartScreenState extends State<CartScreen> {
           listener: (context, state) {
             if (state is UserDeleteCartSuccessState) {
               _getMyCartCubit.userGetCart();
-            //   setState(() {
-            //     _getMyCartCubit.getMyCartModel.carts
-            //         .removeWhere((element) => element.id == state.cartId);
-            //   });
             }
           },
           child: BlocBuilder<GetMyCartCubit, GetMyCartState>(
@@ -109,7 +110,7 @@ class _CartScreenState extends State<CartScreen> {
                                     padding: const EdgeInsets.all(20.0),
                                     child: DefaultText(
                                       text:
-                                          '${_getMyCartCubit.getMyCartModel.totalPrice} ${AppLocalizations.of(context)!.appCurrency}',
+                                          '${_getMyCartCubit.getMyCartModel.totalPrice.toStringAsFixed(2)} ${AppLocalizations.of(context)!.appCurrency}',
                                       style:
                                           Theme.of(context).textTheme.bodyText1,
                                     ),
@@ -129,7 +130,7 @@ class _CartScreenState extends State<CartScreen> {
                             child: InkWell(
                               onTap: () {
                                 Navigator.pushNamed(
-                                    context, DELIVERY_DETAILS_SCREEN_R);
+                                    context, DELIVERY_DETAILS_SCREEN_R,arguments:DeliveryDetailsScreenArgs( getMyCartModel: _getMyCartCubit.getMyCartModel));
                               },
                               child: Container(
                                 padding:
@@ -181,7 +182,7 @@ class _CartScreenState extends State<CartScreen> {
                   ],
                 );
               } else if (state is UserGetCartLoadingState) {
-                return const DefaultLoadingIndicator();
+                return const DefaultLoadingIndicator(color: Colors.white,);
               } else if (state is UserGetCartEmptyState) {
                 return Center(
                   child: Expanded(
@@ -194,6 +195,7 @@ class _CartScreenState extends State<CartScreen> {
                         ),
                         DefaultText(
                           text: AppLocalizations.of(context)!.noResultsFound,
+                          style: const TextStyle(color: Colors.white),
                           textStyle: Theme.of(context).textTheme.headline6,
                         )
                       ],

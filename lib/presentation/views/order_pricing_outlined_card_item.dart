@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:uae_user/data/models/user_models/get_orders/get_orders_model.dart';
 import 'package:uae_user/presentation/styles/colors.dart';
 import 'package:uae_user/presentation/widgets/default_text.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class OrderPricingOutlinedCardItem extends StatelessWidget {
-  const OrderPricingOutlinedCardItem({Key? key}) : super(key: key);
+  final Orders order;
+  final int index;
+  const OrderPricingOutlinedCardItem( {Key? key, required this.order, required this.index,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +26,7 @@ class OrderPricingOutlinedCardItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             DefaultText(
-              text: '${AppLocalizations.of(context)!.orderPrice} : ${36.80} AED',
+              text: '${AppLocalizations.of(context)!.orderPrice} : ${order.bill.productsPrice} ${AppLocalizations.of(context)!.appCurrency}',
               style: Theme.of(context)
                   .textTheme
                   .bodyText1
@@ -30,7 +35,7 @@ class OrderPricingOutlinedCardItem extends StatelessWidget {
             Padding(
               padding: const EdgeInsetsDirectional.only(top: 5),
               child: DefaultText(
-                text: '${AppLocalizations.of(context)!.deliveryFees} : ${12.80} AED',
+                text: '${AppLocalizations.of(context)!.deliveryFees} : ${order.bill.deliveryPrice} ${AppLocalizations.of(context)!.appCurrency}',
                 style: Theme.of(context)
                     .textTheme
                     .bodyText1
@@ -46,7 +51,7 @@ class OrderPricingOutlinedCardItem extends StatelessWidget {
                     style: Theme.of(context).textTheme.button,
                   ),
                   DefaultText(
-                    text: '${12.80} AED',
+                    text: '${order.bill.discounted} ${AppLocalizations.of(context)!.appCurrency}',
                     style: Theme.of(context).textTheme.button?.copyWith(decoration: TextDecoration.lineThrough),
                   ),
                 ],
@@ -55,7 +60,7 @@ class OrderPricingOutlinedCardItem extends StatelessWidget {
             Padding(
               padding: const EdgeInsetsDirectional.only(top: 5),
               child: DefaultText(
-                text: '${AppLocalizations.of(context)!.total} : ${48.80} AED',
+                text: '${AppLocalizations.of(context)!.total} : ${order.bill.totalPrice} ${AppLocalizations.of(context)!.appCurrency}',
                 style: Theme.of(context).textTheme.headline6?.copyWith(color: AppColors.green,fontFamily:'Bukra-Regular'),
               ),
             ),

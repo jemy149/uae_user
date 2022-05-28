@@ -6,5 +6,6 @@ enum SharedPreferencesKeys {
   SP_ACCOUNT_TYPE_KEY,
   SP_ACCOUNT_NAME_KEY,
   SP_ACCOUNT_PHONE_KEY,
+  SP_ACCOUNT_E_MAIL,
 
 }

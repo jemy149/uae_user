@@ -1,9 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:uae_user/business_logic/user/ads/ads_cubit.dart';
 import 'package:uae_user/business_logic/user/category/category_cubit.dart';
+import 'package:uae_user/business_logic/user/get_offers/get_offers_cubit.dart';
 import 'package:uae_user/presentation/screens/user_screens/search/search_screen.dart';
 import 'package:uae_user/presentation/styles/colors.dart';
 import 'package:uae_user/presentation/views/custome_carousel_slider.dart';
@@ -12,20 +12,21 @@ import 'package:uae_user/presentation/views/home_offers_card_item.dart';
 import 'package:uae_user/presentation/widgets/custome_search_field.dart';
 import 'package:uae_user/presentation/widgets/default_error_widget.dart';
 import 'package:uae_user/presentation/widgets/default_text.dart';
-
+import '../../../../business_logic/user/cart/get_my_cart/get_my_cart_cubit.dart';
 import '../../../../constants/constant_methods.dart';
 import '../../../../constants/screens.dart';
+import '../../../widgets/DefaultSvg.dart';
 import '../../../widgets/default_loading_indicator.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   GlobalKey<FormState> searchFormKey = GlobalKey<FormState>();
   ScrollController scrollController = ScrollController();
@@ -34,11 +35,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+
         BlocProvider(
-          create: (context) => AdsCubit()..userAds(type: 'welcome'),
-        ),
-        BlocProvider(
-          create: (context) => CategoryCubit()..userCategories(),
+          create: (context) => GetMyCartCubit()..userGetCart(),
         ),
 
       ],
@@ -64,8 +63,8 @@ class _HomeScreenState extends State<HomeScreen> {
               IconButton(
                 icon: Stack(
                   alignment: Alignment.topRight,
-                  children: const [
-                    Icon(
+                  children:  [
+                    const Icon(
                       Icons.add_shopping_cart,
                       color: Colors.white,
                     ),
@@ -73,9 +72,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       backgroundColor: Colors.lightGreenAccent,
                       radius: 5.0,
                       child: Center(
-                        child: Text(
-                          '0',
-                          style: TextStyle(fontSize: 8),
+                        child: BlocBuilder<GetMyCartCubit, GetMyCartState>(
+                          builder: (context, state) {
+                            GetMyCartCubit getMyCartCubit = GetMyCartCubit.get(context);
+                          return Text(
+                            '${getMyCartCubit.getMyCartModel.carts.length}',
+                            style: const TextStyle(fontSize: 8),
+                          );
+                          },
                         ),
                       ),
                     ),
@@ -115,25 +119,35 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: Form(
                                   key: searchFormKey,
                                   child: CustomeSearchField(
-                                    keyboardType:TextInputType.text,
+                                    keyboardType: TextInputType.text,
                                     prefixIcon: IconButton(
-                                      icon: Image.asset('assets/images/search.png'),
-                                      onPressed: () {Navigator.pushNamed(context, SEARCH_SCREEN_R);},
+                                      icon: Image.asset(
+                                          'assets/images/search.png'),
+                                      onPressed: () {
+                                        Navigator.pushNamed(
+                                            context, SEARCH_SCREEN_R);
+                                      },
                                     ),
                                     suffixIcon: IconButton(
-                                      icon: Image.asset('assets/images/barcode.png'),
-                                      onPressed: () {Navigator.pushNamed(context, BAR_CODE_SCREEN_R);},
+                                      icon: Image.asset(
+                                          'assets/images/barcode.png'),
+                                      onPressed: () {
+                                        Navigator.pushNamed(
+                                            context, BAR_CODE_SCREEN_R);
+                                      },
                                     ),
                                     controller: _searchController,
                                     validator: (text) {
                                       if (text!.isEmpty) {
                                         return 'البحث فارغ';
                                       }
+                                      return '';
                                     },
                                     onFieldSubmitted: (text) {
-                                      if (searchFormKey.currentState!.validate()) {
+                                      if (searchFormKey.currentState!
+                                          .validate()) {
                                         navigateTo(context,
-                                            SearchScreen(searchText:text));
+                                            SearchScreen(searchText: text));
                                       }
                                     },
                                   ),
@@ -205,20 +219,47 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: const [
-                                HomeOffersCardItem(),
-                                HomeOffersCardItem(),
-                                HomeOffersCardItem(),
-                                HomeOffersCardItem(),
-                                HomeOffersCardItem(),
-                              ],
-                            ),
-                          ),
+                        BlocBuilder<GetOffersCubit, GetOffersState>(
+                          builder: (context, state) {
+                            if (state is UserGetOffersSuccessState) {
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5.0),
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: List.generate(
+                                      state.offers.length,
+                                      (index) => HomeOffersCardItem(offer:state.offers[index],productId:state.offers[index].product.id),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            } else if (state is UserGetOffersLoadingState) {
+                              return const DefaultLoadingIndicator();
+                            } else if (state is UserGetOffersEmptyState) {
+                              return Center(
+                                child: Expanded(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const DefaultSvg(
+                                        imagePath: 'assets/icons/no_search_data.svg',
+                                        color: AppColors.lightBlue2,
+                                      ),
+                                      DefaultText(
+                                        text: AppLocalizations.of(context)!.noResultsFound,
+                                        style: const TextStyle(color: Colors.white),
+                                        textStyle: Theme.of(context).textTheme.headline6,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            } else {
+                              return const DefaultErrorWidget();
+                            }
+                          },
                         ),
                         Row(
                           children: [
@@ -241,15 +282,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         BlocBuilder<CategoryCubit, CategoryStates>(
                           builder: (context, state) {
                             if (state is UserCategorySuccessState) {
-                              return GridView.builder(
+                              return
+                                GridView.builder(
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
                                   gridDelegate:
                                       const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisSpacing: 20,
                                           crossAxisCount: 3,
                                           mainAxisSpacing: 20,
                                           mainAxisExtent: 150),
-                                  itemCount: 20,
+                                  itemCount: state.userCategories.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     return HomeGridViewItem(
@@ -259,9 +302,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                           state.userCategories[index].image,
                                       onTap: () {
                                         Navigator.pushNamed(
-                                            context, CATEGORIES_SCREEN_R,arguments:  state
-                                          .userCategories[index]
-                                          .id, );
+                                          context,
+                                          CATEGORIES_SCREEN_R,
+                                          arguments:
+                                              state.userCategories[index].id,
+                                        );
                                       },
                                     );
                                   });

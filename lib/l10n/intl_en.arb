@@ -145,7 +145,16 @@
   "addedSuccessfully":"added successfully",
   "addDescription":"add Description",
   "appCurrency":"AED",
-  "noResultsFound":"No Results Found"
+  "noResultsFound":"No Results Found",
+  "addedSuccessfully":"Added Successfully",
+  "thisFieldIsRequired":"This Field Is Required",
+  "notAvailable":"Not Available",
+  "required":"Required",
+  "orderLocation":"Order Location",
+  "chooseYourLocation":"Choose Your Location",
+  "paymentAmount":"Payment Amount",
+  "selectPaymentMethod":"Select Payment Method",
+  "pay":"Pay"
 
 
 
