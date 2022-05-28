@@ -1,4 +1,3 @@
-import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
@@ -17,11 +16,13 @@ import 'package:uae_user/data/requests/auth/resend_code_request.dart';
 import 'package:uae_user/data/requests/auth/reset_password_request.dart';
 import 'package:uae_user/data/requests/auth/validate_code_request.dart';
 import 'package:uae_user/data/requests/logout/logout_request.dart';
+
 import '../../../constants/constant_methods.dart';
 import '../../../constants/shared_preferences_keys.dart';
 import '../../../data/data_provider/local/cache_helper.dart';
 import '../../../data/models/user_models/auth/validate_code_model.dart';
 import '../../../data/requests/auth/login_by_social_token_request.dart';
+
 part 'user_auth_state.dart';
 
 class UserAuthCubit extends Cubit<UserAuthStates> {
@@ -58,20 +59,47 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
 
   //////////////////////////////////// Register By Social Token ////////////////////////////////////
 
-  RegisterModel? registerBySocialTokenModel;
+  RegisterModel registerBySocialTokenModel = RegisterModel();
 
   void userRegisterBySocialToken({
     required String socialToken,
-    required String email,
-    required String name,
+    required String? email,
+    required String? name,
     required String phone,
+    required String image,
   }) {
-    emit(UserRegisterBySocialTokenLoadingState());
-    RegisterBySocialTokenRequest.registerBySocialTokenRequest(
-            email: email, name: name, phone: phone, socialToken: socialToken)
+    RegisterBySocialTokenRequest()
+        .registerBySocialTokenRequest(
+            email: email,
+            name: name,
+            phone: phone,
+            socialToken: socialToken,
+            image: image)
         .then((value) => (value) {
+              printTest('sdasdasdasdasdasdasd');
               registerBySocialTokenModel = value;
-              emit(UserRegisterBySocialTokenSuccessState());
+              if (value.status == 200) {
+                apiToken = registerBySocialTokenModel.account.apiToken;
+                CacheHelper.saveDataToSP(
+                    key: SharedPreferencesKeys.SP_API_TOKEN_KEY,
+                    value: apiToken);
+                CacheHelper.saveDataToSP(
+                    key: SharedPreferencesKeys.SP_ACCOUNT_TYPE_KEY,
+                    value: registerBySocialTokenModel.account.type);
+                CacheHelper.saveDataToSP(
+                    key: SharedPreferencesKeys.SP_ACCOUNT_NAME_KEY,
+                    value: registerBySocialTokenModel.account.name);
+                CacheHelper.saveDataToSP(
+                    key: SharedPreferencesKeys.SP_ACCOUNT_PHONE_KEY,
+                    value: registerBySocialTokenModel.account.phone);
+                CacheHelper.saveDataToSP(
+                    key: SharedPreferencesKeys.SP_ACCOUNT_E_MAIL,
+                    value: registerBySocialTokenModel.account.email);
+                emit(UserRegisterBySocialTokenSuccessState());
+              } else {
+                emit(UserRegisterBySocialTokenErrorState(
+                    registerBySocialTokenModel.message));
+              }
             })
         .catchError((error) {
       printResponse('userRegisterBySocialToken' + error.toString());
@@ -80,7 +108,7 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
 
   //////////////////////////////////// Validate Code ////////////////////////////////////
 
-  ValidateCodeModel? validateCodeModel;
+  ValidateCodeModel validateCodeModel = ValidateCodeModel();
 
   void userValidateCode({
     required String phone,
@@ -90,10 +118,26 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
     ValidateCodeRequest.validateCodeRequest(phone: phone, code: code)
         .then((value) => (value) {
               validateCodeModel = value;
-              if (validateCodeModel!.status.toString() == '200') {
-                emit(UserValidateCodeSuccessState(validateCodeModel!.message));
+              if (value.status == 200) {
+                apiToken = validateCodeModel.account.apiToken;
+                CacheHelper.saveDataToSP(
+                    key: SharedPreferencesKeys.SP_API_TOKEN_KEY,
+                    value: apiToken);
+                CacheHelper.saveDataToSP(
+                    key: SharedPreferencesKeys.SP_ACCOUNT_TYPE_KEY,
+                    value: validateCodeModel.account.type);
+                CacheHelper.saveDataToSP(
+                    key: SharedPreferencesKeys.SP_ACCOUNT_NAME_KEY,
+                    value: validateCodeModel.account.name);
+                CacheHelper.saveDataToSP(
+                    key: SharedPreferencesKeys.SP_ACCOUNT_PHONE_KEY,
+                    value: validateCodeModel.account.phone);
+                CacheHelper.saveDataToSP(
+                    key: SharedPreferencesKeys.SP_ACCOUNT_E_MAIL,
+                    value: validateCodeModel.account.email);
+                emit(UserValidateCodeSuccessState(validateCodeModel.message));
               } else {
-                emit(UserValidateCodeErrorState(validateCodeModel!.message));
+                emit(UserValidateCodeErrorState(validateCodeModel.message));
               }
             })
         .catchError((error) {
@@ -103,7 +147,7 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
 
   //////////////////////////////////// Login ////////////////////////////////////
 
-  LoginModel? userLoginModel;
+  LoginModel userLoginModel = LoginModel();
 
   void userLogin({
     required String phone,
@@ -112,32 +156,82 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
     emit(UserLoginLoadingState());
     LoginRequest.loginRequest(password: password, phone: phone).then((value) {
       userLoginModel = value;
-      if (userLoginModel!.status.toString() == '200') {
-        apiToken=userLoginModel!.account!.apiToken;
+      if (value.status == 200) {
+        apiToken = userLoginModel.account.apiToken;
         CacheHelper.saveDataToSP(
-            key: SharedPreferencesKeys.SP_API_TOKEN_KEY,
-            value: apiToken);
+            key: SharedPreferencesKeys.SP_API_TOKEN_KEY, value: apiToken);
 
         CacheHelper.saveDataToSP(
             key: SharedPreferencesKeys.SP_ACCOUNT_TYPE_KEY,
-            value: userLoginModel?.account?.type);
-          CacheHelper.saveDataToSP(
+            value: userLoginModel.account.type);
+        CacheHelper.saveDataToSP(
             key: SharedPreferencesKeys.SP_ACCOUNT_NAME_KEY,
-            value: userLoginModel?.account?.name?? '');
+            value: userLoginModel.account.name);
         CacheHelper.saveDataToSP(
             key: SharedPreferencesKeys.SP_ACCOUNT_PHONE_KEY,
-            value: userLoginModel?.account?.phone ?? '');
-       CacheHelper.saveDataToSP(
+            value: userLoginModel.account.phone);
+        CacheHelper.saveDataToSP(
             key: SharedPreferencesKeys.SP_ACCOUNT_E_MAIL,
-            value: userLoginModel?.account?.email ?? '');
-
+            value: userLoginModel.account.email);
 
         emit(UserLoginSuccessState());
       } else {
-        emit(UserLoginErrorState(userLoginModel!.message.toString()));
+        emit(UserLoginErrorState(userLoginModel.message.toString()));
       }
     }).catchError((error) {
       printResponse('UserLogin' + error.toString());
+    });
+  }
+
+  //////////////////////////////////// SocialLogin ////////////////////////////////////
+
+  LoginModel userSocialLoginModel = LoginModel();
+
+  void userSocialLogin({
+    required String? name,
+    required String phone,
+    required String? image,
+    required String? email,
+    required String socialToken,
+  }) {
+    emit(UserSocialLoginLoadingState());
+    LoginBySocialTokenRequest()
+        .loginBySocialTokenRequest(
+            name: name,
+            phone: phone,
+            image: image,
+            email: email,
+            socialToken: socialToken)
+        .then((value) {
+      userSocialLoginModel = value;
+      printTest('aaaaaaaaaaaaaaaaaa'+ value.status.toString());
+
+      if (value.status == 200) {
+        apiToken = userSocialLoginModel.account.apiToken;
+        CacheHelper.saveDataToSP(
+            key: SharedPreferencesKeys.SP_API_TOKEN_KEY, value: apiToken);
+        printTest(userSocialLoginModel.account.apiToken.toString());
+
+        CacheHelper.saveDataToSP(
+            key: SharedPreferencesKeys.SP_ACCOUNT_TYPE_KEY,
+            value: userSocialLoginModel.account.type);
+        CacheHelper.saveDataToSP(
+            key: SharedPreferencesKeys.SP_ACCOUNT_NAME_KEY,
+            value: userSocialLoginModel.account.name);
+        CacheHelper.saveDataToSP(
+            key: SharedPreferencesKeys.SP_ACCOUNT_PHONE_KEY,
+            value: userSocialLoginModel.account.phone);
+        CacheHelper.saveDataToSP(
+            key: SharedPreferencesKeys.SP_ACCOUNT_E_MAIL,
+            value: userSocialLoginModel.account.email);
+
+        emit(UserSocialLoginSuccessState());
+      } else {
+        emit(
+            UserSocialLoginErrorState(userSocialLoginModel.message.toString()));
+      }
+    }).catchError((error) {
+      printResponse('userSocialLogin' + error.toString());
     });
   }
 
@@ -145,11 +239,11 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
 
   LogoutModel? userLogoutModel;
 
-   userLogout() {
+  userLogout() {
     emit(UserLogoutLoadingState());
     LogoutRequest.logoutRequest()
         .then((value) => (value) {
-      userLogoutModel = value;
+              userLogoutModel = value;
               if (userLogoutModel?.status.toString() == '200') {
                 CacheHelper.sharedPreferences.clear();
                 emit(UserLogoutSuccessState());
@@ -209,30 +303,10 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
     });
   }
 
-//////////////////////////////////// Social Request ////////////////////////////////////
-
-  LoginModel? socialAuthUserDetailsModel;
-
-  void userSocialAuthUserDetails() {
-    emit(UserSocialAuthUserDetailsLoadingState());
-    LoginBySocialTokenRequest.loginBySocialTokenRequest()
-        .then((value) => (value) {
-      socialAuthUserDetailsModel = value;
-              if (socialAuthUserDetailsModel!.status.toString() == '200') {
-                emit(UserSocialAuthUserDetailsSuccessState());
-              } else {
-                emit(UserSocialAuthUserDetailsErrorState());
-              }
-            })
-        .catchError((error) {
-      printResponse('userSocialAuthUserDetails' + error.toString());
-    });
-  }
-
 //////////////////////////////////// Auth With Facebook and Google ////////////////////////////////////
 
-  signInWithFacebook() async {
-    emit(UserFacebookAuthLoadingState());
+  signInWithFacebook(String phone) async {
+    emit(UserSocialAuthLoadingState());
     final fb = FacebookLogin();
     final res = await fb.logIn(permissions: [
       FacebookPermission.publicProfile,
@@ -241,7 +315,6 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
 
     switch (res.status) {
       case FacebookLoginStatus.success:
-        // The user is suceessfully logged in
         // Send access token to server for validation and auth
 
         final FacebookAccessToken? accessToken = res.accessToken;
@@ -253,32 +326,36 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
         // Get profile data from facebook for use in the app
         final profile = await fb.getUserProfile();
 
-        print('Hello, ${profile!.name}! You ID: ${profile.userId}');
+        printTest('Hello, ${profile!.name}! You ID: ${profile.userId}');
         // Get user profile image url
         final imageUrl = await fb.getProfileImageUrl(width: 100);
-        print('Your profile image: $imageUrl');
+        printTest('Your profile image: $imageUrl');
         // fetch user email
         final email = await fb.getUserEmail();
         // But user can decline permission
         await CacheHelper.saveDataToSP(
             key: SharedPreferencesKeys.SP_FACEBOOK_ACCESS_TOKEN_KEY,
             value: accessToken.token);
-        emit(UserFacebookAuthSuccessState());
-        if (email != null) print('And your email is $email');
+        printTest('And your email is $email');
+        emit(UserSocialAuthSuccessState(
+            socialToken: accessToken.token,
+            name: profile.name,
+            email: email,
+            urlImage: imageUrl,phone: phone));
         break;
       case FacebookLoginStatus.cancel:
         // In case the user cancels the login process
         break;
       case FacebookLoginStatus.error:
         // Login procedure failed
-        emit(UserFacebookAuthErrorState());
-        print('Error while log in: ${res.error}');
+        emit(UserSocialAuthErrorState());
+        printTest('Error while log in: ${res.error}');
         break;
     }
   }
 
-  Future<UserCredential> signInWithGoogle() async {
-    emit(UserGoogleAuthLoadingState());
+  Future<UserCredential> signInWithGoogle(String phone) async {
+    emit(UserSocialAuthLoadingState());
     // Initiate the auth procedure
     final GoogleSignInAccount? googleUser =
         await GoogleSignIn(scopes: <String>["email"]).signIn();
@@ -295,9 +372,13 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
       CacheHelper.saveDataToSP(
           key: SharedPreferencesKeys.SP_GOOGLE_ACCESS_TOKEN_KEY,
           value: credential.accessToken);
-      emit(UserFacebookAuthSuccessState());
+      emit(UserSocialAuthSuccessState(
+          socialToken: credential.accessToken!,
+          email: googleUser.email,
+          name: googleUser.displayName,
+          urlImage: googleUser.photoUrl,phone: phone));
     } else {
-      emit(UserFacebookAuthErrorState());
+      emit(UserSocialAuthErrorState());
     }
     // Once signed in, return the UserCredential
     return await FirebaseAuth.instance.signInWithCredential(credential);

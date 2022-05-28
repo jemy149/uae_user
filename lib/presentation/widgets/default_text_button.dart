@@ -5,14 +5,15 @@ class DefaultTextButton extends StatelessWidget {
   final Color? color;
   final double? fontSize;
   final Function() onTap;
-  const DefaultTextButton({Key? key,required this.text, this.color, this.fontSize,required this.onTap}) : super(key: key);
+  final int maxLines;
+  const DefaultTextButton({Key? key,required this.text, this.color, this.fontSize,required this.onTap, this.maxLines=1}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
       child: Text(text,
-        maxLines: 1,
+        maxLines: maxLines,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
           color: color,

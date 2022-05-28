@@ -51,7 +51,7 @@ dependencies:
   syncfusion_flutter_charts: ^19.4.48+1
   flutter_holo_date_picker: ^1.0.3
   splash_screen_view: ^3.0.0
-  firebase_core: ^1.16.0
+  firebase_core :
   firebase_auth: ^3.3.17
   flutter_login_facebook: ^1.4.1
   google_sign_in: ^5.3.1
