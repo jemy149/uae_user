@@ -30,7 +30,7 @@ class MakeOrderRequest {
       addIfNotNull('extraDescription', extraDescription);
       addIfNotNull('paymentMethod', paymentMethod);
       addIfNotNull('deliveryTime', deliveryTime);
-      addIfNotNull('paymentId', paymentId);
+      addIfNotNull('PaymentId', paymentId);
       Response response = await DioHelper.postData(
           url: EP_MAKE_ORDER,
           data: requestData

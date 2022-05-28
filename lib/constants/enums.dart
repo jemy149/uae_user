@@ -1,3 +1,3 @@
 enum ToastStates { SUCCESS, ERROR, WARNING }
-enum  PaymentMethodScreenRadioValues { Cash,onlinePayment,points,walletBalance }
+enum  PaymentMethodScreenRadioValues { Cash,visa,points,myCredit }
 

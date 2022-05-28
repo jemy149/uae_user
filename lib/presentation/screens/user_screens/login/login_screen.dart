@@ -245,23 +245,32 @@ class LoginScreen extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  DefaultTextButton(
-                                      text: AppLocalizations.of(context)!
-                                          .forgetPassword,
-                                      onTap: () => showDialog(
-                                            context: context,
-                                            builder: (context) =>
-                                                CorrectingPasswordAlertDialog(),
-                                          ),
-                                      fontSize: 12),
-                                  DefaultTextButton(
-                                      text:
-                                          AppLocalizations.of(context)!.signUp,
-                                      onTap: () {
-                                        Navigator.pushNamed(
-                                            context, REGISTER_SCREEN_R);
-                                      },
-                                      fontSize: 12),
+                                  Flexible(
+
+                                    child: DefaultTextButton(
+                                        text: AppLocalizations.of(context)!
+                                            .forgetPassword,
+                                        onTap: () => showDialog(
+                                              context: context,
+                                              builder: (context) =>
+                                                  CorrectingPasswordAlertDialog(),
+                                            ),
+                                        fontSize: 12),
+                                    flex: 40,
+                                  ),
+                                  const Spacer(flex: 5,),
+                                  Expanded(
+
+                                    child: DefaultTextButton(
+                                        text:
+                                            AppLocalizations.of(context)!.signUp,
+                                        onTap: () {
+                                          Navigator.pushNamed(
+                                              context, REGISTER_SCREEN_R);
+                                        },
+                                        fontSize: 12),
+                                    flex: 70,
+                                  ),
                                 ],
                               ),
                             )

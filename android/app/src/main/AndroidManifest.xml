@@ -30,7 +30,7 @@
         android:usesCleartextTraffic="true"
         android:label="uae_user"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

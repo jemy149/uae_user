@@ -140,7 +140,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                                 ),
                                 leading: Radio<PaymentMethodScreenRadioValues>(
                                   value: PaymentMethodScreenRadioValues
-                                      .onlinePayment,
+                                      .visa,
                                   groupValue: _character,
                                   onChanged:
                                       (PaymentMethodScreenRadioValues? value) {
@@ -158,7 +158,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                                 ),
                                 leading: Radio<PaymentMethodScreenRadioValues>(
                                   value: PaymentMethodScreenRadioValues
-                                      .walletBalance,
+                                      .myCredit,
                                   groupValue: _character,
                                   onChanged:
                                       (PaymentMethodScreenRadioValues? value) {
@@ -182,7 +182,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                                       (PaymentMethodScreenRadioValues? value) {
                                     setState(() {
                                       _character = value;
-                                      paymentMethod = 'Visa';
+                                      paymentMethod = 'points';
                                     });
                                   },
                                 ),
@@ -375,8 +375,8 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                                       latitude: widget.paymentMethodScreenArgs
                                           .apiAddress?.latitude
                                           .toDouble()),
-                                  // extraDescription: widget.paymentMethodScreenArgs
-                                  //     .additionalInstructions,
+                                  extraDescription: widget.paymentMethodScreenArgs
+                                      .additionalInstructions,
                                   deliveryTime: dateFormat
                                       .format(DateTime.now())
                                       .toString(),
@@ -391,28 +391,107 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                                   },
                                 );
                               } else  if (paymentMethod == 'Visa') {
+                                num invoiceAmount = widget.paymentMethodScreenArgs.checkDistanceModel.deliveryPrice  + widget.paymentMethodScreenArgs.getMyCartModel.totalPrice;
                                 var response = await MyFatoorah.startPayment(
                                   context: context,
-                                  request: MyfatoorahRequest.test(
+                                  request: MyfatoorahRequest.live(
+
                                     currencyIso: Country.UAE,
                                     successUrl: 'https://www.beauty-addict.com/wp-content/uploads/2021/02/Payment-success.png',
                                     errorUrl: 'https://kashmirreader.com/wp-content/uploads/2020/07/Payment-Failure-1.png',
-                                    invoiceAmount: 100,
+                                    invoiceAmount: invoiceAmount.toDouble(),
                                     language: ApiLanguage.English,
-                                    token:
-                                        'rLtt6JWvbUHDDhsZnfpAhpYk4dxYDQkbcPTyGaKp2TYqQgG7FGZ5Th_WD53Oq8Ebz6A53njUoo1w3pjU1D4vs_ZMqFiz_j0urb_BH9Oq9VZoKFoJEDAbRZepGcQanImyYrry7Kt6MnMdgfG5jn4HngWoRdKduNNyP4kzcp3mRv7x00ahkm9LAK7ZRieg7k1PDAnBIOG3EyVSJ5kK4WLMvYr7sCwHbHcu4A5WwelxYK0GMJy37bNAarSJDFQsJ2ZvJjvMDmfWwDVFEVe_5tOomfVNt6bOg9mexbGjMrnHBnKnZR1vQbBtQieDlQepzTZMuQrSuKn-t5XZM7V6fCW7oP-uXGX-sMOajeX65JOf6XVpk29DP6ro8WTAflCDANC193yof8-f5_EYY-3hXhJj7RBXmizDpneEQDSaSz5sFk0sV5qPcARJ9zGG73vuGFyenjPPmtDtXtpx35A-BVcOSBYVIWe9kndG3nclfefjKEuZ3m4jL9Gg1h2JBvmXSMYiZtp9MR5I6pvbvylU_PP5xJFSjVTIz7IQSjcVGO41npnwIxRXNRxFOdIUHn0tjQ-7LwvEcTXyPsHXcMD8WtgBh-wxR8aKX7WPSsT1O8d8reb2aR7K3rkV3K82K_0OgawImEpwSvp9MNKynEAJQS6ZHe_J_l77652xwPNxMRTMASk1ZsJL',
-                                  ),
+                                    token:'_CPfj0FWP4ZNlu614ueuLfs3F5X689OwX4TM3jfKJU_GcW9bJDuVCGQb4w4YC9mtoUKpBCxxR_yV7MctkhEqV5jZbAwfGZgfP2u1la9iZ2Qqv8jEhnSj6CyyPwm9xw9bNtCnhBGmHByNzMDu5Q6GdiT_QIDNL5Lc13XvroS0Bp9Gb8TLuZkhqqT5nOiRhVa6sVxQjiNmm9z-7Wifs6TWJ9WawHdTtGWa9-mjcnOs3ZloqjOytopNiQIXvcAkObCSA_QgeSm8h5h1OAnk9Zwc5T3lJEPq78VECVTjV6PQ-q0tKySnfDwv_I_OL74_hDtYHS3_SmeuJJ0Wh62axOLSL_9onltkeCje46oJR6S0zfoL2Wuzh_d5CDjZQESaSZrTLa39k0yHLy5qpfkYbNIELMdLKrHSkAesz1umw97dRkn3db3YxDBTK9S863nLr_61oQs6UUcQ6k-ARj5XgEQ0TpMk56vCNPZgAqwMccDv1EEaEQiWaBnwvykYf2zTEPaHXk3Fr9bvm0FG7jGK2j6kSb1-Aq0c8mhu0XQEveRWSE95bmu9X468YNnkSM-29DCvWg1w8Oa8jjAi5BJcmxbOlwiKOrc8w2SG0KtGqqu1fibIEbKIU-ZrF5AYYV_b_zKYskB2Jog794uVILv9_Gyl6cdQK3fmZfzruEs0ZBK4x3DDr3VyjQW1TtOW6OWJWY9-9UfIPA'),
                                 );
                                 log(response.paymentId.toString());
                                 log(response.status.toString());
 
-                                // Navigator.pushNamed(context, ONLINE_PAYMENT_SCREEN_R);
-                                // showToastMsg(msg: 'Coming Soon', toastState: ToastStates.SUCCESS);
-
+                                if (response.isSuccess) {
+                                  await _makeOrderCubit.userMakeOrder(
+                                    paymentMethod:
+                                    PaymentMethodScreenRadioValues.visa.name,
+                                    makeOrderLocation: MakeOrderLocation(
+                                        address: widget.paymentMethodScreenArgs
+                                            .apiAddress?.address,
+                                        longitude: widget.paymentMethodScreenArgs
+                                            .apiAddress?.longitude
+                                            .toDouble(),
+                                        latitude: widget.paymentMethodScreenArgs
+                                            .apiAddress?.latitude
+                                            .toDouble()),
+                                    extraDescription: widget.paymentMethodScreenArgs
+                                        .additionalInstructions,
+                                    paymentId: response.paymentId,
+                                    deliveryTime: dateFormat
+                                        .format(DateTime.now())
+                                        .toString(),
+                                  );
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const HomeLayout(),
+                                    ),
+                                        (route) {
+                                      return false;
+                                    },
+                                  );
+                                }
                               } else  if (paymentMethod == 'walletBalance'){
-
-                              }else{
-
+                                await _makeOrderCubit.userMakeOrder(
+                                  paymentMethod:
+                                  PaymentMethodScreenRadioValues.myCredit.name,
+                                  makeOrderLocation: MakeOrderLocation(
+                                      address: widget.paymentMethodScreenArgs
+                                          .apiAddress?.address,
+                                      longitude: widget.paymentMethodScreenArgs
+                                          .apiAddress?.longitude
+                                          .toDouble(),
+                                      latitude: widget.paymentMethodScreenArgs
+                                          .apiAddress?.latitude
+                                          .toDouble()),
+                                  extraDescription: widget.paymentMethodScreenArgs
+                                      .additionalInstructions,
+                                  deliveryTime: dateFormat
+                                      .format(DateTime.now())
+                                      .toString(),
+                                );
+                                Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const HomeLayout(),
+                                  ),
+                                      (route) {
+                                    return false;
+                                  },
+                                );
+                              }else if(paymentMethod == 'points' ){
+                                await _makeOrderCubit.userMakeOrder(
+                                  paymentMethod:
+                                  PaymentMethodScreenRadioValues.points.name,
+                                  makeOrderLocation: MakeOrderLocation(
+                                      address: widget.paymentMethodScreenArgs
+                                          .apiAddress?.address,
+                                      longitude: widget.paymentMethodScreenArgs
+                                          .apiAddress?.longitude
+                                          .toDouble(),
+                                      latitude: widget.paymentMethodScreenArgs
+                                          .apiAddress?.latitude
+                                          .toDouble()),
+                                  extraDescription: widget.paymentMethodScreenArgs
+                                      .additionalInstructions,
+                                  deliveryTime: dateFormat
+                                      .format(DateTime.now())
+                                      .toString(),
+                                );
+                                Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const HomeLayout(),
+                                  ),
+                                      (route) {
+                                    return false;
+                                  },
+                                );
                               }
                             },
                             child: Container(
