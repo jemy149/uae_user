@@ -6,7 +6,7 @@ class TrackingOrderDetailsItem extends StatelessWidget {
   final String titleText;
   final String subTitleText;
 
-  TrackingOrderDetailsItem({Key? key, required this.titleText,required this.subTitleText})
+  const TrackingOrderDetailsItem({Key? key, required this.titleText,required this.subTitleText})
       : super(key: key);
 
   @override
@@ -30,9 +30,11 @@ class TrackingOrderDetailsItem extends StatelessWidget {
               ),
             ],
           ),
-          Padding(
-            padding: const EdgeInsetsDirectional.only(start: 30),
-            child: DefaultText(text: subTitleText,style: Theme.of(context).textTheme.button,),
+          Flexible(
+            child: Padding(
+              padding: const EdgeInsetsDirectional.only(start: 30),
+              child: DefaultText(text: subTitleText,style: Theme.of(context).textTheme.button,),
+            ),
           )
         ],
       ),

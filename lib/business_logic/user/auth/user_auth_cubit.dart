@@ -157,22 +157,22 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
     LoginRequest.loginRequest(password: password, phone: phone).then((value) {
       userLoginModel = value;
       if (value.status == 200) {
-        apiToken = userLoginModel.account.apiToken;
+        apiToken =value.account.apiToken;
         CacheHelper.saveDataToSP(
             key: SharedPreferencesKeys.SP_API_TOKEN_KEY, value: apiToken);
 
         CacheHelper.saveDataToSP(
             key: SharedPreferencesKeys.SP_ACCOUNT_TYPE_KEY,
-            value: userLoginModel.account.type);
+            value: userLoginModel.account?.type);
         CacheHelper.saveDataToSP(
             key: SharedPreferencesKeys.SP_ACCOUNT_NAME_KEY,
-            value: userLoginModel.account.name);
+            value: userLoginModel.account?.name);
         CacheHelper.saveDataToSP(
             key: SharedPreferencesKeys.SP_ACCOUNT_PHONE_KEY,
-            value: userLoginModel.account.phone);
+            value: userLoginModel.account?.phone);
         CacheHelper.saveDataToSP(
             key: SharedPreferencesKeys.SP_ACCOUNT_E_MAIL,
-            value: userLoginModel.account.email);
+            value: userLoginModel.account?.email);
 
         emit(UserLoginSuccessState());
       } else {
@@ -207,23 +207,23 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
       printTest('aaaaaaaaaaaaaaaaaa'+ value.status.toString());
 
       if (value.status == 200) {
-        apiToken = userSocialLoginModel.account.apiToken;
+        apiToken = userSocialLoginModel.account?.apiToken;
         CacheHelper.saveDataToSP(
             key: SharedPreferencesKeys.SP_API_TOKEN_KEY, value: apiToken);
-        printTest(userSocialLoginModel.account.apiToken.toString());
+        printTest(userSocialLoginModel.account!.apiToken.toString());
 
         CacheHelper.saveDataToSP(
             key: SharedPreferencesKeys.SP_ACCOUNT_TYPE_KEY,
-            value: userSocialLoginModel.account.type);
+            value: userSocialLoginModel.account?.type);
         CacheHelper.saveDataToSP(
             key: SharedPreferencesKeys.SP_ACCOUNT_NAME_KEY,
-            value: userSocialLoginModel.account.name);
+            value: userSocialLoginModel.account?.name);
         CacheHelper.saveDataToSP(
             key: SharedPreferencesKeys.SP_ACCOUNT_PHONE_KEY,
-            value: userSocialLoginModel.account.phone);
+            value: userSocialLoginModel.account?.phone);
         CacheHelper.saveDataToSP(
             key: SharedPreferencesKeys.SP_ACCOUNT_E_MAIL,
-            value: userSocialLoginModel.account.email);
+            value: userSocialLoginModel.account?.email);
 
         emit(UserSocialLoginSuccessState());
       } else {

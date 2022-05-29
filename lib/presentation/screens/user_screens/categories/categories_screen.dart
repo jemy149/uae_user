@@ -94,148 +94,154 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                       onTap: (index) {},
                       isScrollable: true,
                       controller: tabController,
+                      indicatorSize: TabBarIndicatorSize.label,
+                      labelPadding: const EdgeInsets.symmetric(horizontal: 60),
                       tabs: tabBarItemList),
                 ),
                 Expanded(
-                  child: TabBarView(
-                      controller: tabController,
-                      children: List.generate(
-                        state.userSubCategories.length,
-                        (index) {
-                          return BlocProvider(
-                            create: (context) => SearchCubit()
-                              ..userSearch(
-                                  page: 0,
-                                  categoryId:
-                                      state.userSubCategories[index].id),
-                            child: BlocBuilder<SearchCubit, SearchState>(
-                              builder: (context, searchState) {
-                                if (searchState is UserSearchSuccessState) {
-                                  SearchCubit _searchCubit =
-                                      SearchCubit.get(context);
-                                  return Padding(
-                                    padding: const EdgeInsetsDirectional.only(
-                                      start: 12.0,
-                                      end: 12.0,
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.only(
-                                                  bottom: 10.0, top: 10.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              InkWell(
-                                                onTap: () {
-                                                  Navigator.pushNamed(
-                                                    context,
-                                                    FILTER_SCREEN_R,
-                                                    arguments: state
-                                                        .userSubCategories[
-                                                            index]
-                                                        .id,
-                                                  );
-                                                },
-                                                child: Card(
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: TabBarView(
+
+                        controller: tabController,
+                        children: List.generate(
+                          state.userSubCategories.length,
+                          (index) {
+                            return BlocProvider(
+                              create: (context) => SearchCubit()
+                                ..userSearch(
+                                    page: 0,
+                                    categoryId:
+                                        state.userSubCategories[index].id),
+                              child: BlocBuilder<SearchCubit, SearchState>(
+                                builder: (context, searchState) {
+                                  if (searchState is UserSearchSuccessState) {
+                                    SearchCubit _searchCubit =
+                                        SearchCubit.get(context);
+                                    return Padding(
+                                      padding: const EdgeInsetsDirectional.only(
+                                        start: 12.0,
+                                        end: 12.0,
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Padding(
+                                            padding:
+                                                const EdgeInsetsDirectional.only(
+                                                    bottom: 10.0, top: 10.0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                InkWell(
+                                                  onTap: () {
+                                                    Navigator.pushNamed(
+                                                      context,
+                                                      FILTER_SCREEN_R,
+                                                      arguments: state
+                                                          .userSubCategories[
+                                                              index]
+                                                          .id,
+                                                    );
+                                                  },
+                                                  child: Card(
+                                                      elevation: 5,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10)),
+                                                      child: Padding(
+                                                        padding: const EdgeInsets
+                                                                .symmetric(
+                                                            vertical: 8.0,
+                                                            horizontal: 5.0),
+                                                        child: Image.asset(
+                                                          'assets/icons/filter.png',
+                                                          width: 20,
+                                                          height: 20,
+                                                        ),
+                                                      )),
+                                                ),
+                                                Card(
                                                     elevation: 5,
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10)),
+                                                    shape: RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                10)),
                                                     child: Padding(
                                                       padding: const EdgeInsets
                                                               .symmetric(
                                                           vertical: 8.0,
                                                           horizontal: 5.0),
-                                                      child: Image.asset(
-                                                        'assets/icons/filter.png',
-                                                        width: 20,
-                                                        height: 20,
+                                                      child: Row(
+                                                        children: [
+                                                          Image.asset(
+                                                            'assets/images/menu@3x.png',
+                                                            width: 20,
+                                                            height: 20,
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsetsDirectional
+                                                                        .only(
+                                                                    start: 5.0),
+                                                            child: DefaultText(
+                                                              text: AppLocalizations
+                                                                      .of(context)!
+                                                                  .all,
+                                                              style: Theme.of(
+                                                                      context)
+                                                                  .textTheme
+                                                                  .caption
+                                                                  ?.copyWith(
+                                                                      color: AppColors
+                                                                          .lightBlue),
+                                                            ),
+                                                          )
+                                                        ],
                                                       ),
                                                     )),
-                                              ),
-                                              Card(
-                                                  elevation: 5,
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10)),
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        vertical: 8.0,
-                                                        horizontal: 5.0),
-                                                    child: Row(
-                                                      children: [
-                                                        Image.asset(
-                                                          'assets/images/menu@3x.png',
-                                                          width: 20,
-                                                          height: 20,
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsetsDirectional
-                                                                      .only(
-                                                                  start: 5.0),
-                                                          child: DefaultText(
-                                                            text: AppLocalizations
-                                                                    .of(context)!
-                                                                .all,
-                                                            style: Theme.of(
-                                                                    context)
-                                                                .textTheme
-                                                                .caption
-                                                                ?.copyWith(
-                                                                    color: AppColors
-                                                                        .lightBlue),
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  )),
-                                            ],
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        Expanded(
-                                          child:GridView.count(
-                                        controller: productGridController,
-                                        crossAxisCount: 2,
-                                        crossAxisSpacing: 6,
-                                        mainAxisSpacing: 6,
-                                        childAspectRatio: 1 / 1.32,
-                                        children: List.generate(
-                                        _searchCubit
-                                            .searchModel.products.length,
-                                        (index) => ProductsInStockItem(
-                                        productModel: _searchCubit
-                                            .searchModel
-                                            .products[index])))
-                                        ),
+                                          Expanded(
+                                            child:GridView.count(
+                                          controller: productGridController,
+                                          crossAxisCount: 2,
+                                          crossAxisSpacing: 6,
+                                          mainAxisSpacing: 6,
+                                          childAspectRatio: 1 / 1.4,
+                                          children: List.generate(
+                                          _searchCubit
+                                              .searchModel.products.length,
+                                          (index) => ProductsInStockItem(
+                                          productModel: _searchCubit
+                                              .searchModel
+                                              .products[index])))
+                                          ),
 
-                                      ],
-                                    ),
-                                  );
-                                } else if (searchState
-                                    is UserSearchLoadingState) {
-                                  return const DefaultLoadingIndicator();
-                                } else if (state is UserSearchEmptyState) {
-                                  return const Icon(
-                                    Icons.add_box_rounded,
-                                    size: 48,
-                                  );
-                                } else {
-                                  return const DefaultErrorWidget();
-                                }
-                              },
-                            ),
-                          );
-                        },
-                      )),
+                                        ],
+                                      ),
+                                    );
+                                  } else if (searchState
+                                      is UserSearchLoadingState) {
+                                    return const DefaultLoadingIndicator();
+                                  } else if (state is UserSearchEmptyState) {
+                                    return const Icon(
+                                      Icons.add_box_rounded,
+                                      size: 48,
+                                    );
+                                  } else {
+                                    return const DefaultErrorWidget();
+                                  }
+                                },
+                              ),
+                            );
+                          },
+                        )),
+                  ),
                 )
               ]);
             } else if (state is UserSubCategoryLoadingState) {

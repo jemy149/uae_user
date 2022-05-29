@@ -17,10 +17,11 @@ class HomeOffersCardItem extends StatelessWidget {
 
 
    HomeOffersCardItem({Key? key, required this.offer, required this.productId}) : super(key: key);
-
+   late double totalPriceAfterMakeOffer;
   late AddToCartCubit _cartCubit;
   @override
   Widget build(BuildContext context) {
+
     return InkWell(
       onTap: (){
         Navigator.pushReplacementNamed(context, ADDING_PRODUCT_TO_CART_SCREEN_R,
@@ -57,53 +58,72 @@ class HomeOffersCardItem extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Padding(
-                          padding: const EdgeInsetsDirectional.only(end: 55.0),
-                          child: DefaultMaterialButton(
-                            text: AppLocalizations.of(context)!.offersAddButton,
-                            onTap: () {
-                              _cartCubit =
-                            AddToCartCubit.get(context);
-                            _cartCubit.userAddToCart(
-                                productId: productId);
-                            },
-                            height: 25,
-                            width: 60,
-                            color: AppColors.lightBlue,
-                            textColor: Colors.white,
-                            fontSize: 15,
-                          ),
-                        ),
-                        // const Icon(
-                        //   Icons.favorite_outline,
-                        //   color: AppColors.grey,
-                        // ),
+
+
                       ],
                     ),
                   ),
                 ),
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 100,
-                  child: DefaultText(
-                    maxLines: 2,
-                    text: offer.product.name,
-                    style: Theme.of(context).textTheme.button?.copyWith(
-                        fontFamily: 'Bukra-Regular', fontWeight: FontWeight.bold,fontSize: 14),
-                  ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+              child: SizedBox(
+                width: 150,
+                child: DefaultText(
+                  maxLines: 2,
+                  text: offer.product.name,
+                  style: Theme.of(context).textTheme.button?.copyWith(
+                      fontFamily: 'Bukra-Regular', fontWeight: FontWeight.bold,fontSize: 12),
                 ),
-              ],
+              ),
             ),
-            Text(
-              '${offer.discount} ${AppLocalizations.of(context)!.appCurrency}',
-              style: const TextStyle(decoration: TextDecoration.lineThrough),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5.0,vertical: 5),
+              child: SizedBox(
+                width: 150,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                InkWell(
+
+                  child: Container(
+                  padding: const EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        border: Border.all(
+          width: 1,
+          color: AppColors.grey,
+        ),
+      ),
+
+      child: const Icon(
+        Icons.add_shopping_cart_outlined,
+        color: AppColors.lightBlue,
+      ),
+    ),
+                onTap: (){ _cartCubit =
+                    AddToCartCubit.get(context);
+                _cartCubit.userAddToCart(
+                    productId: productId);},
+                ),
+                    Flexible(
+                      child: Text(
+                        '${offer.discountStr}',
+                        style: const TextStyle(decoration: TextDecoration.lineThrough),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            DefaultText(
-              text: offer.discountStr,
+            Builder(
+              builder: (context) {
+                totalPriceAfterMakeOffer =  offer.price - (offer.price * offer.discount  / 100);
+                return DefaultText(
+                  text:'${totalPriceAfterMakeOffer.toStringAsFixed(2)} ${AppLocalizations.of(context)!.appCurrency}',
+                );
+              }
             )
           ],
         ),

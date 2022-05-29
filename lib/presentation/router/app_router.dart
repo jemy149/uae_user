@@ -31,7 +31,6 @@ import '../screens/user_screens/barcode/barcode_screen.dart';
 import '../screens/user_screens/delivery_information/delivery_information_screen.dart';
 import '../screens/user_screens/frequently_asked_questions/frequently_asked_questions_screen.dart';
 import '../screens/user_screens/login/login_screen.dart';
-import '../screens/user_screens/payment_method/online_payment_screen.dart';
 import '../screens/user_screens/products_in_stock/products_in_stock_screen.dart';
 import '../screens/user_screens/profile/profile_screen.dart';
 import '../screens/user_screens/register/register_screen.dart';
@@ -147,8 +146,7 @@ class AppRouter {
             builder: (_) =>  AddingAdditionalLocationScreen(myAddressesCubit: _myAddressesCubit,));
       case SEARCH_SCREEN_R:
         return MaterialPageRoute(builder: (_) => SearchScreen());
-        case ONLINE_PAYMENT_SCREEN_R:
-        return MaterialPageRoute(builder: (_) => OnlinePaymentMethodScreen());
+
 
       default:
         return null;

@@ -48,7 +48,7 @@ class _FilterScreenState extends State<FilterScreen> {
   @override
   void initState() {
     min = 1;
-    max = 1000;
+    max = 300;
     _initialValues = SfRangeValues(max * 0.2, max * 0.8);
     firstSliderValue = max * 0.2;
     secondSliderValue = max * 0.8;
@@ -161,29 +161,76 @@ class _FilterScreenState extends State<FilterScreen> {
                               child: Builder(builder: (context) {
                                 brands = _filterCubit.getBrandsModel.brands;
 
-                                return ListView.builder(
-                                  itemBuilder: (context, index) {
-                                    return CheckboxListTile(
-                                      value: brandCheck[index],
-                                      onChanged: (value) {
-                                        setState(() {
-                                          brandCheck[index] = value!;
-                                        });
-                                      },
-                                      title: DefaultText(
-                                        text: _filterCubit.getBrandsModel
-                                            .brands[index].nameAr,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyText1
-                                            ?.copyWith(color: Colors.white),
+                                return Column(
+                                  children: [
+                                    Expanded(
+
+                                      child: ListView.builder(
+                                        itemBuilder: (context, index) {
+                                          return CheckboxListTile(
+                                            value: brandCheck[index],
+                                            onChanged: (value) {
+                                              setState(() {
+                                                brandCheck[index] = value!;
+                                              });
+                                            },
+                                            title: DefaultText(
+                                              text: _filterCubit.getBrandsModel
+                                                  .brands[index].nameAr,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1
+                                                  ?.copyWith(color: Colors.white),
+                                            ),
+                                            controlAffinity:
+                                                ListTileControlAffinity.leading,
+                                          );
+                                        },
+                                        itemCount:
+                                            _filterCubit.getBrandsModel.brands.length,
                                       ),
-                                      controlAffinity:
-                                          ListTileControlAffinity.leading,
-                                    );
-                                  },
-                                  itemCount:
-                                      _filterCubit.getBrandsModel.brands.length,
+                                      flex: 90,
+                                    ),
+                                    Flexible(
+
+                                      child: Padding(
+                                        padding: const EdgeInsetsDirectional.only(
+                                            top: 30),
+                                        child:
+                                        DefaultMaterialButton(
+                                          text: AppLocalizations.of(context)!
+                                              .filtering,
+                                          onTap: () async {
+                                            brandId.clear();
+                                            for (int index = 0;
+                                            index < brandCheck.length;
+                                            index++) {
+                                              if (brandCheck[index] == true) {
+                                                brandId.add(brands[index].id);
+                                              }
+                                              printTest(brands[index]
+                                                  .id
+                                                  .toString());
+                                            }
+
+                                            navigateTo(
+                                                context,
+                                                BarcodeResultScreen(
+                                                  brandId: brandId,
+
+                                                  categoryId: widget.subCategoryId,
+                                                ));
+                                          },
+                                          height: 60,
+                                          width: 120,
+                                          fontSize: 20,
+                                          textColor: Colors.white,
+                                          color: AppColors.lightBlue,
+                                        )
+                                      ),
+                                      flex: 15,
+                                    )
+                                  ],
                                 );
                               })),
                         )
@@ -277,11 +324,15 @@ class _FilterScreenState extends State<FilterScreen> {
                                                     brandId: brandId,
                                                     rangPrice: Price(
                                                         from: firstSliderValue
-                                                            .toInt(),
+                                                            .round(),
                                                         to: secondSliderValue
-                                                            .toInt()),
+                                                            .round()),
                                                     categoryId: widget.subCategoryId,
                                                   ));
+                                             printTest('testttttttttt'+brandId.toString());
+                                             printTest('testttttttttt'+firstSliderValue.toString());
+                                             printTest('testttttttttt'+secondSliderValue.toString());
+                                             printTest('testttttttttt'+widget.subCategoryId.toString());
                                             },
                                             height: 60,
                                             width: 120,

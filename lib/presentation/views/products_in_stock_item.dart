@@ -105,16 +105,7 @@ class _ProductsInStockItemState extends State<ProductsInStockItem> {
               padding: const EdgeInsets.symmetric(horizontal: 5.0),
               child: Row(
                 children: [
-                  Flexible(
-                      child: InkWell(
-                          onTap: () {
-                            AddToCartCubit.get(context).userAddToCart(
-                                productId: widget.productModel.id);
-                          },
-                          child: const Icon(
-                            Icons.add_shopping_cart_outlined,
-                            color: AppColors.lightBlue,
-                          ))),
+                
                   const Spacer(
                     flex: 1,
                   ),
@@ -140,10 +131,33 @@ class _ProductsInStockItemState extends State<ProductsInStockItem> {
                               )
                             ]),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            DefaultText(
-                                text: '${widget.productModel.price.toStringAsFixed(2)} ${AppLocalizations.of(context)!.appCurrency}'),
+
+                            InkWell(
+                                onTap: () {
+                                  AddToCartCubit.get(context).userAddToCart(
+                                      productId: widget.productModel.id);
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(
+                                      width: 1,
+                                      color: AppColors.grey,
+                                    ),
+                                  ),
+
+                                  child: const Icon(
+                                    Icons.add_shopping_cart_outlined,
+                                    color: AppColors.lightBlue,
+                                  ),
+                                )),
+                            Flexible(
+                              child: DefaultText(
+                                  text: '${widget.productModel.price.toStringAsFixed(2)} ${AppLocalizations.of(context)!.appCurrency}'),
+                            ),
                           ],
                         ),
                       ],

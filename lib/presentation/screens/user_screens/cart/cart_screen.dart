@@ -21,14 +21,22 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   late GetMyCartCubit _getMyCartCubit;
+  late double totalPrice;
+
+  @override
+  void initState() {
+    _getMyCartCubit = GetMyCartCubit.get(context);
+    _getMyCartCubit.userGetCart();
+    super.initState();
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => GetMyCartCubit()..userGetCart(),
-        ),
+
         BlocProvider(
           create: (context) => DeleteCartCubit(),
         ),

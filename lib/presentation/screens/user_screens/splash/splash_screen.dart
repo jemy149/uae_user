@@ -14,7 +14,8 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     apiToken =  CacheHelper.getDataFromSP(
-        key: SharedPreferencesKeys.SP_API_TOKEN_KEY);
+        key: SharedPreferencesKeys.SP_API_TOKEN_KEY).toString();
+    printTest(apiToken.toString());
     return Scaffold(
       body: Stack(
         children: [

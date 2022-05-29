@@ -30,15 +30,23 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   GlobalKey<FormState> searchFormKey = GlobalKey<FormState>();
   ScrollController scrollController = ScrollController();
+  late GetMyCartCubit getMyCartCubit;
 
+  @override
+  void initState() {
+    getMyCartCubit = GetMyCartCubit.get(context);
+    getMyCartCubit.userGetCart();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
 
         BlocProvider(
-          create: (context) => GetMyCartCubit()..userGetCart(),
+          create: (context) => GetOffersCubit()..userGetOffers(),
         ),
+
 
       ],
       child: SafeArea(
@@ -74,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Center(
                         child: BlocBuilder<GetMyCartCubit, GetMyCartState>(
                           builder: (context, state) {
-                            GetMyCartCubit getMyCartCubit = GetMyCartCubit.get(context);
+
                           if (state is UserGetCartSuccessState) {
                             return Text(
                               '${getMyCartCubit.getMyCartModel.carts.length}',

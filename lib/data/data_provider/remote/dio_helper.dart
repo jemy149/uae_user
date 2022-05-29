@@ -1,18 +1,16 @@
 import 'package:dio/dio.dart';
-import 'package:uae_user/data/data_provider/local/cache_helper.dart';
+
 import '../../../constants/constant_methods.dart';
 import '../../../constants/constants.dart';
 
 
-
 class DioHelper {
   static late Dio dio;
+
   static init() {
     dio = Dio(BaseOptions(
-        baseUrl: 'https://500-abnormal.magdsoft.com/api/',
-        receiveDataWhenStatusError: true,
-        connectTimeout: 30*1000
-
+      baseUrl: 'https://500-abnormal.magdsoft.com/api/',
+      receiveDataWhenStatusError: true,
     ));
   }
 
@@ -34,23 +32,22 @@ class DioHelper {
     required String url,
     Map<String, dynamic>? query,
     Map<String, dynamic>? data,
-    bool formData=true,
     String? token,
   }) {
     dio.options.headers = {
-      'Authorization': token
     };
 
     data == null? data={'language':AppLang}:  data['language'] = AppLang;
 
     printResponse('base:    ' + dio.options.baseUrl.toString());
-    printResponse('url:    ' + url.toString());
-    printResponse('header:    ' + dio.options.headers.toString());
     printResponse('body:    ' + data.toString());
+    printResponse('header:    ' + dio.options.headers.toString());
+    printResponse('url:    ' + url.toString());
     return dio.post(
+
       url,
       queryParameters: query,
-      data:formData? FormData.fromMap(data):data,
+      data: data,
     );
   }
 
@@ -69,4 +66,3 @@ class DioHelper {
     return dio.put(url, queryParameters: query, data: data);
   }
 }
-
