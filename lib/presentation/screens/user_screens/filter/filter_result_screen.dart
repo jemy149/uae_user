@@ -6,23 +6,23 @@ import 'package:uae_user/presentation/views/products_in_stock_item.dart';
 import '../../../../business_logic/user/home_product_search/home_product_search_cubit.dart';
 import '../../../styles/colors.dart';
 import '../../../widgets/DefaultSvg.dart';
-import '../../../widgets/custome_search_field.dart';
 import '../../../widgets/default_error_widget.dart';
 import '../../../widgets/default_loading_indicator.dart';
 import '../../../widgets/default_text.dart';
 
-class BarcodeResultScreen extends StatefulWidget {
+class FilterResultScreen extends StatefulWidget {
   final int? searchBarCode;
+  final List? brandId;
   final int? categoryId;
+  final Price? rangPrice;
 
-
-  const BarcodeResultScreen({Key? key, this.searchBarCode, this.categoryId, }) : super(key: key);
+  const FilterResultScreen({Key? key, this.searchBarCode, this.brandId, this.categoryId, this.rangPrice, }) : super(key: key);
 
   @override
-  State<BarcodeResultScreen> createState() => _BarcodeResultScreenState();
+  State<FilterResultScreen> createState() => _FilterResultScreenState();
 }
 
-class _BarcodeResultScreenState extends State<BarcodeResultScreen> {
+class _FilterResultScreenState extends State<FilterResultScreen> {
 
   final ScrollController productGridController = ScrollController();
 
@@ -30,7 +30,7 @@ class _BarcodeResultScreenState extends State<BarcodeResultScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => UserProductSearchCubit()
-        ..userBarcodeProductSearch(barcode: widget.searchBarCode, page: 0,),
+        ..userProductSearch(page: 0,rangPrice:widget.rangPrice,categoryId: widget.categoryId,brandId: widget.brandId, ),
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
@@ -58,7 +58,7 @@ class _BarcodeResultScreenState extends State<BarcodeResultScreen> {
               ],
             ),
           ),
-          body: 
+          body:
           BlocBuilder<UserProductSearchCubit, UserProductSearchStates>(
             builder: (context, state) {
               UserProductSearchCubit  searchCubit = UserProductSearchCubit.get(context);
@@ -81,7 +81,7 @@ class _BarcodeResultScreenState extends State<BarcodeResultScreen> {
                         builder: (context, state) {
                           if (state is UserProductBarcodeSearchSuccessState) {
                             return GridView.count(
-                              controller: productGridController,
+                                controller: productGridController,
                                 crossAxisCount: 2,
                                 crossAxisSpacing: 6,
                                 mainAxisSpacing: 6,
@@ -123,7 +123,7 @@ class _BarcodeResultScreenState extends State<BarcodeResultScreen> {
                 ],
               );
             },
-),
+          ),
         ),
       ),
     );

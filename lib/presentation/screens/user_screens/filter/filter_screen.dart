@@ -15,6 +15,7 @@ import 'package:uae_user/presentation/widgets/default_material_button.dart';
 import '../../../styles/colors.dart';
 import '../../../widgets/default_text.dart';
 import '../barcode/barcode_result_screen.dart';
+import 'filter_result_screen.dart';
 
 class FilterScreen extends StatefulWidget {
   final int subCategoryId;
@@ -171,6 +172,7 @@ class _FilterScreenState extends State<FilterScreen> {
                                             value: brandCheck[index],
                                             onChanged: (value) {
                                               setState(() {
+
                                                 brandCheck[index] = value!;
                                               });
                                             },
@@ -200,7 +202,7 @@ class _FilterScreenState extends State<FilterScreen> {
                                         DefaultMaterialButton(
                                           text: AppLocalizations.of(context)!
                                               .filtering,
-                                          onTap: () async {
+                                          onTap: ()  {
                                             brandId.clear();
                                             for (int index = 0;
                                             index < brandCheck.length;
@@ -208,16 +210,15 @@ class _FilterScreenState extends State<FilterScreen> {
                                               if (brandCheck[index] == true) {
                                                 brandId.add(brands[index].id);
                                               }
-                                              printTest(brands[index]
+                                              printTest('brand id '+brands[index]
                                                   .id
                                                   .toString());
                                             }
 
                                             navigateTo(
                                                 context,
-                                                BarcodeResultScreen(
+                                                FilterResultScreen(
                                                   brandId: brandId,
-
                                                   categoryId: widget.subCategoryId,
                                                 ));
                                           },
@@ -300,47 +301,43 @@ class _FilterScreenState extends State<FilterScreen> {
                                       padding: const EdgeInsetsDirectional.only(
                                           top: 30),
                                       child:
-                                          BlocBuilder<SearchCubit, SearchState>(
-                                        builder: (context, state) {
-                                          return DefaultMaterialButton(
-                                            text: AppLocalizations.of(context)!
-                                                .filtering,
-                                            onTap: () async {
-                                              brandId.clear();
-                                              for (int index = 0;
-                                                  index < brandCheck.length;
-                                                  index++) {
-                                                if (brandCheck[index] == true) {
-                                                  brandId.add(brands[index].id);
-                                                }
-                                                printTest(brands[index]
-                                                    .id
-                                                    .toString());
-                                              }
+                                      DefaultMaterialButton(
+                                        text: AppLocalizations.of(context)!
+                                            .filtering,
+                                        onTap: () async {
+                                          brandId.clear();
+                                          for (int index = 0;
+                                          index < brandCheck.length;
+                                          index++) {
+                                            if (brandCheck[index] == true) {
+                                              brandId.add(brands[index].id);
+                                            }
+                                            printTest(brands[index]
+                                                .id
+                                                .toString());
+                                          }
 
-                                              navigateTo(
-                                                  context,
-                                                  BarcodeResultScreen(
-                                                    brandId: brandId,
-                                                    rangPrice: Price(
-                                                        from: firstSliderValue
-                                                            .round(),
-                                                        to: secondSliderValue
-                                                            .round()),
-                                                    categoryId: widget.subCategoryId,
-                                                  ));
-                                             printTest('testttttttttt'+brandId.toString());
-                                             printTest('testttttttttt'+firstSliderValue.toString());
-                                             printTest('testttttttttt'+secondSliderValue.toString());
-                                             printTest('testttttttttt'+widget.subCategoryId.toString());
-                                            },
-                                            height: 60,
-                                            width: 120,
-                                            fontSize: 20,
-                                            textColor: Colors.white,
-                                            color: AppColors.lightBlue,
-                                          );
+                                          navigateTo(
+                                              context,
+                                              FilterResultScreen(
+                                                brandId: brandId,
+                                                rangPrice: Price(
+                                                    from: firstSliderValue
+                                                        .round(),
+                                                    to: secondSliderValue
+                                                        .round()),
+                                                categoryId: widget.subCategoryId,
+                                              ));
+                                          printTest('testttttttttt'+brandId.toString());
+                                          printTest('testttttttttt'+firstSliderValue.toString());
+                                          printTest('testttttttttt'+secondSliderValue.toString());
+                                          printTest('testttttttttt'+widget.subCategoryId.toString());
                                         },
+                                        height: 60,
+                                        width: 120,
+                                        fontSize: 20,
+                                        textColor: Colors.white,
+                                        color: AppColors.lightBlue,
                                       ),
                                     )
                                   ],

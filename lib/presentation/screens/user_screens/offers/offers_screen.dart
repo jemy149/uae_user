@@ -60,7 +60,7 @@ class OffersScreen extends StatelessWidget {
                           crossAxisCount: 2,
                           mainAxisSpacing: 20,
                           crossAxisSpacing: 20,
-                          mainAxisExtent: 200),
+                          mainAxisExtent: 225),
                       itemCount: state.offers.length,
                       itemBuilder: (BuildContext context, int index) {
                         return HomeOffersCardItem(offer: state.offers[index],productId: state.offers[index].product.id,);

@@ -4,6 +4,7 @@ import 'package:meta/meta.dart';
 import 'package:uae_user/data/models/user_models/search/search_model.dart';
 import 'package:uae_user/data/requests/search/search_request.dart';
 import '../../../constants/constant_methods.dart';
+import '../../../data/requests/search/price_model.dart';
 part 'home_product_search_state.dart';
 
 class UserProductSearchCubit extends Cubit<UserProductSearchStates> {
@@ -104,4 +105,55 @@ class UserProductSearchCubit extends Cubit<UserProductSearchStates> {
       printError('userProductSearch ' + error.toString());
     });
   }
+}
+
+
+///////////////////////////////////////////// filtering /////////////////////////////////////////
+
+
+
+SearchModel userFilterModel = SearchModel();
+int nextFilteringPage = 2;
+bool isFilterLoadingMoreData = false;
+void userFilterSearch({
+  required int page,
+  int? categoryId,
+  List? brandId,
+  Price? rangPrice,
+}) async {
+  if (page == 1) {
+    nextFilteringPage = 2;
+    emit(UserFilterSearchSuccessState());
+  } else {
+    isFilterLoadingMoreData = true;
+  }
+  SearchRequest()
+      .searchRequest(
+      page: page,
+      categoryId: categoryId,
+      brandId: brandId,
+      rangPrice: rangPrice)
+      .then((value) {
+    if (value.status == 200) {
+      if (page == 1) {
+        userFilterModel = value;
+      } else {
+        SearchModel tempUserFilterSearchModel = value;
+        userFilterModel.products.addAll(tempUserFilterSearchModel.products);
+        isFilterLoadingMoreData = false;
+
+        nextFilteringPage += 1;
+      }
+      emit(UserFilterSearchEmptyState());
+    } else if (value.status == 204) {
+      if (page == 1) {
+        emit(UserFilterSearchErrorState());
+      } else {
+        isFilterLoadingMoreData = false;
+      }
+    }
+  }).catchError((error) {
+    emit(UserProductSearchErrorState());
+    printError('userFilterSearch ' + error.toString());
+  });
 }
