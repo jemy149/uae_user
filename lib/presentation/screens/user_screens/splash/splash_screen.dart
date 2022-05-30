@@ -15,14 +15,14 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     apiToken =  CacheHelper.getDataFromSP(
         key: SharedPreferencesKeys.SP_API_TOKEN_KEY).toString();
-    printTest(apiToken.toString());
+    printTest('test apiToken '+apiToken.toString());
     return Scaffold(
       body: Stack(
         children: [
           SplashScreenView(
             navigateRoute: SizedBox(
-              child: apiToken == null
-                  ? LoginScreen()
+              child: apiToken == 'null'
+                  ? const LoginScreen()
                   : const HomeLayout(),
             ),
             duration: 4000,

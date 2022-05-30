@@ -30,7 +30,7 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => UserProductSearchCubit()
-        ..userProductSearch(page: 0,rangPrice:widget.rangPrice,categoryId: widget.categoryId,brandId: widget.brandId, ),
+        ..userBarcodeProductSearch(page: 0,rangPrice:widget.rangPrice,categoryId: widget.categoryId,brandId: widget.brandId, ),
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
@@ -62,15 +62,16 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
           BlocBuilder<UserProductSearchCubit, UserProductSearchStates>(
             builder: (context, state) {
               UserProductSearchCubit  searchCubit = UserProductSearchCubit.get(context);
-              productGridController.addListener(() {
-                if (productGridController.position.pixels >=
-                    productGridController.position.maxScrollExtent &&
-                    !searchCubit.isLoadingMoreData) {
-
-                  searchCubit.userProductSearch(
-                      barcode: widget.searchBarCode, page: searchCubit.nextPage);
-                }
-              });
+              ///////////////// this bloc of code made for paging between all requested pages ////////////////
+              // productGridController.addListener(() {
+              //   if (productGridController.position.pixels >=
+              //       productGridController.position.maxScrollExtent &&
+              //       !searchCubit.isLoadingMoreData) {
+              //
+              //     searchCubit.userProductSearch(
+              //         barcode: widget.searchBarCode, page: searchCubit.nextPage);
+              //   }
+              // });
               return Column(
                 children: [
                   Expanded(

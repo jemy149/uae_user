@@ -61,7 +61,7 @@ class UserProductSearchCubit extends Cubit<UserProductSearchStates> {
 
 
 
-  ///////////////////////////////////// search using barcode//////////////////////////
+  ///////////////////////////////////// search using barcode & filtering //////////////////////////
 
   SearchModel userBarcodeSearchModel = SearchModel();
   int nextBarcodePage = 1;
@@ -70,6 +70,9 @@ class UserProductSearchCubit extends Cubit<UserProductSearchStates> {
   void userBarcodeProductSearch({
     int? barcode,
     required int page,
+    int? categoryId,
+    List? brandId,
+    Price? rangPrice,
   }) async {
     if (page == 0) {
       nextBarcodePage=1;
@@ -78,7 +81,7 @@ class UserProductSearchCubit extends Cubit<UserProductSearchStates> {
       isBarcodeLoadingMoreData = true;
     }
 
-    SearchRequest().searchRequest(page: page,barcode: barcode)
+    SearchRequest().searchRequest(page: page,barcode: barcode,rangPrice: rangPrice,categoryId: categoryId,brandId: brandId)
         .then((value) {
       if (value.status == 200) {
         if (page == 0) {
@@ -105,55 +108,13 @@ class UserProductSearchCubit extends Cubit<UserProductSearchStates> {
       printError('userProductSearch ' + error.toString());
     });
   }
+
+
+
+  SearchModel userFilterModel = SearchModel();
+
+
+
+
 }
 
-
-///////////////////////////////////////////// filtering /////////////////////////////////////////
-
-
-
-SearchModel userFilterModel = SearchModel();
-int nextFilteringPage = 2;
-bool isFilterLoadingMoreData = false;
-void userFilterSearch({
-  required int page,
-  int? categoryId,
-  List? brandId,
-  Price? rangPrice,
-}) async {
-  if (page == 1) {
-    nextFilteringPage = 2;
-    emit(UserFilterSearchSuccessState());
-  } else {
-    isFilterLoadingMoreData = true;
-  }
-  SearchRequest()
-      .searchRequest(
-      page: page,
-      categoryId: categoryId,
-      brandId: brandId,
-      rangPrice: rangPrice)
-      .then((value) {
-    if (value.status == 200) {
-      if (page == 1) {
-        userFilterModel = value;
-      } else {
-        SearchModel tempUserFilterSearchModel = value;
-        userFilterModel.products.addAll(tempUserFilterSearchModel.products);
-        isFilterLoadingMoreData = false;
-
-        nextFilteringPage += 1;
-      }
-      emit(UserFilterSearchEmptyState());
-    } else if (value.status == 204) {
-      if (page == 1) {
-        emit(UserFilterSearchErrorState());
-      } else {
-        isFilterLoadingMoreData = false;
-      }
-    }
-  }).catchError((error) {
-    emit(UserProductSearchErrorState());
-    printError('userFilterSearch ' + error.toString());
-  });
-}

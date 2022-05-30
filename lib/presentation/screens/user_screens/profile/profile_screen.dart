@@ -110,9 +110,10 @@ class ProfileScreen extends StatelessWidget {
                     onTap: () async{
                       UserAuthCubit.get(context).userLogout();
                       UserAuthCubit.get(context).signOut();
-                     await CacheHelper.sharedPreferences.clear();
+
                       apiToken =  CacheHelper.getDataFromSP(
                           key: SharedPreferencesKeys.SP_API_TOKEN_KEY);
+                      await CacheHelper.sharedPreferences.clear();
                       printTest('>>>>>>>>>>>>>>>>>>>>>>>>>>>>> apiToken ${apiToken!}');
                     },
                     image: 'assets/icons/logout.jpg',
