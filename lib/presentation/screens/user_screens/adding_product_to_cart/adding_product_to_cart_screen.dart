@@ -223,7 +223,7 @@ class _AddingProductToCartScreenState extends State<AddingProductToCartScreen> {
                                           showToastMsg(
                                               msg: AppLocalizations.of(context)!.addedSuccessfully,
                                               toastState: ToastStates.SUCCESS);
-                                        }else{
+                                        }else if (state is UserAddCartNotAvailableStates) {
                                           showToastMsg(
                                               msg: AppLocalizations.of(context)!.notAvailable,
                                               toastState: ToastStates.WARNING);

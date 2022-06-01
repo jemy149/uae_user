@@ -69,6 +69,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
               Flexible(
                   flex: 10,
                   child: Container(
+                    clipBehavior: Clip.antiAlias,
                     decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.only(

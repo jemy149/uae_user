@@ -1,5 +1,6 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/animation.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -148,14 +149,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                         },
                                         // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
                                         initialSelection: 'EG',
-                                        favorite: ['+20', 'EG'],
+                                        favorite: const ['+20', 'EG'],
                                         // optional. Shows only country name and flag
                                         showCountryOnly: false,
                                         // optional. Shows only country name and flag when popup is closed.
                                         showOnlyCountryWhenClosed: false,
                                         // optional. aligns the flag and the Text left
                                         alignLeft: false,
-                                        countryFilter: ['+20', '+971'],
+                                        countryFilter: const ['+20', '+971'],
                                       ),
                                     ),
                                   ),
@@ -164,6 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   padding: const EdgeInsetsDirectional.only(
                                       top: 5),
                                   child: DefaultFormField(
+                                    obscureText: true,
                                     controller: passwordController,
                                     imgPath: 'assets/images/padlock.png',
                                     hintText: AppLocalizations.of(context)!
@@ -178,7 +180,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 Padding(
                                   padding: const EdgeInsetsDirectional.only(
-                                      top: 15),
+                                      top: 15.0,bottom: 5.0),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.start,
@@ -209,7 +211,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               OutlinedSocialButton(
                                 text: 'facebook',
@@ -249,31 +251,32 @@ class _LoginScreenState extends State<LoginScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 20),
-                            child: Row(
+                            child: Column(
                               mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
+                                  MainAxisAlignment.spaceBetween,
                               children: [
-                                DefaultTextButton(
-                                    text: AppLocalizations.of(context)!
-                                        .forgetPassword,
-                                    onTap: () => showDialog(
-                                          context: context,
-                                          builder: (context) =>
-                                              CorrectingPasswordAlertDialog(),
-                                        ),
-                                    maxLines: 1,
-                                    fontSize: 12),
-                                Flexible(
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 20.0),
                                   child: DefaultTextButton(
                                       text: AppLocalizations.of(context)!
-                                          .signUp,
-                                      onTap: () {
-                                        Navigator.pushNamed(
-                                            context, REGISTER_SCREEN_R);
-                                      },
-                                      fontSize: 12,
-                                      maxLines: 1),
+                                          .forgetPassword,
+                                      onTap: () => showDialog(
+                                            context: context,
+                                            builder: (context) =>
+                                                CorrectingPasswordAlertDialog(),
+                                          ),
+                                      maxLines: 1,
+                                      fontSize: 12),
                                 ),
+                                DefaultTextButton(
+                                    text: AppLocalizations.of(context)!
+                                        .signUp,
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                          context, REGISTER_SCREEN_R);
+                                    },
+                                    fontSize: 12,
+                                    maxLines: 1),
                               ],
                             ),
                           )

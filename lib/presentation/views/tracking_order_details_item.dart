@@ -15,25 +15,24 @@ class TrackingOrderDetailsItem extends StatelessWidget {
       padding: const EdgeInsetsDirectional.only(top: 10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              DefaultText(
-                text: titleText,
-                style: Theme.of(context).textTheme.headline6?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Bukra-Regular',
-                      color: AppColors.lightBlue,
-                  fontSize: 15,
-                    ),
-              ),
-            ],
+          DefaultText(
+            text: titleText,
+            style: Theme.of(context).textTheme.headline6?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Bukra-Regular',
+                  color: AppColors.lightBlue,
+              fontSize: 15,
+                ),
           ),
           Flexible(
             child: Padding(
               padding: const EdgeInsetsDirectional.only(start: 30),
-              child: DefaultText(text: subTitleText,style: Theme.of(context).textTheme.button,),
+              child: DefaultText(text: subTitleText,style: Theme.of(context).textTheme.button,
+              maxLines: 10,
+                textDirection: TextDirection.rtl,
+              ),
             ),
           )
         ],

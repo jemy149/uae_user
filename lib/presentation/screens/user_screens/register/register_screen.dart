@@ -215,6 +215,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     padding: const EdgeInsetsDirectional.only(
                                         top: 5),
                                     child: DefaultFormField(
+                                      obscureText: true,
                                       controller: passwordController,
                                       imgPath: 'assets/images/padlock.png',
                                       hintText: AppLocalizations.of(context)!
@@ -236,6 +237,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     padding: const EdgeInsetsDirectional.only(
                                         top: 5),
                                     child: DefaultFormField(
+                                      obscureText: true,
                                       controller:
                                           passwordConfirmationController,
                                       imgPath: 'assets/images/padlock.png',

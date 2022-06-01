@@ -111,9 +111,9 @@ class ProfileScreen extends StatelessWidget {
                       UserAuthCubit.get(context).userLogout();
                       UserAuthCubit.get(context).signOut();
 
-                      apiToken =  CacheHelper.getDataFromSP(
-                          key: SharedPreferencesKeys.SP_API_TOKEN_KEY);
-                      await CacheHelper.sharedPreferences.clear();
+                      // apiToken =  CacheHelper.getDataFromSP(
+                      //     key: SharedPreferencesKeys.SP_API_TOKEN_KEY);
+                      await CacheHelper.sharedPreferences.remove(SharedPreferencesKeys.SP_API_TOKEN_KEY.name);
                       printTest('>>>>>>>>>>>>>>>>>>>>>>>>>>>>> apiToken ${apiToken!}');
                     },
                     image: 'assets/icons/logout.jpg',

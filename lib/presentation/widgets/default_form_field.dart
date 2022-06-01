@@ -10,6 +10,7 @@ class DefaultFormField extends StatelessWidget {
   final TextInputType? keyboardType;
   final double? suffixIconHeight;
   final String? Function(String?)? validator;
+  final bool? obscureText;
 
    const DefaultFormField({
     Key? key,
@@ -17,7 +18,7 @@ class DefaultFormField extends StatelessWidget {
     required this.imgPath,
     required this.hintText,
     this.keyboardType, this.suffixIconHeight,
-    this.validator,
+    this.validator, this.obscureText = false,
   }) : super(key: key);
 
   @override
@@ -32,8 +33,10 @@ class DefaultFormField extends StatelessWidget {
         color: AppColors.black,
         fontSize: 18,
       ),
+      obscureText: obscureText!,
       cursorColor: AppColors.lightBlue,
       decoration: InputDecoration(
+
         hintText: hintText,
         hintStyle: const TextStyle(
           fontSize: 18,
