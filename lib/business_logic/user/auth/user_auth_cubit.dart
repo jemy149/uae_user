@@ -174,7 +174,7 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
             key: SharedPreferencesKeys.SP_ACCOUNT_E_MAIL,
             value: userLoginModel.account?.email);
 
-        emit(UserLoginSuccessState());
+        emit(UserLoginSuccessState(userLoginModel.message.toString()));
       } else {
         emit(UserLoginErrorState(userLoginModel.message.toString()));
       }
@@ -204,7 +204,7 @@ class UserAuthCubit extends Cubit<UserAuthStates> {
             socialToken: socialToken)
         .then((value) {
       userSocialLoginModel = value;
-      printTest('aaaaaaaaaaaaaaaaaa'+ value.status.toString());
+      printTest('value'+ value.status.toString());
 
       if (value.status == 200) {
         apiToken = userSocialLoginModel.account?.apiToken;

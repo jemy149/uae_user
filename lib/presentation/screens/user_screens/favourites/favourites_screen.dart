@@ -63,7 +63,7 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 DefaultText(
-                                  text: 'List of My Favourites',
+                                  text: AppLocalizations.of(context)!.listOfMyFavourites,
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyText1
@@ -74,7 +74,7 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                                       start: 5),
                                   child: DefaultText(
                                     text:
-                                        '(${_getFavoriteCubit.favoriteModel.products.length} items)',
+                                        '(${_getFavoriteCubit.favoriteModel.products.length} ${AppLocalizations.of(context)!.items})',
                                     style: Theme.of(context).textTheme.caption,
                                   ),
                                 ),

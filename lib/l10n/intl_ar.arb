@@ -158,5 +158,8 @@
       "points":"النقاط",
       "walletBalance":"رصيد المحفظه",
       "currentAddress":"العنوان الحالى",
-      "profile":"الحساب الشخصى"
+      "profile":"الحساب الشخصى",
+      "youAreLoggedInSuccessfully":"تم تسجيل الدخول بنجاح",
+      "listOfMyFavourites":"قائمة المفضله",
+      "items":"عناصر"
 }

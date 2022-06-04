@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:uae_user/data/models/user_models/get_products/get_products_model.dart';
-
 import '../styles/colors.dart';
 import '../widgets/default_text.dart';
 
 class AddingProductToCartCounterItem extends StatefulWidget {
   final Product getProductsModel;
+
 
   const AddingProductToCartCounterItem(
       {Key? key, required this.getProductsModel})

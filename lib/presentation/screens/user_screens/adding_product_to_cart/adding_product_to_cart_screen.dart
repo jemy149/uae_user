@@ -33,6 +33,28 @@ late GetProductsCubit _getProductsCubit;
 class _AddingProductToCartScreenState extends State<AddingProductToCartScreen> {
   bool favClicked = false;
 
+
+  late int productQuantity;
+  List<int> listOfQuantities = [];
+  List<bool> listOfCheckBoxesValue = [];
+
+  @override
+  void initState() {
+    super.initState();
+    productQuantity = 1;
+
+    if (_getProductsCubit.getProductsModel.product.prices.isEmpty) {
+      productQuantity = 1;
+      // productQuantity = _getProductsCubit.getProductsModel.product.quantity;
+    } else {
+      listOfCheckBoxesValue=List.generate(_getProductsCubit.getProductsModel.product.prices.length, (index) => false);
+
+      for (var element in _getProductsCubit.getProductsModel.product.prices) {
+        listOfQuantities.add(element.quantity);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -72,6 +94,7 @@ class _AddingProductToCartScreenState extends State<AddingProductToCartScreen> {
                         Container(
                           height: 300,
                           width: double.maxFinite,
+                          clipBehavior: Clip.antiAlias,
                           decoration: const BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.only(
@@ -201,13 +224,282 @@ class _AddingProductToCartScreenState extends State<AddingProductToCartScreen> {
                                 ],
                               ),
                             ),
+                            // Padding(
+                            //   padding: const EdgeInsets.symmetric(vertical: 20),
+                            //   child: Row(
+                            //     mainAxisAlignment: MainAxisAlignment.center,
+                            //     children: [
+                            //       Builder(builder: (context) {
+                            //         AddToCartCubit _cartCubit =
+                            //             AddToCartCubit.get(context);
+                            //         return BlocListener<AddToCartCubit,
+                            //             AddToCartState>(
+                            //           listener: (context, state) {
+                            //             if (state is UserAddCartSuccessStates) {
+                            //               showToastMsg(
+                            //                   msg: AppLocalizations.of(context)!.addedSuccessfully,
+                            //                   toastState: ToastStates.SUCCESS);
+                            //             }else if (state is UserAddCartNotAvailableStates) {
+                            //               showToastMsg(
+                            //                   msg: AppLocalizations.of(context)!.notAvailable,
+                            //                   toastState: ToastStates.WARNING);
+                            //             }
+                            //           },
+                            //           child: DefaultMaterialButton(
+                            //             text: AppLocalizations.of(context)!
+                            //                 .addToCart,
+                            //             onTap: () {
+                            //               _cartCubit.userAddToCart(
+                            //                 quantity:_finalCount,
+                            //                   productId: widget.productId);
+                            //               printTest(_finalCount.toString());
+                            //             },
+                            //             height: 50,
+                            //             width: 260,
+                            //             color: Colors.white,
+                            //             textColor: AppColors.lightBlue,
+                            //           ),
+                            //         );
+                            //       })
+                            //     ],
+                            //   ),
+                            // ),
                             Padding(
                               padding:
                                   const EdgeInsetsDirectional.only(end: 12.0),
-                              child: AddingProductToCartCounterItem(
-                                  getProductsModel: _getProductsCubit
-                                      .getProductsModel.product),
+                              child: _getProductsCubit.getProductsModel.product.prices.isEmpty
+                                  ? Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Flexible(
+                                        flex: 30,
+                                        child: CheckboxListTile(
+                                          value: true,
+                                          onChanged: (p) {},
+                                          title: DefaultText(
+                                            text: _getProductsCubit.getProductsModel.product.name,
+                                            maxLines: 10,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .subtitle1
+                                                ?.copyWith(color: Colors.white),
+                                          ),
+                                          contentPadding: EdgeInsets.zero,
+                                          controlAffinity: ListTileControlAffinity.leading,
+
+
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Expanded(
+                                        flex: 40,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              color: AppColors.lightBlue,
+                                              borderRadius: BorderRadius.circular(15)),
+                                          padding: const EdgeInsets.symmetric(horizontal: 2),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              InkWell(
+                                                onTap: () {
+                                                  decrementProductQuantity();
+                                                },
+                                                child: const CircleAvatar(
+                                                  backgroundColor: AppColors.black,
+                                                  radius: 15.2,
+                                                  child: CircleAvatar(
+                                                    child: Icon(
+                                                      Icons.remove,
+                                                      color: Colors.white,
+                                                    ),
+                                                    backgroundColor: AppColors.lightBlue,
+                                                    radius: 15,
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                                child: DefaultText(
+                                                  text: productQuantity.toString(),
+                                                  style:
+                                                  Theme.of(context).textTheme.bodyText1?.copyWith(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                              InkWell(
+                                                onTap: () {
+                                                  incrementProductQuantity();
+                                                },
+                                                child: const CircleAvatar(
+                                                  backgroundColor: AppColors.black,
+                                                  radius: 15.2,
+                                                  child: CircleAvatar(
+                                                    child: Icon(
+                                                      Icons.add,
+                                                      color: Colors.white,
+                                                    ),
+                                                    backgroundColor: AppColors.lightBlue,
+                                                    radius: 15,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      const Spacer(flex: 5,),
+                                      Flexible(
+                                        flex: 30,
+                                        child: DefaultText(
+                                          text:
+                                          '${(_getProductsCubit.getProductsModel.product.price*productQuantity).toStringAsFixed(2)} ${AppLocalizations.of(context)!.appCurrency}',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle1
+                                              ?.copyWith(color: Colors.white),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              )
+                                  : Column(
+                                children: List.generate(
+                                    listOfQuantities.length,
+                                        (index) => Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Flexible(
+                                              flex: 30,
+                                              child: SizedBox(
+                                                child: CheckboxListTile(
+                                                  value: listOfCheckBoxesValue[index],
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      listOfCheckBoxesValue[index]=value!;
+                                                    });
+                                                  },
+                                                  title: DefaultText(
+                                                    text:
+                                                    _getProductsCubit.getProductsModel.product.prices[index].name,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .subtitle1
+                                                        ?.copyWith(color: Colors.white),
+                                                  ),
+                                                  contentPadding: EdgeInsets.zero,
+                                                  controlAffinity: ListTileControlAffinity.leading,
+                                                ),
+                                                width: 100,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Expanded(
+                                              flex: 40,
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    color: AppColors.lightBlue,
+                                                    borderRadius: BorderRadius.circular(15)),
+                                                padding: const EdgeInsets.symmetric(horizontal: 2),
+                                                child: Row(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    InkWell(
+                                                      onTap: () {
+                                                        if (listOfCheckBoxesValue[index]) {
+                                                          setState(() {
+                                                            if (listOfQuantities[index] > 1) {
+                                                              listOfQuantities[index]--;
+                                                            }
+                                                          });
+                                                        }
+                                                      },
+                                                      child: const CircleAvatar(
+                                                        backgroundColor: AppColors.black,
+                                                        radius: 15.2,
+                                                        child: CircleAvatar(
+                                                          child: Icon(
+                                                            Icons.remove,
+                                                            color: Colors.white,
+                                                          ),
+                                                          backgroundColor: AppColors.lightBlue,
+                                                          radius: 15,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding: const EdgeInsets.symmetric(
+                                                          horizontal: 8.0),
+                                                      child: DefaultText(
+                                                        text: listOfQuantities[index].toString(),
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .bodyText1
+                                                            ?.copyWith(
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    InkWell(
+                                                      onTap: () {
+                                                        if (listOfCheckBoxesValue[index]) {
+                                                          setState(() {
+                                                            if (listOfQuantities[index] < 99) {
+                                                              listOfQuantities[index]++;
+                                                            }
+                                                          });
+                                                        }
+                                                      },
+                                                      child: const CircleAvatar(
+                                                        backgroundColor: AppColors.black,
+                                                        radius: 15.2,
+                                                        child: CircleAvatar(
+                                                          child: Icon(
+                                                            Icons.add,
+                                                            color: Colors.white,
+                                                          ),
+                                                          backgroundColor: AppColors.lightBlue,
+                                                          radius: 15,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            const Spacer(flex: 5,),
+                                            Flexible(
+                                              flex: 30,
+                                              child: DefaultText(
+                                                text:
+                                                '${(_getProductsCubit.getProductsModel.product.prices[index].price* listOfQuantities[index]).toStringAsFixed(2)} ${AppLocalizations.of(context)!.appCurrency}',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .subtitle1
+                                                    ?.copyWith(color: Colors.white),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    )),
+                              ),
                             ),
+
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 20),
                               child: Row(
@@ -234,7 +526,9 @@ class _AddingProductToCartScreenState extends State<AddingProductToCartScreen> {
                                             .addToCart,
                                         onTap: () {
                                           _cartCubit.userAddToCart(
+                                            quantity:productQuantity,
                                               productId: widget.productId);
+                                          printTest(productQuantity.toString());
                                         },
                                         height: 50,
                                         width: 260,
@@ -276,5 +570,21 @@ class _AddingProductToCartScreenState extends State<AddingProductToCartScreen> {
             },
           ),
         )));
+  }
+
+  incrementProductQuantity() {
+    setState(() {
+      if (productQuantity < 99) {
+        productQuantity++;
+      } else {}
+    });
+  }
+
+  decrementProductQuantity() {
+    setState(() {
+      if (productQuantity > 1) {
+        productQuantity--;
+      } else {}
+    });
   }
 }

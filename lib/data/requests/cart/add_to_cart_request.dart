@@ -7,13 +7,15 @@ import '../../../constants/end_points.dart';
 import '../../data_provider/remote/dio_helper.dart';
 
 class AddToCartRequest {
-   Future addToCartRequest({
-  required int productId,
+  Future addToCartRequest({
+    required int productId,
+    int? quantity,
   }) async {
     try {
       Response response = await DioHelper.postData(url: EP_ADD_TO_CART, data: {
         'apiToken': apiToken,
         'productId': productId,
+        'quantity': quantity,
       });
       printResponse(response.data.toString());
       return AddToCartModel.fromJson(response.data);

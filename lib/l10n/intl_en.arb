@@ -135,7 +135,7 @@
   "enterYourPassword":"Password Doesn't Match",
   "pleaseTryAgain":"Please Try Again",
   "emptyPhoneNumber":"Empty Phone Number",
-  "emptyPhonePassword":"Empty Phone Password",
+  "emptyPhonePassword":"Empty Password",
   "pleaseEnterVerificationCode":"Please Enter Verification Code",
   "enterYourVerificationCode":"Enter Your Verification Code",
   "verificationCode":"Verification Code",
@@ -158,7 +158,10 @@
   "points":"Points",
   "walletBalance":"Wallet Balance",
   "currentAddress":"Current Address",
-  "profile":"Profile"
+  "profile":"Profile",
+  "youAreLoggedInSuccessfully":"You are Logged in Successfully",
+  "listOfMyFavourites":"List of My Favourites",
+  "items":"items"
 
 
 

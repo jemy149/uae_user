@@ -14,14 +14,14 @@ class AddToCartCubit extends Cubit<AddToCartState> {
 
   AddToCartModel addToCartModel = AddToCartModel();
 
-  void userAddToCart ({required productId}){
+  void userAddToCart ({required productId, quantity,}){
     emit(UserAddCartLoadingStates());
     AddToCartRequest()
-        .addToCartRequest(productId:productId )
+        .addToCartRequest(productId:productId,quantity: quantity )
         .then((value) {
       if(value.status == 200){
         addToCartModel = value;
-        emit(UserAddCartSuccessStates());
+        emit(UserAddCartSuccessStates(message: addToCartModel.message));
       }else  if(value.status == 430){
         emit(UserAddCartNotAvailableStates());
       }

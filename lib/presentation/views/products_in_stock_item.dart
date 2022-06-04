@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:uae_user/business_logic/user/change_favorite/favorite_change_cubit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:uae_user/business_logic/user/change_favorite/favorite_change_cubit.dart';
+import 'package:uae_user/constants/constant_methods.dart';
+import 'package:uae_user/constants/enums.dart';
 import 'package:uae_user/constants/weights.dart';
 import 'package:uae_user/data/models/user_models/search/search_model.dart';
+
 import '../../business_logic/user/add_to_cart/add_to_cart_cubit.dart';
 import '../../constants/screens.dart';
 import '../styles/colors.dart';
@@ -23,7 +26,8 @@ class ProductsInStockItem extends StatefulWidget {
 }
 
 class _ProductsInStockItemState extends State<ProductsInStockItem> {
-  bool favClicked=false;
+  bool favClicked = false;
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -64,35 +68,37 @@ class _ProductsInStockItemState extends State<ProductsInStockItem> {
                       children: [
                         BlocListener<ChangeFavoriteCubit, ChangeFavoriteStates>(
                           listener: (context, state) {
-                            if(state is FavoriteChangeSuccessState){
-                              favClicked=false;
+                            if (state is FavoriteChangeSuccessState) {
+                              favClicked = false;
 
-                              if(widget.productModel.id==state.productId){
+                              if (widget.productModel.id == state.productId) {
                                 setState(() {
-                                  widget.productModel.setIsFav= !widget.productModel.isFav;
+                                  widget.productModel.setIsFav =
+                                      !widget.productModel.isFav;
                                 });
                               }
-                            }
-                            else if (state is FavoriteChangeErrorState){
-                              favClicked=false;
-                            }
-                          },
-                          child: InkWell(onTap: () {
-
-                            if (!favClicked) {
-                              favClicked=true;
-                              ChangeFavoriteCubit.get(context).changeFavorite(
-                                productId: widget.productModel.id,
-                              );
+                            } else if (state is FavoriteChangeErrorState) {
+                              favClicked = false;
                             }
                           },
-                            child: widget.productModel.isFav==false?const Icon(
-                               Icons.favorite_outline,
-                              color: AppColors.grey,
-                            ):const Icon(
-                              Icons.favorite,
-                              color: AppColors.red,
-                            ),
+                          child: InkWell(
+                            onTap: () {
+                              if (!favClicked) {
+                                favClicked = true;
+                                ChangeFavoriteCubit.get(context).changeFavorite(
+                                  productId: widget.productModel.id,
+                                );
+                              }
+                            },
+                            child: widget.productModel.isFav == false
+                                ? const Icon(
+                                    Icons.favorite_outline,
+                                    color: AppColors.grey,
+                                  )
+                                : const Icon(
+                                    Icons.favorite,
+                                    color: AppColors.red,
+                                  ),
                           ),
                         ),
                       ],
@@ -105,7 +111,6 @@ class _ProductsInStockItemState extends State<ProductsInStockItem> {
               padding: const EdgeInsets.symmetric(horizontal: 5.0),
               child: Row(
                 children: [
-                
                   const Spacer(
                     flex: 1,
                   ),
@@ -120,45 +125,60 @@ class _ProductsInStockItemState extends State<ProductsInStockItem> {
                                 child: DefaultText(
                                   maxLines: 2,
                                   text: widget.productModel.name,
-                                  style: Theme
-                                      .of(context)
+                                  style: Theme.of(context)
                                       .textTheme
                                       .button
                                       ?.copyWith(
-                                      fontFamily: 'Bukra-Regular',
-                                      fontSize: 12,fontWeight: FontWeights.bold),
+                                          fontFamily: 'Bukra-Regular',
+                                          fontSize: 12,
+                                          fontWeight: FontWeights.bold),
                                 ),
                               )
                             ]),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-
-                            InkWell(
-                                onTap: () {
-                                  AddToCartCubit.get(context).userAddToCart(
-                                      productId: widget.productModel.id);
+                        Padding(
+                          padding: const EdgeInsetsDirectional.only(top: 5.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              BlocListener<AddToCartCubit, AddToCartState>(
+                                listener: (context, state) {
+                                  if (state is UserAddCartSuccessStates) {
+                                    showToastMsg(
+                                        msg: state.message,
+                                        toastState: ToastStates.SUCCESS);
+                                  }
                                 },
-                                child: Container(
-                                  padding: const EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                      width: 1,
-                                      color: AppColors.grey,
-                                    ),
-                                  ),
-
-                                  child: const Icon(
-                                    Icons.add_shopping_cart_outlined,
-                                    color: AppColors.lightBlue,
-                                  ),
-                                )),
-                            Flexible(
-                              child: DefaultText(
-                                  text: '${widget.productModel.price.toStringAsFixed(2)} ${AppLocalizations.of(context)!.appCurrency}'),
-                            ),
-                          ],
+                                child:InkWell(
+                                    onTap: () {
+                                      AddToCartCubit.get(context)
+                                          .userAddToCart(
+                                          quantity: 1,
+                                          productId:
+                                          widget.productModel.id);
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                        BorderRadius.circular(5),
+                                        border: Border.all(
+                                          width: 1,
+                                          color: AppColors.grey,
+                                        ),
+                                      ),
+                                      child: const Icon(
+                                        Icons.add_shopping_cart_outlined,
+                                        color: AppColors.lightBlue,
+                                      ),
+                                    ))
+                              ),
+                              Flexible(
+                                child: DefaultText(
+                                    text:
+                                        '${widget.productModel.price.toStringAsFixed(2)} ${AppLocalizations.of(context)!.appCurrency}'),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),

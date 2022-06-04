@@ -7,7 +7,11 @@ class UserAuthInitial extends UserAuthStates {}
 
 class UserLoginLoadingState extends UserAuthStates {}
 
-class UserLoginSuccessState extends UserAuthStates {}
+class UserLoginSuccessState extends UserAuthStates {
+  final String? message;
+
+  UserLoginSuccessState(this.message);
+}
 
 class UserLoginErrorState extends UserAuthStates {
   final String? message;

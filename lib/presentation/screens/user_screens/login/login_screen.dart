@@ -37,6 +37,16 @@ class _LoginScreenState extends State<LoginScreen> {
   late UserAuthCubit userAuthCubit;
 
   CountryCode? _countryCode = CountryCode(name: 'EG', dialCode: '+20');
+  bool _obscureText = true;
+
+   String? _password;
+
+  // Toggles the password show status
+  void _toggle() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +77,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           HOME_LAYOUT_R,
                           (route) => false,
                         );
+                        showToastMsg(
+                            msg: state.message ??
+                                AppLocalizations.of(context)!.pleaseTryAgain,
+                            toastState: ToastStates.SUCCESS);
                       }
                       if (state is UserSocialAuthSuccessState) {
                         userAuthCubit.userSocialLogin(
@@ -165,9 +179,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                   padding: const EdgeInsetsDirectional.only(
                                       top: 5),
                                   child: DefaultFormField(
-                                    obscureText: true,
+                                    onSaved: (val) => _password = val,
+                                    obscureText: _obscureText,
+                                    prefixIcon:
+                                        IconButton(
+                                          icon: Icon(_obscureText? Icons.visibility : Icons.visibility_off,color: AppColors.grey,),
+                                        onPressed: _toggle
+                                          ,),
                                     controller: passwordController,
-                                    imgPath: 'assets/images/padlock.png',
+                                    suffixIcon: const Icon(Icons.lock_outline_rounded,color: AppColors.grey,),
                                     hintText: AppLocalizations.of(context)!
                                         .hintPassword,
                                     validator: (text) {

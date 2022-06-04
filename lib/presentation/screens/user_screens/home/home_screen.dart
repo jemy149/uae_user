@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:sizer/sizer.dart';
 import 'package:uae_user/business_logic/user/ads/ads_cubit.dart';
+import 'package:uae_user/business_logic/user/auth/user_auth_cubit.dart';
 import 'package:uae_user/business_logic/user/category/category_cubit.dart';
 import 'package:uae_user/business_logic/user/get_offers/get_offers_cubit.dart';
 import 'package:uae_user/presentation/screens/user_screens/search/search_screen.dart';
@@ -105,75 +107,135 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
             ],
-          ),
-          body: Column(
-            children: [
-              Container(
-                color: AppColors.lightBlue,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+            bottom: PreferredSize(
+              preferredSize:  Size.fromHeight(12.h),
+              child:  Padding(
+                padding: const EdgeInsets.symmetric(vertical: 15),
+                child: Column(
                   children: [
-                    SingleChildScrollView(
-                      physics: const NeverScrollableScrollPhysics(),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          DefaultText(
-                            text:
-                                '${AppLocalizations.of(context)!.welcome}',
-                            style:
-                                Theme.of(context).textTheme.bodyText1?.copyWith(
-                                      color: AppColors.lightGrey,
-                                    ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 15),
-                            child: SizedBox(
-                                height: 35,
-                                width: 300,
-                                child: Form(
-                                  key: searchFormKey,
-                                  child: CustomeSearchField(
-                                    keyboardType: TextInputType.text,
-                                    prefixIcon: IconButton(
-                                      icon: Image.asset(
-                                          'assets/images/search.png'),
-                                      onPressed: () {
-                                        Navigator.pushNamed(
-                                            context, SEARCH_SCREEN_R);
-                                      },
-                                    ),
-                                    suffixIcon: IconButton(
-                                      icon: Image.asset(
-                                          'assets/images/barcode.png'),
-                                      onPressed: () {
-                                        Navigator.pushNamed(
-                                            context, BAR_CODE_SCREEN_R);
-                                      },
-                                    ),
-                                    controller: _searchController,
-                                    validator: (text) {
-                                      if (text!.isEmpty) {
-                                        return 'البحث فارغ';
-                                      }
-                                      return '';
-                                    },
-                                    onFieldSubmitted: (text) {
-                                      if (searchFormKey.currentState!
-                                          .validate()) {
-                                        navigateTo(context,
-                                            SearchScreen(searchText: text));
-                                      }
-                                    },
-                                  ),
-                                )),
-                          ),
-                        ],
+                    Padding(
+                      padding: const EdgeInsetsDirectional.only(bottom: 12.0),
+                      child: DefaultText(
+                        text:
+                        AppLocalizations.of(context)!.welcome,
+                        style:
+                        Theme.of(context).textTheme.bodyText1?.copyWith(
+                          color: AppColors.lightGrey,
+                        ),
                       ),
                     ),
+                    SizedBox(
+                        height: 35,
+                        width: 300,
+                        child: Form(
+                          key: searchFormKey,
+                          child: CustomeSearchField(
+                            keyboardType: TextInputType.text,
+                            prefixIcon: IconButton(
+                              icon: Image.asset(
+                                  'assets/images/search.png'),
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                    context, SEARCH_SCREEN_R);
+                              },
+                            ),
+                            suffixIcon: IconButton(
+                              icon: Image.asset(
+                                  'assets/images/barcode.png'),
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                    context, BAR_CODE_SCREEN_R);
+                              },
+                            ),
+                            controller: _searchController,
+                            validator: (text) {
+                              if (text!.isEmpty) {
+                                return 'البحث فارغ';
+                              }
+                              return '';
+                            },
+                            onFieldSubmitted: (text) {
+                              if (searchFormKey.currentState!
+                                  .validate()) {
+                                navigateTo(context,
+                                    SearchScreen(searchText: text));
+                              }
+                            },
+                          ),
+                        )),
                   ],
                 ),
               ),
+            ),
+          ),
+          body: Column(
+            children: [
+              // Container(
+              //   color: AppColors.lightBlue,
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     children: [
+              //       SingleChildScrollView(
+              //         physics: const NeverScrollableScrollPhysics(),
+              //         child: Column(
+              //           crossAxisAlignment: CrossAxisAlignment.center,
+              //           children: [
+              //             DefaultText(
+              //               text:
+              //                   '${AppLocalizations.of(context)!.welcome}',
+              //               style:
+              //                   Theme.of(context).textTheme.bodyText1?.copyWith(
+              //                         color: AppColors.lightGrey,
+              //                       ),
+              //             ),
+              //             Padding(
+              //               padding: const EdgeInsets.symmetric(vertical: 15),
+              //               child: SizedBox(
+              //                   height: 35,
+              //                   width: 300,
+              //                   child: Form(
+              //                     key: searchFormKey,
+              //                     child: CustomeSearchField(
+              //                       keyboardType: TextInputType.text,
+              //                       prefixIcon: IconButton(
+              //                         icon: Image.asset(
+              //                             'assets/images/search.png'),
+              //                         onPressed: () {
+              //                           Navigator.pushNamed(
+              //                               context, SEARCH_SCREEN_R);
+              //                         },
+              //                       ),
+              //                       suffixIcon: IconButton(
+              //                         icon: Image.asset(
+              //                             'assets/images/barcode.png'),
+              //                         onPressed: () {
+              //                           Navigator.pushNamed(
+              //                               context, BAR_CODE_SCREEN_R);
+              //                         },
+              //                       ),
+              //                       controller: _searchController,
+              //                       validator: (text) {
+              //                         if (text!.isEmpty) {
+              //                           return 'البحث فارغ';
+              //                         }
+              //                         return '';
+              //                       },
+              //                       onFieldSubmitted: (text) {
+              //                         if (searchFormKey.currentState!
+              //                             .validate()) {
+              //                           navigateTo(context,
+              //                               SearchScreen(searchText: text));
+              //                         }
+              //                       },
+              //                     ),
+              //                   )),
+              //             ),
+              //           ],
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
               Expanded(
                 flex: 7,
                 child: RawScrollbar(
@@ -302,11 +364,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
                                   gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisSpacing: 20,
+                                       SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisSpacing: 0.5.w,
                                           crossAxisCount: 3,
-                                          mainAxisSpacing: 20,
-                                          mainAxisExtent: 150),
+                                          mainAxisSpacing: 0.5.h,
+                                          mainAxisExtent: 20.h),
                                   itemCount: state.userCategories.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {

@@ -87,7 +87,7 @@ class VerificationScreen extends StatelessWidget {
                             padding: const EdgeInsetsDirectional.only(top: 20),
                             child: DefaultFormField(
                               controller: verificationCodeController,
-                              imgPath: 'assets/images/padlock.png',
+                              suffixIcon: const Icon(Icons.lock_outline_rounded,color: AppColors.grey,),
                               hintText: AppLocalizations.of(context)!.verificationCode,
                             ),
                           ),

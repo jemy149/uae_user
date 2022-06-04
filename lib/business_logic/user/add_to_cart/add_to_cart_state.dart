@@ -5,7 +5,10 @@ abstract class AddToCartState {}
 
 class UserCartInitialStates extends AddToCartState {}
 
-class UserAddCartSuccessStates extends AddToCartState {}
+class UserAddCartSuccessStates extends AddToCartState {
+  final String message;
+  UserAddCartSuccessStates({ required this.message});
+}
 class UserAddCartNotAvailableStates extends AddToCartState {}
 class UserAddCartLoadingStates extends AddToCartState {}
 class UserAddCartErrorStates extends AddToCartState {}

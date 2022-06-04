@@ -55,7 +55,7 @@ class PaymentMethodItem extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 5.0,horizontal: 10),
                       child: DefaultText(
-                        text: '${getMyCartModel.carts[index].product.quantity}',
+                        text: '${getMyCartModel.carts[index].quantity}',
                         style: Theme.of(context).textTheme.caption?.copyWith(color: Colors.white)
                       ),
                     ),

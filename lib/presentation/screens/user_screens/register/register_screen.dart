@@ -9,14 +9,9 @@ import 'package:uae_user/presentation/views/animated_image.dart';
 import 'package:uae_user/presentation/widgets/default_form_field.dart';
 import 'package:uae_user/presentation/widgets/default_material_button.dart';
 import 'package:uae_user/presentation/widgets/default_text.dart';
-
 import '../../../../constants/constant_methods.dart';
-import '../../../../constants/constants.dart';
 import '../../../../constants/enums.dart';
-import '../../../../constants/screens.dart';
-import '../../../../constants/shared_preferences_keys.dart';
-import '../../../../data/data_provider/local/cache_helper.dart';
-import '../../../widgets/outlined_social_button.dart';
+
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -42,6 +37,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
   CountryCode? _countryCode = CountryCode(name: 'EG', dialCode: '+20');
 
   final GlobalKey<FormState> registerFormKey = GlobalKey<FormState>();
+
+  bool _obscureText = true;
+  bool _obscureConfirmText = true;
+  String? _password;
+  String? _confirmPassword;
+  // Toggles the password show status
+  void _toggle() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
+  void _confirmationToggle() {
+    setState(() {
+      _obscureConfirmText = !_obscureConfirmText;
+    });
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +159,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         top: 5),
                                     child: DefaultFormField(
                                       controller: nameController,
-                                      imgPath: 'assets/images/email.png',
+                                      suffixIcon: const Icon(Icons.email_outlined,color: AppColors.grey,),
                                       hintText: AppLocalizations.of(context)!
                                           .hintFullName,
                                       keyboardType: TextInputType.text,
@@ -162,7 +176,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         top: 5),
                                     child: DefaultFormField(
                                       controller: emailController,
-                                      imgPath: 'assets/images/email.png',
+                                      suffixIcon: const Icon(Icons.email_outlined,color: AppColors.grey,),
                                       hintText: AppLocalizations.of(context)!
                                           .hintEmail,
                                       validator: (text) {
@@ -215,9 +229,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     padding: const EdgeInsetsDirectional.only(
                                         top: 5),
                                     child: DefaultFormField(
-                                      obscureText: true,
+                                      onSaved: (val) => _password = val,
+                                      obscureText: _obscureText,
+                                      prefixIcon:
+                                      IconButton(
+                                        icon: Icon(_obscureText? Icons.visibility : Icons.visibility_off,color: AppColors.grey,),
+                                        onPressed: _toggle
+                                        ,),
                                       controller: passwordController,
-                                      imgPath: 'assets/images/padlock.png',
+                                      suffixIcon: const Icon(Icons.lock_outline_rounded,color: AppColors.grey,),
                                       hintText: AppLocalizations.of(context)!
                                           .hintPassword,
                                       validator: (text) {
@@ -237,10 +257,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     padding: const EdgeInsetsDirectional.only(
                                         top: 5),
                                     child: DefaultFormField(
-                                      obscureText: true,
+                                      onSaved: (val) => _confirmPassword = val,
+                                      obscureText: _obscureConfirmText,
+                                      prefixIcon:
+                                      IconButton(
+                                        icon: Icon(_obscureConfirmText? Icons.visibility : Icons.visibility_off,color: AppColors.grey,),
+                                        onPressed: _confirmationToggle
+                                        ,),
                                       controller:
                                           passwordConfirmationController,
-                                      imgPath: 'assets/images/padlock.png',
+                                      suffixIcon: const Icon(Icons.lock_outline_rounded,color: AppColors.grey,),
                                       hintText: AppLocalizations.of(context)!
                                           .confirmPassword,
                                       validator: (text) {

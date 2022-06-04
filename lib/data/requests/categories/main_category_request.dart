@@ -7,6 +7,7 @@ import '../../models/user_models/categories/main_category_model.dart';
 
 class MainCategoryRequest {
    Future mainCategoryRequest({
+
     required int page,
   }) async {
     try {

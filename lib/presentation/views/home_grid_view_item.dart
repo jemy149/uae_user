@@ -20,9 +20,11 @@ class HomeGridViewItem extends StatelessWidget {
              Image.network(homeGridViewItemImgageUrl,fit: BoxFit.contain,height: 100,width: 100,) : Image.asset('assets/images/no_image.png',height: 120,width: 120,),
           ),
           SizedBox(
-            width: 120,
+            width: 100,
             child: DefaultText(text: homeGridViewItemText,
-            style: Theme.of(context).textTheme.button?.copyWith(fontSize: 12),),
+            style: Theme.of(context).textTheme.button?.copyWith(fontSize: 12),
+            maxLines: 2,
+            ),
           )
         ],
       ),

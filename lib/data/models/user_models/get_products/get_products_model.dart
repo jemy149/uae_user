@@ -3,7 +3,7 @@ GetProductsModel getProductsModelFromJson(String str) => GetProductsModel.fromJs
 String getProductsModelToJson(GetProductsModel data) => json.encode(data.toJson());
 class GetProductsModel {
   GetProductsModel({
-      int? status, 
+      int? status,
       Product? product,}){
     _status = status;
     _product = product;
@@ -34,21 +34,22 @@ Product productFromJson(String str) => Product.fromJson(json.decode(str));
 String productToJson(Product data) => json.encode(data.toJson());
 class Product {
   Product({
-      int? id, 
-      String? barcode, 
-      String? name, 
+
+      int? id,
+      String? barcode,
+      String? name,
       String? description,
     num? price,
-      bool? isFreeDelivered, 
-      List<String>? images, 
-      dynamic store, 
-      int? quantity, 
-      dynamic brand, 
-      List<Prices>? prices, 
-      bool? isFav, 
-      bool? hasOffer, 
-      int? point, 
-      List<dynamic>? features, 
+      bool? isFreeDelivered,
+      List<String>? images,
+      dynamic store,
+      int? quantity,
+      dynamic brand,
+      List<Prices>? prices,
+      bool? isFav,
+      bool? hasOffer,
+      int? point,
+      List<dynamic>? features,
       int? viewers,}){
     _id = id;
     _barcode = barcode;
@@ -168,7 +169,7 @@ class Prices {
       int? id,
     num? price,
       String? name,
-      int? quantity, 
+      int? quantity,
       String? image,}){
     _id = id;
     _price = price;
