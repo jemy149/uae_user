@@ -140,38 +140,29 @@ class _ProductsInStockItemState extends State<ProductsInStockItem> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              BlocListener<AddToCartCubit, AddToCartState>(
-                                listener: (context, state) {
-                                  if (state is UserAddCartSuccessStates) {
-                                    showToastMsg(
-                                        msg: state.message,
-                                        toastState: ToastStates.SUCCESS);
-                                  }
-                                },
-                                child:InkWell(
-                                    onTap: () {
-                                      AddToCartCubit.get(context)
-                                          .userAddToCart(
-                                          quantity: 1,
-                                          productId:
-                                          widget.productModel.id);
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.all(5),
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                        BorderRadius.circular(5),
-                                        border: Border.all(
-                                          width: 1,
-                                          color: AppColors.grey,
-                                        ),
+                              InkWell(
+                                  onTap: () {
+                                    AddToCartCubit.get(context)
+                                        .userAddToCart(
+                                        quantity: 1,
+                                        productId:
+                                        widget.productModel.id);
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                      BorderRadius.circular(5),
+                                      border: Border.all(
+                                        width: 1,
+                                        color: AppColors.grey,
                                       ),
-                                      child: const Icon(
-                                        Icons.add_shopping_cart_outlined,
-                                        color: AppColors.lightBlue,
-                                      ),
-                                    ))
-                              ),
+                                    ),
+                                    child: const Icon(
+                                      Icons.add_shopping_cart_outlined,
+                                      color: AppColors.lightBlue,
+                                    ),
+                                  )),
                               Flexible(
                                 child: DefaultText(
                                     text:

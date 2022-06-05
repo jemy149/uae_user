@@ -49,7 +49,7 @@ class AnOrderedCardItem extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(1.0),
                   child: DefaultText(
-                    text: '${order.carts[index].product.quantity}',
+                    text: '${order.carts[index].quantity}',
                     style: Theme.of(context)
                         .textTheme
                         .caption

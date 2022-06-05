@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:sizer/sizer.dart';
+import 'package:uae_user/business_logic/user/add_to_cart/add_to_cart_cubit.dart';
 import 'package:uae_user/business_logic/user/ads/ads_cubit.dart';
-import 'package:uae_user/business_logic/user/auth/user_auth_cubit.dart';
 import 'package:uae_user/business_logic/user/category/category_cubit.dart';
 import 'package:uae_user/business_logic/user/get_offers/get_offers_cubit.dart';
 import 'package:uae_user/presentation/screens/user_screens/search/search_screen.dart';
@@ -14,8 +14,10 @@ import 'package:uae_user/presentation/views/home_offers_card_item.dart';
 import 'package:uae_user/presentation/widgets/custome_search_field.dart';
 import 'package:uae_user/presentation/widgets/default_error_widget.dart';
 import 'package:uae_user/presentation/widgets/default_text.dart';
+
 import '../../../../business_logic/user/cart/get_my_cart/get_my_cart_cubit.dart';
 import '../../../../constants/constant_methods.dart';
+import '../../../../constants/enums.dart';
 import '../../../../constants/screens.dart';
 import '../../../widgets/DefaultSvg.dart';
 import '../../../widgets/default_loading_indicator.dart';
@@ -40,16 +42,17 @@ class _HomeScreenState extends State<HomeScreen> {
     getMyCartCubit.userGetCart();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-
         BlocProvider(
           create: (context) => GetOffersCubit()..userGetOffers(),
         ),
-
-
+        BlocProvider(
+          create: (context) => CategoryCubit()..userCategories(),
+        ),
       ],
       child: SafeArea(
         child: Scaffold(
@@ -73,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
               IconButton(
                 icon: Stack(
                   alignment: Alignment.topRight,
-                  children:  [
+                  children: [
                     const Icon(
                       Icons.add_shopping_cart,
                       color: Colors.white,
@@ -84,18 +87,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Center(
                         child: BlocBuilder<GetMyCartCubit, GetMyCartState>(
                           builder: (context, state) {
-
-                          if (state is UserGetCartSuccessState) {
-                            return Text(
-                              '${getMyCartCubit.getMyCartModel.carts.length}',
-                              style: const TextStyle(fontSize: 8),
-                            );
-                          }else{
-                            return Text(
-                              '${getMyCartCubit.getMyCartModel.carts.length}',
-                              style: const TextStyle(fontSize: 8),
-                            );
-                          }
+                            if (state is UserGetCartSuccessState) {
+                              return Text(
+                                '${getMyCartCubit.getMyCartModel.carts.length}',
+                                style: const TextStyle(fontSize: 8),
+                              );
+                            } else {
+                              return Text(
+                                '${getMyCartCubit.getMyCartModel.carts.length}',
+                                style: const TextStyle(fontSize: 8),
+                              );
+                            }
                           },
                         ),
                       ),
@@ -108,20 +110,18 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
             bottom: PreferredSize(
-              preferredSize:  Size.fromHeight(12.h),
-              child:  Padding(
+              preferredSize: Size.fromHeight(12.h),
+              child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 15),
                 child: Column(
                   children: [
                     Padding(
                       padding: const EdgeInsetsDirectional.only(bottom: 12.0),
                       child: DefaultText(
-                        text:
-                        AppLocalizations.of(context)!.welcome,
-                        style:
-                        Theme.of(context).textTheme.bodyText1?.copyWith(
-                          color: AppColors.lightGrey,
-                        ),
+                        text: AppLocalizations.of(context)!.welcome,
+                        style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                              color: AppColors.lightGrey,
+                            ),
                       ),
                     ),
                     SizedBox(
@@ -132,19 +132,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: CustomeSearchField(
                             keyboardType: TextInputType.text,
                             prefixIcon: IconButton(
-                              icon: Image.asset(
-                                  'assets/images/search.png'),
+                              icon: Image.asset('assets/images/search.png'),
                               onPressed: () {
-                                Navigator.pushNamed(
-                                    context, SEARCH_SCREEN_R);
+                                Navigator.pushNamed(context, SEARCH_SCREEN_R);
                               },
                             ),
                             suffixIcon: IconButton(
-                              icon: Image.asset(
-                                  'assets/images/barcode.png'),
+                              icon: Image.asset('assets/images/barcode.png'),
                               onPressed: () {
-                                Navigator.pushNamed(
-                                    context, BAR_CODE_SCREEN_R);
+                                Navigator.pushNamed(context, BAR_CODE_SCREEN_R);
                               },
                             ),
                             controller: _searchController,
@@ -155,10 +151,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               return '';
                             },
                             onFieldSubmitted: (text) {
-                              if (searchFormKey.currentState!
-                                  .validate()) {
-                                navigateTo(context,
-                                    SearchScreen(searchText: text));
+                              if (searchFormKey.currentState!.validate()) {
+                                navigateTo(
+                                    context, SearchScreen(searchText: text));
                               }
                             },
                           ),
@@ -170,72 +165,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           body: Column(
             children: [
-              // Container(
-              //   color: AppColors.lightBlue,
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.center,
-              //     children: [
-              //       SingleChildScrollView(
-              //         physics: const NeverScrollableScrollPhysics(),
-              //         child: Column(
-              //           crossAxisAlignment: CrossAxisAlignment.center,
-              //           children: [
-              //             DefaultText(
-              //               text:
-              //                   '${AppLocalizations.of(context)!.welcome}',
-              //               style:
-              //                   Theme.of(context).textTheme.bodyText1?.copyWith(
-              //                         color: AppColors.lightGrey,
-              //                       ),
-              //             ),
-              //             Padding(
-              //               padding: const EdgeInsets.symmetric(vertical: 15),
-              //               child: SizedBox(
-              //                   height: 35,
-              //                   width: 300,
-              //                   child: Form(
-              //                     key: searchFormKey,
-              //                     child: CustomeSearchField(
-              //                       keyboardType: TextInputType.text,
-              //                       prefixIcon: IconButton(
-              //                         icon: Image.asset(
-              //                             'assets/images/search.png'),
-              //                         onPressed: () {
-              //                           Navigator.pushNamed(
-              //                               context, SEARCH_SCREEN_R);
-              //                         },
-              //                       ),
-              //                       suffixIcon: IconButton(
-              //                         icon: Image.asset(
-              //                             'assets/images/barcode.png'),
-              //                         onPressed: () {
-              //                           Navigator.pushNamed(
-              //                               context, BAR_CODE_SCREEN_R);
-              //                         },
-              //                       ),
-              //                       controller: _searchController,
-              //                       validator: (text) {
-              //                         if (text!.isEmpty) {
-              //                           return 'البحث فارغ';
-              //                         }
-              //                         return '';
-              //                       },
-              //                       onFieldSubmitted: (text) {
-              //                         if (searchFormKey.currentState!
-              //                             .validate()) {
-              //                           navigateTo(context,
-              //                               SearchScreen(searchText: text));
-              //                         }
-              //                       },
-              //                     ),
-              //                   )),
-              //             ),
-              //           ],
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
               Expanded(
                 flex: 7,
                 child: RawScrollbar(
@@ -296,47 +225,70 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                         ),
-                        BlocBuilder<GetOffersCubit, GetOffersState>(
-                          builder: (context, state) {
-                            if (state is UserGetOffersSuccessState) {
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 5.0),
-                                child: SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: List.generate(
-                                      state.offers.length,
-                                      (index) => HomeOffersCardItem(offer:state.offers[index],productId:state.offers[index].product.id),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            } else if (state is UserGetOffersLoadingState) {
-                              return const DefaultLoadingIndicator();
-                            } else if (state is UserGetOffersEmptyState) {
-                              return Center(
-                                child: Expanded(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const DefaultSvg(
-                                        imagePath: 'assets/icons/no_search_data.svg',
-                                        color: AppColors.lightBlue2,
-                                      ),
-                                      DefaultText(
-                                        text: AppLocalizations.of(context)!.noResultsFound,
-                                        style: const TextStyle(color: Colors.white),
-                                        textStyle: Theme.of(context).textTheme.headline6,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              );
-                            } else {
-                              return const DefaultErrorWidget();
+                        BlocListener<AddToCartCubit, AddToCartState>(
+                          listener: (context, state) {
+                            if (state is UserAddToCartSuccessStates) {
+                              showToastMsg(
+                                  msg: state.message,
+                                  toastState: ToastStates.SUCCESS);
+                            } else if (state
+                                is UserAddToCartNotAvailableStates) {
+                              showToastMsg(
+                                  msg: AppLocalizations.of(context)!
+                                      .notAvailable,
+                                  toastState: ToastStates.WARNING);
                             }
                           },
+                          child: BlocBuilder<GetOffersCubit, GetOffersState>(
+                            builder: (context, state) {
+                              if (state is UserGetOffersSuccessState) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 5.0),
+                                  child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      children: List.generate(
+                                        state.offers.length,
+                                        (index) => HomeOffersCardItem(
+                                            offer: state.offers[index],
+                                            productId:
+                                                state.offers[index].product.id),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              } else if (state is UserGetOffersLoadingState) {
+                                return const DefaultLoadingIndicator();
+                              } else if (state is UserGetOffersEmptyState) {
+                                return Center(
+                                  child: Expanded(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const DefaultSvg(
+                                          imagePath:
+                                              'assets/icons/no_search_data.svg',
+                                          color: AppColors.lightBlue2,
+                                        ),
+                                        DefaultText(
+                                          text: AppLocalizations.of(context)!
+                                              .noResultsFound,
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                          textStyle: Theme.of(context)
+                                              .textTheme
+                                              .headline6,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                return const DefaultErrorWidget();
+                              }
+                            },
+                          ),
                         ),
                         Row(
                           children: [
@@ -357,43 +309,42 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                         BlocBuilder<CategoryCubit, CategoryStates>(
-                          builder: (context, state) {
-                            if (state is UserCategorySuccessState) {
-                              return
-                                GridView.builder(
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  gridDelegate:
-                                       SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisSpacing: 0.5.w,
-                                          crossAxisCount: 3,
-                                          mainAxisSpacing: 0.5.h,
-                                          mainAxisExtent: 20.h),
-                                  itemCount: state.userCategories.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return HomeGridViewItem(
-                                      homeGridViewItemText:
-                                          state.userCategories[index].name,
-                                      homeGridViewItemImgageUrl:
-                                          state.userCategories[index].image,
-                                      onTap: () {
-                                        Navigator.pushNamed(
-                                          context,
-                                          CATEGORIES_SCREEN_R,
-                                          arguments:
-                                              state.userCategories[index].id,
-                                        );
-                                      },
-                                    );
-                                  });
-                            } else if (state is UserCategoryLoadingState) {
-                              return const DefaultLoadingIndicator();
-                            } else {
-                              return const DefaultErrorWidget();
-                            }
-                          },
-                        ),
+                                                builder: (context, state) {
+                                                  if (state is UserCategorySuccessState) {
+                                                    return GridView.builder(
+                                                        shrinkWrap: true,
+                                                        physics: const NeverScrollableScrollPhysics(),
+                                                        gridDelegate:
+                                                            SliverGridDelegateWithFixedCrossAxisCount(
+                                                                crossAxisSpacing: 0.5.w,
+                                                                crossAxisCount: 3,
+                                                                mainAxisSpacing: 0.5.h,
+                                                                mainAxisExtent: 20.h),
+                                                        itemCount: state.userCategories.length,
+                                                        itemBuilder:
+                                                            (BuildContext context, int index) {
+                                                          return HomeGridViewItem(
+                                                            homeGridViewItemText:
+                                                                state.userCategories[index].name,
+                                                            homeGridViewItemImgageUrl:
+                                                                state.userCategories[index].image,
+                                                            onTap: () {
+                                                              Navigator.pushNamed(
+                                                                context,
+                                                                CATEGORIES_SCREEN_R,
+                                                                arguments:
+                                                                    state.userCategories[index].id,
+                                                              );
+                                                            },
+                                                          );
+                                                        });
+                                                  } else if (state is UserCategoryLoadingState) {
+                                                    return const DefaultLoadingIndicator();
+                                                  } else {
+                                                    return const DefaultErrorWidget();
+                                                  }
+                                                },
+                                              ),
                       ],
                     ),
                   ),

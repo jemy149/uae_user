@@ -54,11 +54,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => EditCartCubit(),
         ),
-
         BlocProvider(create: (context) => AddToCartCubit()),
-        BlocProvider(
-          create: (context) => CategoryCubit()..userCategories(),
-        ),
+
         BlocProvider(
           create: (context) => UserAuthCubit(),
         ),

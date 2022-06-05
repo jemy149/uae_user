@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:uae_user/constants/constant_methods.dart';
 import 'package:uae_user/constants/enums.dart';
+import 'package:uae_user/presentation/router/arguments/user_arguments/adding_favourite_product_to_cart_screen_args.dart';
 import 'package:uae_user/presentation/widgets/default_cached_network_image.dart';
 import '../../../../business_logic/user/add_to_cart/add_to_cart_cubit.dart';
 import '../../../../business_logic/user/change_favorite/favorite_change_cubit.dart';
@@ -15,21 +16,19 @@ import '../../../widgets/default_loading_indicator.dart';
 import '../../../widgets/default_material_button.dart';
 import '../../../widgets/default_text.dart';
 
-class AddingProductToCartScreen extends StatefulWidget {
-  final int productId;
-  final int? discount;
-
-  const AddingProductToCartScreen({Key? key, required this.productId, this.discount})
+class AddingFavouriteProductToCartScreen extends StatefulWidget {
+ final AddingFavouriteProductToCartScreenArgs addingFavouriteProductToCartScreenArgs ;
+  const AddingFavouriteProductToCartScreen({Key? key, required this.addingFavouriteProductToCartScreenArgs,})
       : super(key: key);
 
   @override
-  State<AddingProductToCartScreen> createState() =>
-      _AddingProductToCartScreenState();
+  State<AddingFavouriteProductToCartScreen> createState() =>
+      _AddingFavouriteProductToCartScreenState();
 }
 
  GetProductsCubit _getProductsCubit = GetProductsCubit();
 
-class _AddingProductToCartScreenState extends State<AddingProductToCartScreen> {
+class _AddingFavouriteProductToCartScreenState extends State<AddingFavouriteProductToCartScreen> {
   bool favClicked = false;
 
 
@@ -56,12 +55,13 @@ class _AddingProductToCartScreenState extends State<AddingProductToCartScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return MultiBlocProvider(
         providers: [
 
           BlocProvider(
             create: (context) => GetProductsCubit()
-              ..userGetProducts(productId: widget.productId),
+              ..userGetProducts(productId: widget.addingFavouriteProductToCartScreenArgs.productId),
           ),
         ],
         child: SafeArea(
@@ -212,7 +212,7 @@ class _AddingProductToCartScreenState extends State<AddingProductToCartScreen> {
                                   ),
                                   DefaultText(
                                     text:
-                                        '${_getProductsCubit.getProductsModel.product.price.toStringAsFixed(2)} ${AppLocalizations.of(context)!.appCurrency}',
+                                        '${widget.addingFavouriteProductToCartScreenArgs.discount.toStringAsFixed(2)} ${AppLocalizations.of(context)!.appCurrency}',
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyText1
@@ -223,46 +223,7 @@ class _AddingProductToCartScreenState extends State<AddingProductToCartScreen> {
                                 ],
                               ),
                             ),
-                            // Padding(
-                            //   padding: const EdgeInsets.symmetric(vertical: 20),
-                            //   child: Row(
-                            //     mainAxisAlignment: MainAxisAlignment.center,
-                            //     children: [
-                            //       Builder(builder: (context) {
-                            //         AddToCartCubit _cartCubit =
-                            //             AddToCartCubit.get(context);
-                            //         return BlocListener<AddToCartCubit,
-                            //             AddToCartState>(
-                            //           listener: (context, state) {
-                            //             if (state is UserAddCartSuccessStates) {
-                            //               showToastMsg(
-                            //                   msg: AppLocalizations.of(context)!.addedSuccessfully,
-                            //                   toastState: ToastStates.SUCCESS);
-                            //             }else if (state is UserAddCartNotAvailableStates) {
-                            //               showToastMsg(
-                            //                   msg: AppLocalizations.of(context)!.notAvailable,
-                            //                   toastState: ToastStates.WARNING);
-                            //             }
-                            //           },
-                            //           child: DefaultMaterialButton(
-                            //             text: AppLocalizations.of(context)!
-                            //                 .addToCart,
-                            //             onTap: () {
-                            //               _cartCubit.userAddToCart(
-                            //                 quantity:_finalCount,
-                            //                   productId: widget.productId);
-                            //               printTest(_finalCount.toString());
-                            //             },
-                            //             height: 50,
-                            //             width: 260,
-                            //             color: Colors.white,
-                            //             textColor: AppColors.lightBlue,
-                            //           ),
-                            //         );
-                            //       })
-                            //     ],
-                            //   ),
-                            // ),
+
                             Padding(
                               padding:
                                   const EdgeInsetsDirectional.only(end: 12.0),
@@ -359,7 +320,7 @@ class _AddingProductToCartScreenState extends State<AddingProductToCartScreen> {
                                         flex: 30,
                                         child: DefaultText(
                                           text:
-                                          '${(_getProductsCubit.getProductsModel.product.price*productQuantity).toStringAsFixed(2)} ${AppLocalizations.of(context)!.appCurrency}',
+                                          '${(widget.addingFavouriteProductToCartScreenArgs.discount*productQuantity).toStringAsFixed(2)} ${AppLocalizations.of(context)!.appCurrency}',
                                           style: Theme.of(context)
                                               .textTheme
                                               .subtitle1
@@ -526,7 +487,7 @@ class _AddingProductToCartScreenState extends State<AddingProductToCartScreen> {
                                         onTap: () {
                                           _cartCubit.userAddToCart(
                                             quantity:productQuantity,
-                                              productId: widget.productId);
+                                              productId: widget.addingFavouriteProductToCartScreenArgs.productId);
                                           printTest(productQuantity.toString());
                                         },
                                         height: 50,

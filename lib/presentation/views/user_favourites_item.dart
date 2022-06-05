@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:uae_user/business_logic/user/add_to_cart/add_to_cart_cubit.dart';
 import 'package:uae_user/business_logic/user/change_favorite/favorite_change_cubit.dart';
+import 'package:uae_user/constants/constant_methods.dart';
+import 'package:uae_user/constants/enums.dart';
 import 'package:uae_user/constants/screens.dart';
 import 'package:uae_user/data/models/user_models/favorites/favorites_model.dart';
 import 'package:uae_user/presentation/widgets/default_cached_network_image.dart';
@@ -13,7 +16,8 @@ class UserFavouritesItem extends StatefulWidget {
 
   const UserFavouritesItem({
     Key? key,
-    required this.productModel, required this.productId,
+    required this.productModel,
+    required this.productId,
   }) : super(key: key);
 
   @override
@@ -21,19 +25,20 @@ class UserFavouritesItem extends StatefulWidget {
 }
 
 class _UserFavouritesItemState extends State<UserFavouritesItem> {
-
   late ChangeFavoriteCubit _changeFavoriteCubit;
+
   @override
   void initState() {
-    _changeFavoriteCubit=ChangeFavoriteCubit.get(context);
+    _changeFavoriteCubit = ChangeFavoriteCubit.get(context);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){
+      onTap: () {
         Navigator.pushReplacementNamed(context, ADDING_PRODUCT_TO_CART_SCREEN_R,
-            arguments:widget.productId);
+            arguments: widget.productId);
       },
       child: Column(
         children: [
@@ -49,8 +54,8 @@ class _UserFavouritesItemState extends State<UserFavouritesItem> {
                       height: 160,
                       width: 150,
                       clipBehavior: Clip.antiAlias,
-                      decoration:
-                          BoxDecoration(borderRadius: BorderRadius.circular(25)),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25)),
                       child: DefaultCachedNetworkImage(
                           imageUrl: widget.productModel.images.isEmpty
                               ? ''
@@ -64,7 +69,9 @@ class _UserFavouritesItemState extends State<UserFavouritesItem> {
                           const EdgeInsetsDirectional.only(start: 10, top: 15),
                       child: InkWell(
                         onTap: () {
-                          _changeFavoriteCubit.changeFavorite(productId: widget.productModel.id,);
+                          _changeFavoriteCubit.changeFavorite(
+                            productId: widget.productModel.id,
+                          );
                         },
                         child: Container(
                           decoration: BoxDecoration(
@@ -86,7 +93,8 @@ class _UserFavouritesItemState extends State<UserFavouritesItem> {
                       alignment: Alignment.topRight,
                       child: InkWell(
                         onTap: () {
-                          AddToCartCubit.get(context).userAddToCart(productId: widget.productId);
+                          AddToCartCubit.get(context)
+                              .userAddToCart(quantity: 1,productId: widget.productId);
                         },
                         child: Container(
                           decoration: BoxDecoration(
@@ -111,8 +119,7 @@ class _UserFavouritesItemState extends State<UserFavouritesItem> {
                 padding: const EdgeInsetsDirectional.only(top: 10),
                 child: DefaultText(
                   textAlign: TextAlign.center,
-                  text:
-                  widget.productModel.name,
+                  text: widget.productModel.name,
                   maxLines: 3,
                   style: Theme.of(context).textTheme.bodyText1?.copyWith(
                         fontFamily: 'Bukra-Regular',
@@ -128,9 +135,10 @@ class _UserFavouritesItemState extends State<UserFavouritesItem> {
                       text: AppLocalizations.of(context)!.price,
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
-                     Padding(
+                    Padding(
                       padding: const EdgeInsetsDirectional.only(start: 5),
-                      child: DefaultText(text: '(${widget.productModel.price})'),
+                      child:
+                          DefaultText(text: '(${widget.productModel.price})'),
                     ),
                   ],
                 ),

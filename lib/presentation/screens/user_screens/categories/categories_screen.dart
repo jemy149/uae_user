@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:uae_user/business_logic/user/category/category_cubit.dart';
 import 'package:uae_user/business_logic/user/search/search_cubit.dart';
+
 import '../../../../constants/screens.dart';
 import '../../../styles/colors.dart';
 import '../../../views/products_in_stock_item.dart';
@@ -51,7 +52,7 @@ class _CategoriesScreenState extends State<CategoriesScreen>
               Navigator.pushNamedAndRemoveUntil(
                 context,
                 HOME_LAYOUT_R,
-                    (route) => false,
+                (route) => false,
               );
             },
           ),
@@ -102,7 +103,6 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                   child: SizedBox(
                     width: double.infinity,
                     child: TabBarView(
-
                         controller: tabController,
                         children: List.generate(
                           state.userSubCategories.length,
@@ -126,9 +126,8 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                                       child: Column(
                                         children: [
                                           Padding(
-                                            padding:
-                                                const EdgeInsetsDirectional.only(
-                                                    bottom: 10.0, top: 10.0),
+                                            padding: const EdgeInsetsDirectional
+                                                .only(bottom: 10.0, top: 10.0),
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.start,
@@ -153,10 +152,12 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                                                                       .circular(
                                                                           10)),
                                                       child: Padding(
-                                                        padding: const EdgeInsets
-                                                                .symmetric(
-                                                            vertical: 8.0,
-                                                            horizontal: 5.0),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                vertical: 8.0,
+                                                                horizontal:
+                                                                    5.0),
                                                         child: Image.asset(
                                                           'assets/icons/filter.png',
                                                           width: 20,
@@ -166,10 +167,12 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                                                 ),
                                                 Card(
                                                     elevation: 5,
-                                                    shape: RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                10)),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10)),
                                                     child: Padding(
                                                       padding: const EdgeInsets
                                                               .symmetric(
@@ -207,21 +210,22 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                                             ),
                                           ),
                                           Expanded(
-                                            child:GridView.count(
-                                          controller: productGridController,
-                                          crossAxisCount: 2,
-                                          crossAxisSpacing: 6,
-                                          mainAxisSpacing: 6,
-                                          childAspectRatio: 1 / 1.4,
-                                          children: List.generate(
-                                          _searchCubit
-                                              .searchModel.products.length,
-                                          (index) => ProductsInStockItem(
-                                          productModel: _searchCubit
-                                              .searchModel
-                                              .products[index])))
-                                          ),
-
+                                              child: GridView.count(
+                                                  controller:
+                                                      productGridController,
+                                                  crossAxisCount: 2,
+                                                  crossAxisSpacing: 6,
+                                                  mainAxisSpacing: 6,
+                                                  childAspectRatio: 1 / 1.4,
+                                                  children: List.generate(
+                                                      _searchCubit.searchModel
+                                                          .products.length,
+                                                      (index) => ProductsInStockItem(
+                                                          productModel:
+                                                              _searchCubit
+                                                                      .searchModel
+                                                                      .products[
+                                                                  index])))),
                                         ],
                                       ),
                                     );

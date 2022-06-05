@@ -3,15 +3,15 @@ part of 'add_to_cart_cubit.dart';
 @immutable
 abstract class AddToCartState {}
 
-class UserCartInitialStates extends AddToCartState {}
+class UserAddToCartInitialStates extends AddToCartState {}
 
-class UserAddCartSuccessStates extends AddToCartState {
+class UserAddToCartSuccessStates extends AddToCartState {
   final String message;
-  UserAddCartSuccessStates({ required this.message});
+  UserAddToCartSuccessStates({ required this.message});
 }
-class UserAddCartNotAvailableStates extends AddToCartState {}
-class UserAddCartLoadingStates extends AddToCartState {}
-class UserAddCartErrorStates extends AddToCartState {}
+class UserAddToCartNotAvailableStates extends AddToCartState {}
+class UserAddToCartLoadingStates extends AddToCartState {}
+class UserAddToCartErrorStates extends AddToCartState {}
 
 
 

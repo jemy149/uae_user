@@ -8,6 +8,10 @@ import 'package:uae_user/presentation/views/user_favourites_item.dart';
 import 'package:uae_user/presentation/widgets/DefaultSvg.dart';
 import 'package:uae_user/presentation/widgets/default_error_widget.dart';
 import 'package:uae_user/presentation/widgets/default_loading_indicator.dart';
+
+import '../../../../business_logic/user/add_to_cart/add_to_cart_cubit.dart';
+import '../../../../constants/constant_methods.dart';
+import '../../../../constants/enums.dart';
 import '../../../styles/colors.dart';
 import '../../../widgets/default_text.dart';
 
@@ -28,20 +32,17 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
         BlocProvider(
           create: (context) => GetFavoriteCubit()..getFavorite(),
         ),
-
       ],
       child: SafeArea(
         child: Scaffold(
             appBar: AppBar(
               backgroundColor: AppColors.lightBlue,
-
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   DefaultText(text: AppLocalizations.of(context)!.fav),
                 ],
               ),
-
             ),
             body: BlocListener<ChangeFavoriteCubit, ChangeFavoriteStates>(
               listener: (context, state) {
@@ -51,7 +52,8 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
               },
               child: BlocBuilder<GetFavoriteCubit, GetFavoriteState>(
                 builder: (context, state) {
-                  if (state is GetFavoriteSuccessState||state is RemoveItemState) {
+                  if (state is GetFavoriteSuccessState ||
+                      state is RemoveItemState) {
                     _getFavoriteCubit = GetFavoriteCubit.get(context);
                     return CustomScrollView(
                       slivers: [
@@ -63,7 +65,8 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 DefaultText(
-                                  text: AppLocalizations.of(context)!.listOfMyFavourites,
+                                  text: AppLocalizations.of(context)!
+                                      .listOfMyFavourites,
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyText1
@@ -82,21 +85,35 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                             ),
                           ),
                         ),
-                        SliverGrid(
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  mainAxisSpacing: 20,
-                                  mainAxisExtent: 38.h),
-                          delegate: SliverChildBuilderDelegate(
-                              (context, index) {
-                            return UserFavouritesItem(
-                              productId: _getFavoriteCubit.favoriteModel.products[index].id,
-                                productModel: _getFavoriteCubit
-                                    .favoriteModel.products[index]);
+                        BlocListener<AddToCartCubit, AddToCartState>(
+                          listener: (context, state) {
+                            if (state is UserAddToCartSuccessStates) {
+                              showToastMsg(
+                                  msg: state.message,
+                                  toastState: ToastStates.SUCCESS);
+                            } else if (state is UserAddToCartErrorStates) {
+                              showToastMsg(
+                                  msg: 'error',
+                                  toastState: ToastStates.SUCCESS);
+                            }
                           },
-                              childCount: _getFavoriteCubit
-                                  .favoriteModel.products.length),
+                          child: SliverGrid(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    mainAxisSpacing: 20,
+                                    mainAxisExtent: 38.h),
+                            delegate: SliverChildBuilderDelegate(
+                                (context, index) {
+                              return UserFavouritesItem(
+                                  productId: _getFavoriteCubit
+                                      .favoriteModel.products[index].id,
+                                  productModel: _getFavoriteCubit
+                                      .favoriteModel.products[index]);
+                            },
+                                childCount: _getFavoriteCubit
+                                    .favoriteModel.products.length),
+                          ),
                         ),
                       ],
                     );
@@ -107,7 +124,8 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                       child: DefaultSvg(
                         imagePath: 'assets/icons/add_to_favorite.svg',
                         height: 48,
-                        width: 48,color: AppColors.lightBlue,
+                        width: 48,
+                        color: AppColors.lightBlue,
                       ),
                     );
                   } else {

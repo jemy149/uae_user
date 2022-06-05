@@ -5,6 +5,7 @@ import 'package:uae_user/data/models/user_models/get_orders/get_orders_model.dar
 import 'package:uae_user/presentation/router/arguments/user_arguments/tracking_order_screen_args.dart';
 import 'package:uae_user/presentation/screens/user_screens/about/about_screen.dart';
 import 'package:uae_user/presentation/screens/user_screens/adding_additional_location/adding_additional_location_screen.dart';
+import 'package:uae_user/presentation/screens/user_screens/adding_product_to_cart/adding_favourite_product_to_cart_screen.dart';
 import 'package:uae_user/presentation/screens/user_screens/adding_product_to_cart/adding_product_to_cart_screen.dart';
 import 'package:uae_user/presentation/screens/user_screens/app_layout/home_layout.dart';
 import 'package:uae_user/presentation/screens/user_screens/cart/cart_screen.dart';
@@ -34,6 +35,7 @@ import '../screens/user_screens/login/login_screen.dart';
 import '../screens/user_screens/products_in_stock/products_in_stock_screen.dart';
 import '../screens/user_screens/profile/profile_screen.dart';
 import '../screens/user_screens/register/register_screen.dart';
+import 'arguments/user_arguments/adding_favourite_product_to_cart_screen_args.dart';
 import 'arguments/user_arguments/delivery_details_screen_args.dart';
 import 'arguments/user_arguments/delivery_information_screen_args.dart';
 import 'arguments/user_arguments/payment_method_screen_args.dart';
@@ -127,6 +129,10 @@ class AppRouter {
       case ADDING_PRODUCT_TO_CART_SCREEN_R:
         final int productId = settings.arguments as int;
         return MaterialPageRoute(builder: (_) =>  AddingProductToCartScreen(productId: productId,));
+        case ADDING_FAVOURITE_PRODUCT_TO_CART_SCREEN_R:
+          final AddingFavouriteProductToCartScreenArgs args =
+        settings.arguments as AddingFavouriteProductToCartScreenArgs;
+        return MaterialPageRoute(builder: (_) =>  AddingFavouriteProductToCartScreen(addingFavouriteProductToCartScreenArgs: args,));
       case DELIVERY_LOCATION_SCREEN_R:
         return MaterialPageRoute(builder: (_) => const DeliveryLocationScreen());
       case PAYMENT_METHOD_SCREEN_R:

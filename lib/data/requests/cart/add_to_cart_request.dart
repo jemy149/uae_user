@@ -9,7 +9,7 @@ import '../../data_provider/remote/dio_helper.dart';
 class AddToCartRequest {
   Future addToCartRequest({
     required int productId,
-    int? quantity,
+    required int quantity,
   }) async {
     try {
       Response response = await DioHelper.postData(url: EP_ADD_TO_CART, data: {
