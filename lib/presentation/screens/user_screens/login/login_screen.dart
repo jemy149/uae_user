@@ -1,6 +1,4 @@
 import 'package:country_code_picker/country_code_picker.dart';
-import 'package:flutter/animation.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -39,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
   CountryCode? _countryCode = CountryCode(name: 'EG', dialCode: '+20');
   bool _obscureText = true;
 
-   String? _password;
+    String? _password;
 
   // Toggles the password show status
   void _toggle() {

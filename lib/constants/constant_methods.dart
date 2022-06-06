@@ -96,6 +96,18 @@ Color chooseToastColor({required ToastStates state}) {
 }
 
 
+///////////////////// filtering a list ///////////////////////
+findElementInListUsingForLoop(
+{required List list,required String element}
+    ){
+  for(var i = 0; i <list.length;i++){
+    if(list[i].name == element){
+
+      return list[i];
+    }
+  }
+}
+
 
 
 

@@ -12,7 +12,6 @@ import 'business_logic/user/add_to_cart/add_to_cart_cubit.dart';
 import 'business_logic/user/ads/ads_cubit.dart';
 import 'business_logic/user/cart/edit_cart/edit_cart_cubit.dart';
 import 'business_logic/user/cart/get_my_cart/get_my_cart_cubit.dart';
-import 'business_logic/user/category/category_cubit.dart';
 import 'business_logic/user/change_favorite/favorite_change_cubit.dart';
 import 'business_logic/user/get_offers/get_offers_cubit.dart';
 import 'data/data_provider/local/cache_helper.dart';
@@ -72,6 +71,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => AdsCubit()..userAds(type: 'welcome'),
         ),
+
 
 
       ],

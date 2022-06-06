@@ -7,7 +7,8 @@ import 'package:uae_user/presentation/styles/colors.dart';
 import 'package:uae_user/presentation/widgets/default_cached_network_image.dart';
 import 'package:uae_user/presentation/widgets/default_text.dart';
 import '../../business_logic/user/cart/edit_cart/edit_cart_cubit.dart';
-import '../../business_logic/user/cart/get_my_cart/get_my_cart_cubit.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class CartItem extends StatefulWidget {
   final Carts getMyCartModel;
@@ -68,7 +69,7 @@ class _CartItemState extends State<CartItem> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: DefaultText(
-                          text: '${widget.getMyCartModel.product.price} AED',
+                          text: '${widget.getMyCartModel.product.price} ${AppLocalizations.of(context)!.appCurrency}',
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
                       ),
@@ -105,6 +106,7 @@ class _CartItemState extends State<CartItem> {
                                           quantity:
                                           productQuantity);
                                       printTest('${widget.getMyCartModel.id}');
+
                                     },
                                   ),
                                   Padding(
@@ -121,7 +123,6 @@ class _CartItemState extends State<CartItem> {
                                     ),
                                   ),
                                   InkWell(
-
                                     child: const CircleAvatar(
                                       backgroundColor: AppColors.black,
                                       radius: 15.2,
